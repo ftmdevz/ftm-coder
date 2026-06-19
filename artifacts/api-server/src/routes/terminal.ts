@@ -14,13 +14,17 @@ export function setupTerminalWebSocket(wss: WebSocketServer) {
     let proc: ReturnType<typeof spawn> | null = null;
 
     try {
-      proc = spawn(shell, [], {
+      // Use `script` to allocate a PTY so bash runs interactively with prompts
+      // script -q -c <cmd> /dev/null  →  quiet, run cmd in PTY, discard typescript log
+      proc = spawn("script", ["-q", "-c", `${shell} -i`, "/dev/null"], {
         cwd: workspace,
         env: {
           ...process.env,
           TERM: "xterm-256color",
           COLORTERM: "truecolor",
           FORCE_COLOR: "1",
+          // Keep a clean minimal prompt
+          PS1: "\\[\\033[1;32m\\]\\u@ftm\\[\\033[0m\\]:\\[\\033[1;34m\\]\\W\\[\\033[0m\\]\\$ ",
         },
         stdio: ["pipe", "pipe", "pipe"],
       });
@@ -49,12 +53,9 @@ export function setupTerminalWebSocket(wss: WebSocketServer) {
         logger.error({ err }, "Terminal process error");
         if (ws.readyState === WebSocket.OPEN) {
           ws.send(JSON.stringify({ type: "data", data: `\r\nError: ${err.message}\r\n` }));
-          ws.close();
         }
       });
 
-      // Send initial prompt signal
-      ws.send(JSON.stringify({ type: "ready" }));
     } catch (err) {
       logger.error({ err }, "Failed to spawn terminal process");
       ws.send(JSON.stringify({ type: "data", data: "Failed to start terminal\r\n" }));
@@ -67,9 +68,8 @@ export function setupTerminalWebSocket(wss: WebSocketServer) {
         const msg = JSON.parse(raw.toString()) as { type: string; data?: string; cols?: number; rows?: number };
         if (msg.type === "input" && proc && proc.stdin && msg.data) {
           proc.stdin.write(msg.data);
-        } else if (msg.type === "resize") {
-          // Resize not supported without PTY, but we acknowledge it
         }
+        // resize events acknowledged but not applied without PTY size control
       } catch { /* ignore malformed messages */ }
     });
 

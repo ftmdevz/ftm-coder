@@ -3,7 +3,7 @@ import { useWorkspace } from "@/lib/workspace-context";
 import { useGetGitStatus, useGitCommit, getGetGitStatusQueryKey } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Play, Square, GitBranch, Settings, LayoutPanelLeft } from "lucide-react";
+import { Play, Square, GitBranch, Settings, LayoutPanelLeft, Terminal } from "lucide-react";
 
 export function TopBar() {
   const { workspacePath, setWorkspacePath } = useWorkspace();
@@ -36,7 +36,12 @@ export function TopBar() {
   return (
     <div className="flex items-center h-12 border-b border-border bg-card px-4 shrink-0 justify-between">
       <div className="flex items-center gap-4">
-        <h1 className="font-bold text-primary tracking-tight">FTM-CODER-AI</h1>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center w-7 h-7 rounded bg-primary/20 border border-primary/30">
+            <Terminal className="h-4 w-4 text-primary" />
+          </div>
+          <h1 className="font-bold text-primary tracking-tight text-sm">FTM-CODER-AI</h1>
+        </div>
         <div className="flex items-center gap-2">
           <Input 
             value={pathInput} 

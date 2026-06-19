@@ -13,7 +13,7 @@ const openai = new OpenAI({
   baseURL: "https://agentrouter.org/v1",
 });
 
-const MODEL = process.env.AGENT_MODEL || "gpt-5";
+const MODEL = process.env.AGENT_MODEL || "gpt-4o";
 const MAX_TOOL_CALLS = 25;
 const MAX_FILE_SIZE_CHARS = 8000;
 const SUMMARY_LINES = 100;
@@ -289,7 +289,12 @@ Be concise and professional. Focus on the task.`;
         max_tokens: 4096,
       });
 
-      const choice = response.choices[0];
+      if (!response.choices || response.choices.length === 0) {
+        logger.error({ model: MODEL, responseKeys: Object.keys(response) }, "AI returned empty choices array");
+        throw new Error(`AI returned no choices. Model "${MODEL}" may not be supported by AgentRouter.`);
+      }
+
+      const choice = response.choices[0]!;
       const assistantMsg = choice.message;
       messages.push(assistantMsg as OpenAI.Chat.Completions.ChatCompletionMessageParam);
 
