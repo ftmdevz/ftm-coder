@@ -8,10 +8,12 @@ import { logger } from "../lib/logger";
 
 const router: IRouter = Router();
 
-const openai = new OpenAI({
-  apiKey: process.env.AGENTROUTER_API_KEY || "",
-  baseURL: "https://agentrouter.org/v1",
-});
+function makeOpenAIClient() {
+  return new OpenAI({
+    apiKey: process.env.OMNIROUTE_API_KEY || process.env.AGENTROUTER_API_KEY || "placeholder",
+    baseURL: process.env.OMNIROUTE_BASE_URL || "https://agentrouter.org/v1",
+  });
+}
 
 const MODEL = process.env.AGENT_MODEL || "gpt-4o";
 const MAX_TOOL_CALLS = 25;
@@ -232,9 +234,9 @@ type PendingChange = {
 
 router.get("/chat/config", (_req, res) => {
   res.json({
-    apiKey: process.env.AGENTROUTER_API_KEY || "",
-    baseURL: "https://agentrouter.org/v1",
-    model: process.env.AGENT_MODEL || "gpt-5",
+    apiKey: process.env.OMNIROUTE_API_KEY || process.env.AGENTROUTER_API_KEY || "",
+    baseURL: process.env.OMNIROUTE_BASE_URL || "https://agentrouter.org/v1",
+    model: process.env.AGENT_MODEL || "gpt-4o",
   });
 });
 
@@ -286,6 +288,8 @@ Be concise and professional. Focus on the task.`;
   ];
 
   let planText = "";
+
+  const openai = makeOpenAIClient();
 
   try {
     while (toolCallsUsed < MAX_TOOL_CALLS) {
