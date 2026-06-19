@@ -230,6 +230,14 @@ type PendingChange = {
   diff: string;
 };
 
+router.get("/chat/config", (_req, res) => {
+  res.json({
+    apiKey: process.env.AGENTROUTER_API_KEY || "",
+    baseURL: "https://agentrouter.org/v1",
+    model: process.env.AGENT_MODEL || "gpt-5",
+  });
+});
+
 router.post("/chat/message", async (req, res) => {
   const { message, workspace, history = [], activeFile } = req.body as {
     message: string;
