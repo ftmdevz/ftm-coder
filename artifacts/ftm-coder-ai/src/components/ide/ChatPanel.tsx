@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useWorkspace } from "@/lib/workspace-context";
-import { useApplyChanges, useListFiles, getListFilesQueryKey } from "@workspace/api-client-react";
+import { useApplyChanges, getListFilesQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Send, Loader2, Check, X, ChevronDown, ChevronRight, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { loadAIConfig, type AIConfig } from "./AISettings";
 
 type PendingChange = {
   path: string;
@@ -21,7 +22,7 @@ type ChatMessage = {
   toolCallsUsed?: number;
 };
 
-type AgentConfig = { apiKey: string; baseURL: string; model: string } | null;
+type AgentConfig = AIConfig | null;
 
 const EXAMPLE_PROMPTS = [
   "Explain the structure of this project",
@@ -151,12 +152,20 @@ export function ChatPanel() {
   const queryClient = useQueryClient();
   const applyChanges = useApplyChanges();
 
-  // Fetch AgentRouter config once from the backend (key is stored server-side)
+  // Load config: localStorage override first, then server fallback
   useEffect(() => {
+    const stored = loadAIConfig();
+    if (stored?.apiKey && stored.baseURL && stored.model) {
+      setConfig(stored);
+      return;
+    }
     fetch("/api/chat/config")
       .then(r => r.json())
-      .then((c: AgentConfig) => setConfig(c))
-      .catch(() => setConfig(null));
+      .then((c: AIConfig) => {
+        // Merge: stored prefs (model/baseURL) can override server key
+        setConfig({ ...c, ...(stored || {}) });
+      })
+      .catch(() => setConfig(stored));
   }, []);
 
   useEffect(() => {
@@ -170,6 +179,7 @@ export function ChatPanel() {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${config.apiKey}`,
+        "x-api-key": config.apiKey,
       },
       body: JSON.stringify({
         model: config.model,
