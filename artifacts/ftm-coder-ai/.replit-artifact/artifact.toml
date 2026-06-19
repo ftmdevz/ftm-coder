@@ -15,17 +15,8 @@ paths = [ "/" ]
 localPort = 22177
 
 [services.development]
-run = "pnpm --filter @workspace/ftm-coder-ai run dev"
-
-[services.production]
-build = [ "pnpm", "--filter", "@workspace/ftm-coder-ai", "run", "build" ]
-publicDir = "artifacts/ftm-coder-ai/dist/public"
-serve = "static"
-
-[[services.production.rewrites]]
-from = "/*"
-to = "/index.html"
+run = "cd /home/runner/workspace/artifacts/ftm-coder-ai && npm install --legacy-peer-deps && npm run dev"
 
 [services.env]
 PORT = "22177"
-BASE_PATH = "/"
+HOST = "0.0.0.0"
