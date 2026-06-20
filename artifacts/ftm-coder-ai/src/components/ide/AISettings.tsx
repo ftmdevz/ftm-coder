@@ -25,6 +25,13 @@ export function saveAIConfig(cfg: AIConfig) {
 
 const PROVIDERS = [
   {
+    label: "Built-in AI (Server)",
+    baseURL: "/api/ai",
+    hint: "Server pe configured AI — Ollama, Z.ai ya koi bhi backend. Koi key nahi chahiye!",
+    noKey: true,
+    isServerProxy: true,
+  },
+  {
     label: "Ollama (Local — No Key)",
     baseURL: "http://localhost:11434/v1",
     hint: "100% free & local. Install: ollama.com → then run: ollama pull glm4",
@@ -57,6 +64,15 @@ const PROVIDERS = [
 ];
 
 const MODELS_BY_PROVIDER: Record<string, string[]> = {
+  "/api/ai": [
+    "glm4",
+    "qwen2.5-coder:7b",
+    "qwen2.5-coder:32b",
+    "deepseek-coder-v2",
+    "llama3.2",
+    "phi4",
+    "mistral",
+  ],
   "http://localhost:11434/v1": [
     "glm4",
     "qwen2.5-coder:7b",
@@ -184,7 +200,15 @@ export function AISettingsDialog({
         </div>
 
         {/* Banner — changes based on provider */}
-        {noKeyNeeded ? (
+        {activeProvider?.isServerProxy ? (
+          <div className="mb-4 p-3 rounded-lg bg-gradient-to-r from-violet-950/40 to-purple-950/40 border border-violet-800/40">
+            <p className="text-xs font-semibold text-violet-300 mb-0.5">🚀 Built-in Server AI — Zero Config</p>
+            <p className="text-xs text-muted-foreground mb-1.5">Server apna AI backend use karta hai. VPS pe Ollama chalao — sab auto-connect ho jaata hai.</p>
+            <code className="text-xs text-violet-200 block font-mono bg-black/30 px-2 py-1 rounded">
+              AI_BASE_URL=http://localhost:11434/v1 AI_MODEL=glm4
+            </code>
+          </div>
+        ) : noKeyNeeded ? (
           <div className="mb-4 p-3 rounded-lg bg-gradient-to-r from-green-950/40 to-emerald-950/40 border border-green-800/40">
             <div className="flex items-start justify-between gap-2">
               <div>

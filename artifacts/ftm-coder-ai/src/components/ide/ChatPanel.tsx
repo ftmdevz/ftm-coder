@@ -326,14 +326,13 @@ export function ChatPanel() {
 
   useEffect(() => {
     const stored = loadAIConfig();
-    if (stored?.apiKey && stored.baseURL && stored.model) {
+    // If user has explicitly saved a config with key+URL, use it
+    if (stored?.baseURL && stored.model) {
       setConfig(stored);
       return;
     }
-    fetch("/api/chat/config")
-      .then(r => r.json())
-      .then((c: AIConfig) => setConfig({ ...c, ...(stored ?? {}) }))
-      .catch(() => setConfig(stored));
+    // Otherwise default to the built-in server proxy (no key needed)
+    setConfig({ apiKey: "", baseURL: "/api/ai", model: "glm4", ...stored });
   }, []);
 
   useEffect(() => {
@@ -347,15 +346,20 @@ export function ChatPanel() {
     onToken: (tok: string) => void,
     signal: AbortSignal,
   ): Promise<{ content: string; toolCalls: Array<{ id: string; name: string; arguments: string }>; finishReason: string }> => {
-    if (!config?.apiKey) throw new Error("No API key configured. Open ⚙ Settings to add your provider key.");
+    const isServerProxy = config?.baseURL === "/api/ai";
+    if (!isServerProxy && !config?.apiKey) {
+      throw new Error("No API key configured. Open ⚙ Settings to add your provider key.");
+    }
 
-    const resp = await fetch(`${config.baseURL}/chat/completions`, {
+    const headers: Record<string, string> = { "Content-Type": "application/json" };
+    if (!isServerProxy && config?.apiKey) {
+      headers["Authorization"] = `Bearer ${config.apiKey}`;
+      headers["x-api-key"] = config.apiKey;
+    }
+
+    const resp = await fetch(`${config!.baseURL}/chat/completions`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${config.apiKey}`,
-        "x-api-key": config.apiKey,
-      },
+      headers,
       body: JSON.stringify({
         model: config.model,
         messages,
@@ -423,13 +427,13 @@ export function ChatPanel() {
       case "listFiles": {
         const dir = args["directory"] ? `&path=${encodeURIComponent(args["directory"])}` : "";
         const r = await fetch(`/api/files?workspace=${encodeURIComponent(ws)}${dir}`);
-        const d = await r.json() as { files?: Array<{ path: string; type: string; children?: unknown[] }> };
-        if (!d.files) return "(empty)";
         type Node = { path: string; type: string; children?: Node[] };
+        const d = await r.json() as { files?: Node[] };
+        if (!d.files) return "(empty)";
         const flat = (nodes: Node[], depth = 0): string[] =>
           nodes.flatMap(n => [
             "  ".repeat(depth) + (n.type === "directory" ? `📁 ${n.path}/` : `📄 ${n.path}`),
-            ...(n.type === "directory" && n.children ? flat(n.children as Node[], depth + 1) : [])
+            ...(n.type === "directory" && n.children ? flat(n.children, depth + 1) : [])
           ]);
         return flat(d.files).slice(0, 300).join("\n") || "(empty)";
       }

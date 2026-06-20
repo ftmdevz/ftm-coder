@@ -233,10 +233,15 @@ type PendingChange = {
 };
 
 router.get("/chat/config", (_req, res) => {
+  // If AI_BASE_URL is set, server has a built-in AI proxy configured.
+  // The frontend can use /api/ai as the baseURL (OpenAI-compatible).
+  const hasServerAI = !!(process.env["AI_BASE_URL"] || process.env["AI_API_KEY"]);
   res.json({
-    apiKey: process.env.OMNIROUTE_API_KEY || process.env.AGENTROUTER_API_KEY || "",
-    baseURL: process.env.OMNIROUTE_BASE_URL || "https://agentrouter.org/v1",
-    model: process.env.AGENT_MODEL || "gpt-4o",
+    apiKey:       process.env["OMNIROUTE_API_KEY"] || process.env["AGENTROUTER_API_KEY"] || "",
+    baseURL:      process.env["OMNIROUTE_BASE_URL"] || "",
+    model:        process.env["AGENT_MODEL"] || process.env["AI_MODEL"] || "glm4",
+    serverAI:     hasServerAI,
+    serverModel:  process.env["AI_MODEL"] || "glm4",
   });
 });
 
