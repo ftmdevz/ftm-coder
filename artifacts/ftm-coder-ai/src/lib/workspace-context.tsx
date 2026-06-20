@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 import type { ChatMessage, PendingChange } from "@workspace/api-client-react";
 
 export type OpenFile = {
@@ -19,6 +19,10 @@ interface WorkspaceState {
   chatHistory: ChatMessage[];
   setChatHistory: (history: ChatMessage[]) => void;
   addChatMessage: (msg: ChatMessage) => void;
+  // Terminal integration
+  terminalSendRef: React.MutableRefObject<((cmd: string) => void) | null>;
+  sendToTerminal: (cmd: string) => void;
+  killTerminal: () => void;
 }
 
 const WorkspaceContext = createContext<WorkspaceState | null>(null);
@@ -27,10 +31,13 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
   const [workspacePath, setWorkspacePath] = useState<string>(() => {
     return localStorage.getItem("workspacePath") || "/home/runner/workspace";
   });
-  
+
   const [openFiles, setOpenFiles] = useState<OpenFile[]>([]);
   const [activeFile, setActiveFile] = useState<string | null>(null);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
+
+  // Stable ref that TerminalPanel writes its sendCommand callback into
+  const terminalSendRef = useRef<((cmd: string) => void) | null>(null);
 
   useEffect(() => {
     localStorage.setItem("workspacePath", workspacePath);
@@ -65,6 +72,18 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
     setChatHistory((prev) => [...prev, msg]);
   };
 
+  const sendToTerminal = (cmd: string) => {
+    if (terminalSendRef.current) {
+      terminalSendRef.current(cmd);
+    }
+  };
+
+  const killTerminal = () => {
+    if (terminalSendRef.current) {
+      terminalSendRef.current("\x03"); // Ctrl+C
+    }
+  };
+
   return (
     <WorkspaceContext.Provider
       value={{
@@ -79,7 +98,10 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
         markFileUnsaved,
         chatHistory,
         setChatHistory,
-        addChatMessage
+        addChatMessage,
+        terminalSendRef,
+        sendToTerminal,
+        killTerminal,
       }}
     >
       {children}

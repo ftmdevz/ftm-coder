@@ -12,14 +12,19 @@ export function IDE() {
 
   return (
     <div className="flex flex-col h-screen w-full bg-background text-foreground overflow-hidden">
-      <TopBar />
+      <TopBar
+        showTerminal={showTerminal}
+        showChat={showChat}
+        onToggleTerminal={() => setShowTerminal(v => !v)}
+        onToggleChat={() => setShowChat(v => !v)}
+      />
       <div className="flex-1 overflow-hidden">
         <ResizablePanelGroup direction="horizontal" autoSaveId="ide-layout-main">
           <ResizablePanel defaultSize={15} minSize={10} maxSize={30}>
             <FileTree />
           </ResizablePanel>
           <ResizableHandle />
-          <ResizablePanel defaultSize={60}>
+          <ResizablePanel defaultSize={showChat ? 60 : 85}>
             <ResizablePanelGroup direction="vertical" autoSaveId="ide-layout-center">
               <ResizablePanel defaultSize={showTerminal ? 75 : 100}>
                 <Editor />
