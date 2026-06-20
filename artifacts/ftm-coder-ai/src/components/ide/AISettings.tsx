@@ -32,14 +32,14 @@ const PROVIDERS = [
 ];
 
 const SUGGESTED_MODELS = [
-  "claude-opus-4-5",
+  "qwen/qwen-2.5-coder-32b-instruct:free",
+  "deepseek/deepseek-r1:free",
+  "meta-llama/llama-3.3-70b-instruct:free",
+  "google/gemini-2.0-flash-exp:free",
   "claude-3-5-sonnet-20241022",
   "gpt-4o",
   "gpt-4o-mini",
-  "gemini-1.5-pro",
-  "gemini-2.0-flash",
   "deepseek/deepseek-chat",
-  "meta-llama/llama-3.1-8b-instruct:free",
 ];
 
 type Status = "idle" | "testing" | "ok" | "error";
