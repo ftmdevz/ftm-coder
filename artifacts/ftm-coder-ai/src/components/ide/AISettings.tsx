@@ -24,22 +24,47 @@ export function saveAIConfig(cfg: AIConfig) {
 }
 
 const PROVIDERS = [
-  { label: "OmniRoute (local)", baseURL: "http://localhost:20128/v1", hint: "Run: npm install -g omniroute && omniroute" },
-  { label: "OmniRoute (cloud)", baseURL: "https://omniroute.online/v1", hint: "Sign in at omniroute.online for a dashboard key" },
-  { label: "AgentRouter", baseURL: "https://agentrouter.org/v1", hint: "Get key at agentrouter.org" },
-  { label: "OpenRouter", baseURL: "https://openrouter.ai/api/v1", hint: "Get free key at openrouter.ai" },
+  { label: "Z.ai (GLM-5)", baseURL: "https://api.z.ai/v1", hint: "Get your free API key at z.ai — runs GLM-5.2, the #1 open-source coding model" },
+  { label: "OpenRouter", baseURL: "https://openrouter.ai/api/v1", hint: "Get free key at openrouter.ai — access 200+ models" },
   { label: "OpenAI", baseURL: "https://api.openai.com/v1", hint: "Get key at platform.openai.com" },
+  { label: "Anthropic", baseURL: "https://api.anthropic.com/v1", hint: "Get key at console.anthropic.com" },
+  { label: "OmniRoute (local)", baseURL: "http://localhost:20128/v1", hint: "Run: npm install -g omniroute && omniroute" },
+  { label: "Custom", baseURL: "", hint: "Enter your own OpenAI-compatible API base URL" },
 ];
 
-const SUGGESTED_MODELS = [
-  "nex-agi/nex-n2-pro:free",
-  "qwen/qwen-2.5-coder-32b-instruct:free",
-  "deepseek/deepseek-r1:free",
-  "meta-llama/llama-3.3-70b-instruct:free",
-  "google/gemini-2.0-flash-exp:free",
-  "mistralai/devstral-small:free",
-  "microsoft/phi-4-reasoning:free",
-];
+const MODELS_BY_PROVIDER: Record<string, string[]> = {
+  "https://api.z.ai/v1": [
+    "glm-5.2",
+    "glm-5.1",
+    "glm-5",
+    "glm-4.5",
+  ],
+  "https://openrouter.ai/api/v1": [
+    "nex-agi/nex-n2-pro:free",
+    "qwen/qwen-2.5-coder-32b-instruct:free",
+    "deepseek/deepseek-r1:free",
+    "meta-llama/llama-3.3-70b-instruct:free",
+    "google/gemini-2.0-flash-exp:free",
+    "mistralai/devstral-small:free",
+  ],
+  "https://api.openai.com/v1": [
+    "gpt-4.1",
+    "gpt-4o",
+    "gpt-4o-mini",
+    "o3",
+    "o4-mini",
+  ],
+  "https://api.anthropic.com/v1": [
+    "claude-opus-4-5",
+    "claude-sonnet-4-5",
+    "claude-haiku-4-5",
+  ],
+  "http://localhost:20128/v1": [
+    "gpt-4o",
+    "claude-opus-4-5",
+    "glm-5.2",
+  ],
+};
 
 type Status = "idle" | "testing" | "ok" | "error";
 
@@ -52,12 +77,18 @@ export function AISettingsDialog({
   onClose: () => void;
   serverConfig: AIConfig | null;
 }) {
-  const [cfg, setCfg] = useState<AIConfig>({ apiKey: "", baseURL: "http://localhost:20128/v1", model: "gpt-4o" });
+  const [cfg, setCfg] = useState<AIConfig>({ apiKey: "", baseURL: "https://api.z.ai/v1", model: "glm-5.2" });
   const [showKey, setShowKey] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [statusMsg, setStatusMsg] = useState("");
 
   const activeProvider = PROVIDERS.find(p => p.baseURL === cfg.baseURL);
+  const suggestedModels = MODELS_BY_PROVIDER[cfg.baseURL] ?? [];
+
+  const selectProvider = (baseURL: string) => {
+    const models = MODELS_BY_PROVIDER[baseURL] ?? [];
+    setCfg(prev => ({ ...prev, baseURL, model: models[0] ?? prev.model }));
+  };
 
   useEffect(() => {
     if (!isOpen) return;
@@ -127,15 +158,14 @@ export function AISettingsDialog({
           </button>
         </div>
 
-        {/* OmniRoute banner */}
-        <div className="mb-4 p-3 rounded-lg bg-gradient-to-r from-pink-950/40 to-purple-950/40 border border-pink-900/40">
+        {/* Z.ai / GLM-5 banner */}
+        <div className="mb-4 p-3 rounded-lg bg-gradient-to-r from-blue-950/40 to-cyan-950/40 border border-blue-800/40">
           <div className="flex items-start justify-between gap-2">
             <div>
-              <p className="text-xs font-semibold text-pink-300 mb-0.5">Recommended: OmniRoute</p>
-              <p className="text-xs text-muted-foreground">Free AI gateway with 160+ providers. Run locally in 6 seconds:</p>
-              <code className="text-xs text-pink-200 mt-1 block font-mono">npm install -g omniroute &amp;&amp; omniroute</code>
+              <p className="text-xs font-semibold text-cyan-300 mb-0.5">⭐ Recommended: GLM-5.2 via Z.ai</p>
+              <p className="text-xs text-muted-foreground">744B open-source coding model — #1 on SWE-Bench, 1M context. Free API key at z.ai</p>
             </div>
-            <a href="https://github.com/diegosouzapw/OmniRoute" target="_blank" rel="noopener noreferrer" className="shrink-0 text-pink-400 hover:text-pink-300">
+            <a href="https://z.ai" target="_blank" rel="noopener noreferrer" className="shrink-0 text-cyan-400 hover:text-cyan-300">
               <ExternalLink className="h-3.5 w-3.5" />
             </a>
           </div>
@@ -148,8 +178,8 @@ export function AISettingsDialog({
             <div className="flex flex-wrap gap-1.5">
               {PROVIDERS.map(p => (
                 <button
-                  key={p.baseURL}
-                  onClick={() => setCfg(prev => ({ ...prev, baseURL: p.baseURL }))}
+                  key={p.label}
+                  onClick={() => selectProvider(p.baseURL)}
                   className={`text-xs px-2 py-1 rounded border transition-colors ${cfg.baseURL === p.baseURL ? "border-primary text-primary bg-primary/10" : "border-border text-muted-foreground hover:border-primary/40"}`}
                 >
                   {p.label}
@@ -201,17 +231,19 @@ export function AISettingsDialog({
               placeholder="e.g. gpt-4o"
               className="text-xs h-8"
             />
-            <div className="flex flex-wrap gap-1.5 mt-2">
-              {SUGGESTED_MODELS.map(m => (
-                <button
-                  key={m}
-                  onClick={() => setCfg(p => ({ ...p, model: m }))}
-                  className={`text-xs px-2 py-0.5 rounded border transition-colors ${cfg.model === m ? "border-primary text-primary bg-primary/10" : "border-border text-muted-foreground hover:border-primary/40"}`}
-                >
-                  {m}
-                </button>
-              ))}
-            </div>
+            {suggestedModels.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-2">
+                {suggestedModels.map(m => (
+                  <button
+                    key={m}
+                    onClick={() => setCfg(p => ({ ...p, model: m }))}
+                    className={`text-xs px-2 py-0.5 rounded border transition-colors ${cfg.model === m ? "border-primary text-primary bg-primary/10" : "border-border text-muted-foreground hover:border-primary/40"}`}
+                  >
+                    {m}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {status !== "idle" && (
