@@ -1,7 +1,11 @@
 import { Router, type IRouter } from "express";
-import * as archiver from "archiver";
+import { createRequire } from "module";
 import path from "path";
 import fs from "fs";
+
+const require = createRequire(import.meta.url);
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const archiver = require("archiver") as typeof import("archiver").default;
 
 const router: IRouter = Router();
 

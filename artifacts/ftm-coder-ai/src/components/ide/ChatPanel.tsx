@@ -2,10 +2,13 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useWorkspace } from "@/lib/workspace-context";
 import { useApplyChanges, getListFilesQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Send, Loader2, Check, X, ChevronDown, ChevronRight, Trash2 } from "lucide-react";
+import { Send, Loader2, Check, X, ChevronDown, ChevronRight, Trash2, Copy, CheckCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { loadAIConfig, type AIConfig } from "./AISettings";
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 type PendingChange = {
   path: string;
@@ -50,6 +53,77 @@ function simpleDiff(oldContent: string, newContent: string, filePath: string): s
     }
   }
   return changed ? lines.join("\n") : "";
+}
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+  const copy = () => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+  return (
+    <button onClick={copy} className="absolute top-2 right-2 p-1 rounded bg-white/10 hover:bg-white/20 text-gray-400 hover:text-white transition-colors">
+      {copied ? <CheckCheck className="h-3.5 w-3.5 text-green-400" /> : <Copy className="h-3.5 w-3.5" />}
+    </button>
+  );
+}
+
+function MarkdownMessage({ content }: { content: string }) {
+  return (
+    <ReactMarkdown
+      className="text-sm leading-relaxed"
+      components={{
+        code({ className, children, ...props }) {
+          const match = /language-(\w+)/.exec(className || "");
+          const codeStr = String(children).replace(/\n$/, "");
+          const isBlock = codeStr.includes("\n") || match;
+          if (isBlock) {
+            return (
+              <div className="relative my-2 rounded-lg overflow-hidden border border-white/10">
+                {match && (
+                  <div className="flex items-center justify-between px-3 py-1 bg-white/5 border-b border-white/10">
+                    <span className="text-xs text-gray-400 font-mono">{match[1]}</span>
+                    <CopyButton text={codeStr} />
+                  </div>
+                )}
+                {!match && <CopyButton text={codeStr} />}
+                <SyntaxHighlighter
+                  style={vscDarkPlus}
+                  language={match?.[1] || "text"}
+                  PreTag="div"
+                  customStyle={{ margin: 0, background: "transparent", padding: "12px 16px", fontSize: "12px" }}
+                  codeTagProps={{ style: { fontFamily: "var(--font-mono, monospace)" } }}
+                >
+                  {codeStr}
+                </SyntaxHighlighter>
+              </div>
+            );
+          }
+          return (
+            <code className="px-1.5 py-0.5 rounded bg-white/10 text-pink-300 text-xs font-mono" {...props}>
+              {children}
+            </code>
+          );
+        },
+        h1: ({ children }) => <h1 className="text-base font-bold mt-4 mb-2 text-foreground">{children}</h1>,
+        h2: ({ children }) => <h2 className="text-sm font-bold mt-3 mb-1.5 text-foreground">{children}</h2>,
+        h3: ({ children }) => <h3 className="text-sm font-semibold mt-2 mb-1 text-foreground">{children}</h3>,
+        p: ({ children }) => <p className="mb-2 last:mb-0 text-foreground/90">{children}</p>,
+        ul: ({ children }) => <ul className="list-disc pl-4 mb-2 space-y-1">{children}</ul>,
+        ol: ({ children }) => <ol className="list-decimal pl-4 mb-2 space-y-1">{children}</ol>,
+        li: ({ children }) => <li className="text-foreground/90">{children}</li>,
+        strong: ({ children }) => <strong className="font-semibold text-foreground">{children}</strong>,
+        em: ({ children }) => <em className="italic text-foreground/80">{children}</em>,
+        blockquote: ({ children }) => <blockquote className="border-l-2 border-primary/50 pl-3 my-2 text-muted-foreground italic">{children}</blockquote>,
+        a: ({ href, children }) => <a href={href} target="_blank" rel="noopener noreferrer" className="text-primary underline hover:no-underline">{children}</a>,
+        hr: () => <hr className="border-border my-3" />,
+      }}
+    >
+      {content}
+    </ReactMarkdown>
+  );
 }
 
 function DiffBlock({ diff, filePath }: { diff: string; filePath: string }) {
@@ -118,8 +192,8 @@ function MessageBubble({ msg, onApplyChanges }: { msg: ChatMessage; onApplyChang
 
   return (
     <div className={`flex flex-col mb-4 ${isUser ? "items-end" : "items-start"}`}>
-      <div className={`max-w-full rounded-lg px-3 py-2 text-sm whitespace-pre-wrap break-words ${isUser ? "bg-primary/20 text-foreground border border-primary/30 ml-4" : "bg-muted text-foreground border border-border mr-4"}`}>
-        {msg.content}
+      <div className={`max-w-full rounded-lg px-3 py-2 break-words ${isUser ? "bg-primary/20 text-foreground border border-primary/30 ml-4 text-sm whitespace-pre-wrap" : "bg-muted text-foreground border border-border mr-4"}`}>
+        {isUser ? msg.content : <MarkdownMessage content={msg.content} />}
       </div>
       {msg.toolCallsUsed !== undefined && msg.toolCallsUsed > 0 && (
         <span className="text-xs text-muted-foreground mt-1 px-1">{msg.toolCallsUsed} tool call{msg.toolCallsUsed !== 1 ? "s" : ""}</span>
@@ -173,7 +247,7 @@ export function ChatPanel() {
   }, [chatHistory, isThinking]);
 
   const callAgentRouter = useCallback(async (messages: unknown[], tools: unknown[]): Promise<{ message: unknown; finish_reason: string }> => {
-    if (!config?.apiKey) throw new Error("AgentRouter API key not configured");
+    if (!config?.apiKey) throw new Error("No API key configured. Open ⚙ settings to add your provider key.");
     const resp = await fetch(`${config.baseURL}/chat/completions`, {
       method: "POST",
       headers: {
@@ -191,11 +265,11 @@ export function ChatPanel() {
     });
     if (!resp.ok) {
       const text = await resp.text();
-      throw new Error(`AgentRouter error ${resp.status}: ${text.slice(0, 200)}`);
+      throw new Error(`API error ${resp.status}: ${text.slice(0, 200)}`);
     }
     const data = await resp.json() as { choices?: Array<{ message: unknown; finish_reason: string }> };
     if (!data.choices || data.choices.length === 0) {
-      throw new Error(`AgentRouter returned no choices. Model "${config.model}" may not be supported.`);
+      throw new Error(`No response from model "${config.model}". Try a different model in ⚙ settings.`);
     }
     return data.choices[0]!;
   }, [config]);
