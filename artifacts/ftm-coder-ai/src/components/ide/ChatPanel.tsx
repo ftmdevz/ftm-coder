@@ -72,8 +72,8 @@ function CopyButton({ text }: { text: string }) {
 
 function MarkdownMessage({ content }: { content: string }) {
   return (
+    <div className="text-sm leading-relaxed">
     <ReactMarkdown
-      className="text-sm leading-relaxed"
       components={{
         code({ className, children, ...props }) {
           const match = /language-(\w+)/.exec(className || "");
@@ -123,6 +123,7 @@ function MarkdownMessage({ content }: { content: string }) {
     >
       {content}
     </ReactMarkdown>
+    </div>
   );
 }
 
