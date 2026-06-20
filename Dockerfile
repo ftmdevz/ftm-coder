@@ -1,5 +1,5 @@
 # ── Stage 1: Build everything ─────────────────────────────────────────────────
-FROM node:24-alpine AS builder
+FROM node:24-slim AS builder
 
 RUN corepack enable && corepack prepare pnpm@10 --activate
 
@@ -25,12 +25,21 @@ RUN pnpm --filter @workspace/ftm-coder-ai run build
 # Build Express backend (esbuild bundles everything) → artifacts/api-server/dist/
 RUN pnpm --filter @workspace/api-server run build
 
-# ── Stage 2: Minimal production image ─────────────────────────────────────────
-FROM node:24-alpine AS runner
+# ── Stage 2: Production image with Ollama ────────────────────────────────────
+FROM node:24-slim AS runner
+
+# Install curl (needed by Ollama installer + health check) and ca-certs
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      curl \
+      ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Ollama binary
+RUN curl -fsSL https://ollama.com/install.sh | sh
 
 WORKDIR /app
 
-# Copy bundled server (esbuild already inlined all workspace deps)
+# Copy bundled server
 COPY --from=builder /app/artifacts/api-server/dist ./dist
 
 # Copy built frontend — served as static files by Express
@@ -39,10 +48,20 @@ COPY --from=builder /app/artifacts/ftm-coder-ai/dist ./public
 # Copy only runtime node_modules (pino transports, pg, ws optional deps, etc.)
 COPY --from=builder /app/node_modules ./node_modules
 
+# Copy startup script
+COPY docker-entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Ollama models volume mount point
+VOLUME ["/root/.ollama"]
+
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV STATIC_DIR=/app/public
+# Default AI backend = Ollama running inside this container
+ENV AI_BASE_URL=http://localhost:11434/v1
+ENV AI_MODEL=glm4
 
-EXPOSE 3000
+EXPOSE 3000 11434
 
-CMD ["node", "--enable-source-maps", "/app/dist/index.mjs"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

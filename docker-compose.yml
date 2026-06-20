@@ -2,11 +2,26 @@ services:
   app:
     build: .
     ports:
-      - "3000:3000"
+      - "3000:3000"       # FTM-CODER-AI web + API
+      - "11434:11434"     # Ollama API (optional — expose if you want direct access)
     environment:
       NODE_ENV: production
       PORT: 3000
       STATIC_DIR: /app/public
-      # Optional — add if you use a database:
-      # DATABASE_URL: postgres://user:pass@db:5432/mydb
+      # Ollama runs inside the same container — auto-configured
+      AI_BASE_URL: http://localhost:11434/v1
+      AI_MODEL: glm4       # Change to any Ollama-supported model
+      # Optional: swap to a cloud provider instead of Ollama
+      # AI_BASE_URL: https://api.z.ai/v1
+      # AI_API_KEY: your_z_ai_key
+      # AI_MODEL: glm-5.2
+    volumes:
+      # Persist downloaded models across container restarts
+      - ollama_models:/root/.ollama
     restart: unless-stopped
+    # Give it extra time to start (Ollama + model pull on first run)
+    stop_grace_period: 30s
+
+volumes:
+  ollama_models:
+    driver: local
