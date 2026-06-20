@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useWorkspace } from "@/lib/workspace-context";
 import { useGetGitStatus, useGitCommit, getGetGitStatusQueryKey } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import {
   Play, Square, GitBranch, Settings, Terminal,
   Github, Download, PanelRight, PanelRightClose,
-  Loader2,
+  Loader2, Bot, Cpu,
 } from "lucide-react";
 import { AISettingsDialog, loadAIConfig, type AIConfig } from "./AISettings";
 import { GitHubPushDialog } from "./GitHubPushDialog";
@@ -27,6 +27,8 @@ export function TopBar({ showTerminal, showChat, onToggleTerminal, onToggleChat 
   const [showGitHub, setShowGitHub] = useState(false);
   const [serverConfig, setServerConfig] = useState<AIConfig | null>(null);
   const [isRunning, setIsRunning] = useState(false);
+  const [ollamaStatus, setOllamaStatus] = useState<"checking" | "ok" | "offline">("checking");
+  const [installingOllama, setInstallingOllama] = useState(false);
 
   useEffect(() => {
     fetch("/api/chat/config")
@@ -34,6 +36,37 @@ export function TopBar({ showTerminal, showChat, onToggleTerminal, onToggleChat 
       .then((c: AIConfig) => setServerConfig(c))
       .catch(() => {});
   }, []);
+
+  // Poll Ollama status every 8 seconds
+  const checkOllama = useCallback(() => {
+    fetch("/api/ai/status")
+      .then(r => r.json())
+      .then((d: { ok: boolean }) => setOllamaStatus(d.ok ? "ok" : "offline"))
+      .catch(() => setOllamaStatus("offline"));
+  }, []);
+
+  useEffect(() => {
+    checkOllama();
+    const id = setInterval(checkOllama, 8000);
+    return () => clearInterval(id);
+  }, [checkOllama]);
+
+  const handleInstallOllama = () => {
+    if (!showTerminal) onToggleTerminal();
+    setInstallingOllama(true);
+    // Send install + pull command to terminal
+    const model = serverConfig ? "glm4" : "glm4";
+    const cmd = [
+      `echo "📦 Installing Ollama..."`,
+      `curl -fsSL https://ollama.com/install.sh | sh`,
+      `echo "📥 Pulling ${model} model (may take a few minutes)..."`,
+      `ollama pull ${model}`,
+      `echo "✅ Done! Ollama + ${model} ready."`,
+    ].join(" && ");
+    sendToTerminal(cmd + "\n");
+    // Re-check status after a delay
+    setTimeout(() => { checkOllama(); setInstallingOllama(false); }, 5000);
+  };
 
   const { data: gitStatus } = useGetGitStatus({ workspace: workspacePath }, {
     query: { enabled: !!workspacePath, queryKey: getGetGitStatusQueryKey({ workspace: workspacePath }) }
@@ -132,7 +165,7 @@ export function TopBar({ showTerminal, showChat, onToggleTerminal, onToggleChat 
           </div>
         </div>
 
-        {/* Center: Run controls */}
+        {/* Center: Run controls + Ollama AI button */}
         <div className="flex items-center gap-1">
           <button
             onClick={handleRun}
@@ -149,6 +182,41 @@ export function TopBar({ showTerminal, showChat, onToggleTerminal, onToggleChat 
           >
             <Square className="h-3 w-3 fill-current" />
           </button>
+
+          <div className="h-4 w-px bg-border/60 mx-0.5" />
+
+          {/* Ollama / AI status indicator + one-click installer */}
+          {ollamaStatus === "ok" ? (
+            <button
+              onClick={checkOllama}
+              title="Ollama AI is running ✅ — click to refresh status"
+              className="flex items-center gap-1.5 px-2.5 h-6 rounded text-xs font-medium bg-violet-600/15 text-violet-300 border border-violet-700/30 hover:bg-violet-600/25 transition-colors"
+            >
+              <Cpu className="h-3 w-3" />
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
+              AI
+            </button>
+          ) : ollamaStatus === "checking" ? (
+            <button
+              disabled
+              className="flex items-center gap-1.5 px-2.5 h-6 rounded text-xs font-medium bg-muted/40 text-muted-foreground border border-border/40 cursor-wait"
+            >
+              <Loader2 className="h-3 w-3 animate-spin" />
+              AI
+            </button>
+          ) : (
+            <button
+              onClick={handleInstallOllama}
+              disabled={installingOllama}
+              title="Ollama not detected — click to install Ollama + pull glm4 in terminal"
+              className="flex items-center gap-1.5 px-2.5 h-6 rounded text-xs font-medium bg-amber-600/15 text-amber-300 border border-amber-700/30 hover:bg-amber-600/25 transition-colors disabled:opacity-60 disabled:cursor-wait"
+            >
+              {installingOllama
+                ? <Loader2 className="h-3 w-3 animate-spin" />
+                : <Bot className="h-3 w-3" />}
+              {installingOllama ? "Installing…" : "Install AI"}
+            </button>
+          )}
         </div>
 
         {/* Right: Actions */}
