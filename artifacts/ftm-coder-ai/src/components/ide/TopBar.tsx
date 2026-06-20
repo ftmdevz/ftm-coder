@@ -3,8 +3,9 @@ import { useWorkspace } from "@/lib/workspace-context";
 import { useGetGitStatus, useGitCommit, getGetGitStatusQueryKey } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Play, Square, GitBranch, Settings, LayoutPanelLeft, Terminal } from "lucide-react";
+import { Play, Square, GitBranch, Settings, LayoutPanelLeft, Terminal, Github, Download } from "lucide-react";
 import { AISettingsDialog, loadAIConfig, type AIConfig } from "./AISettings";
+import { GitHubPushDialog } from "./GitHubPushDialog";
 
 export function TopBar() {
   const { workspacePath, setWorkspacePath } = useWorkspace();
@@ -12,6 +13,7 @@ export function TopBar() {
   const [commitMsg, setCommitMsg] = useState("");
   const [showCommit, setShowCommit] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showGitHub, setShowGitHub] = useState(false);
   const [serverConfig, setServerConfig] = useState<AIConfig | null>(null);
 
   useEffect(() => {
@@ -34,6 +36,16 @@ export function TopBar() {
     commit.mutate({ data: { message: commitMsg, workspace: workspacePath } }, {
       onSuccess: () => { setShowCommit(false); setCommitMsg(""); }
     });
+  };
+
+  const handleDownloadZip = () => {
+    const url = `/api/workspace/download?workspace=${encodeURIComponent(workspacePath)}`;
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   const dirtyFiles = gitStatus?.files?.length || 0;
@@ -69,7 +81,31 @@ export function TopBar() {
             <Square className="h-4 w-4 text-red-500" />
           </Button>
 
-          <div className="h-4 w-px bg-border mx-2" />
+          <div className="h-4 w-px bg-border mx-1" />
+
+          {/* Download ZIP */}
+          <Button
+            size="sm"
+            variant="ghost"
+            className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground"
+            onClick={handleDownloadZip}
+            title="Download workspace as ZIP"
+          >
+            <Download className="h-4 w-4" />
+          </Button>
+
+          {/* Push to GitHub */}
+          <Button
+            size="sm"
+            variant="ghost"
+            className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground"
+            onClick={() => setShowGitHub(true)}
+            title="Push to GitHub"
+          >
+            <Github className="h-4 w-4" />
+          </Button>
+
+          <div className="h-4 w-px bg-border mx-1" />
 
           {showCommit ? (
             <div className="flex items-center gap-2">
@@ -113,6 +149,7 @@ export function TopBar() {
       </div>
 
       <AISettingsDialog isOpen={showSettings} onClose={() => setShowSettings(false)} serverConfig={serverConfig} />
+      <GitHubPushDialog isOpen={showGitHub} onClose={() => setShowGitHub(false)} workspace={workspacePath} />
     </>
   );
 }

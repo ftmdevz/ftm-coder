@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neon Runner</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #070914;
+      color: white;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      touch-action: none;
+    }
+    canvas {
+      display: block;
+    }
+    #ui {
+      position: fixed;
+      left: 20px;
+      top: 16px;
+      font-size: 18px;
+      z-index: 10;
+      text-shadow: 0 2px 8px #000;
+    }
+    #message {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(5, 7, 20, 0.78);
+      z-index: 20;
+      text-align: center;
+    }
+    .panel {
+      padding: 28px 34px;
+      border: 1px solid rgba(0, 255, 255, 0.35);
+      border-radius: 18px;
+      background: rgba(0, 0, 0, 0.35);
+      box-shadow: 0 0 35px rgba(0, 255, 255, 0.12);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: 42px;
+      color: #6df7ff;
+    }
+    p {
+      margin: 8px 0;
+      opacity: 0.9;
+    }
+    button {
+      margin-top: 18px;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 22px;
+      font-size: 18px;
+      color: #071018;
+      background: linear-gradient(90deg, #6df7ff, #ff55ff);
+      cursor: pointer;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div id="ui">Score: <span id="score">0</span></div>
+  <div id="message">
+    <div class="panel">
+      <h1>Neon Runner</h1>
+      <p>Dodge the falling neon blocks.</p>
+      <p>Move with ← → or A D.</p>
+      <p>Tap / click sides of the screen to move.</p>
+      <button id="startBtn">Start Game</button>
+    </div>
+  </div>
+  <canvas id="game"></canvas>
+
+  <script>
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+    const scoreEl = document.getElementById("score");
+    const message = document.getElementById("message");
+    const startBtn = document.getElementById("startBtn");
+
+    let w, h, dpr;
+    let player, obstacles, particles, stars;
+    let score, running, gameOver, spawnTimer, speed;
+
+    function resize() {
+      dpr = window.devicePixelRatio || 1;
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      if (!player) {
+        player = {
+          x: w / 2,
+          y: h - 90,
+          r: 18,
+          vx: 0,
+          speed: 720
+        };
+      } else {
+        player.y = h - 90;
+      }
+    }
+
+    function reset() {
+      obstacles = [];
+      particles = [];
+      stars = Array.from({ length: 120 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        z: Math.random() * 1 + 0.2,
+        s: Math.random() * 2 + 1
+      }));
+      score = 0;
+      spawnTimer = 0;
+      speed = 240;
+      running = true;
+      gameOver = false;
+      player.x = w / 2;
+      player.vx = 0;
+      scoreEl.textContent = "0";
+      message.style.display = "none";
+      requestAnimationFrame(loop);
+    }
+
+    function end() {
+      running = false;
+      gameOver = true;
+      message.style.display = "grid";
+      message.querySelector("h1").textContent = "Game Over";
+      message.querySelector("p").textContent = "Final score: " + Math.floor(score);
+      startBtn.textContent = "Play Again";
+    }
+
+    function spawnObstacle() {
+      const size = 28 + Math.random() * 38;
+      obstacles.push({
+        x: Math.random() * (w - size),
+        y: -size,
+        w: size,
+        h: size,
+        spin: (Math.random() - 0.5) * 4,
+        angle: 0,
+        color: Math.random() > 0.5 ? "#ff55ff" : "#6df7ff"
+      });
+    }
+
+    function update(dt) {
+      if (gameOver) return;
+
+      score += dt * 10;
+      speed += dt * 5;
+      scoreEl.textContent = Math.floor(score);
+
+      const keys = keysDown;
+      let dir = 0;
+      if (keys["ArrowLeft"] || keys["a"] || keys["A"]) dir -= 1;
+      if (keys["ArrowRight"] || keys["d"] || keys["D"]) dir += 1;
+      player.vx = dir * player.speed;
+      player.x += player.vx * dt;
+      player.x = Math.max(player.r, Math.min(w - player.r, player.x));
+
+      spawnTimer -= dt;
+      if (spawnTimer <= 0) {
+        spawnObstacle();
+        spawnTimer = Math.max(0.28, 0.75 - score / 2200);
+      }
+
+      for (const o of obstacles) {
+        o.y += speed * dt;
+        o.angle += o.spin * dt;
+      }
+      obstacles = obstacles.filter(o => o.y < h + 80);
+
+      for (const o of obstacles) {
+        if (circleRect(player.x, player.y, player.r, o.x, o.y, o.w, o.h)) {
+          burst(player.x, player.y, "#ff3864", 35);
+          end();
+          break;
+        }
+      }
+
+      updateParticles(dt);
+    }
+
+    function updateParticles(dt) {
+      for (const p of particles) {
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        p.vy += 500 * dt;
+        p.life -= dt;
+      }
+      particles = particles.filter(p => p.life > 0);
+    }
+
+    function burst(x, y, color, count) {
+      for (let i = 0; i < count; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const s = 80 + Math.random() * 320;
+        particles.push({
+          x, y,
+          vx: Math.cos(a) * s,
+          vy: Math.sin(a) * s,
+          life: 0.5 + Math.random() * 0.5,
+          color
+        });
+      }
+    }
+
+    function draw() {
+      ctx.fillStyle = "#070914";
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.save();
+      for (const s of stars) {
+        s.y += (35 * s.z + score * 0.02) * 0.016;
+        if (s.y > h) {
+          s.y = 0;
+          s.x = Math.random() * w;
+        }
+        ctx.fillStyle = `rgba(109, 247, 255, ${0.25 + s.z * 0.35})`;
+        ctx.fillRect(s.x, s.y, s.s, s.s);
+      }
+      ctx.restore();
+
+      ctx.strokeStyle = "rgba(109, 247, 255, 0.12)";
+      ctx.lineWidth = 1;
+      const grid = 42;
+      const offset = (score * 0.5) % grid;
+      for (let x = 0; x < w; x += grid) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+      for (let y = -grid + offset; y < h; y += grid) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+
+      for (const o of obstacles) {
+        ctx.save();
+        ctx.translate(o.x + o.w / 2, o.y + o.h / 2);
+        ctx.rotate(o.angle);
+        ctx.shadowBlur = 20;
+        ctx.shadowColor = o.color;
+        ctx.fillStyle = o.color;
+        ctx.fillRect(-o.w / 2, -o.h / 2, o.w, o.h);
+        ctx.restore();
+      }
+
+      ctx.save();
+      ctx.shadowBlur = 25;
+      ctx.shadowColor = "#6df7ff";
+      ctx.fillStyle = "#6df7ff";
+      ctx.beginPath();
+      ctx.arc(player.x, player.y, player.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = "rgba(255,255,255,0.85)";
+      ctx.beginPath();
+      ctx.arc(player.x - 5, player.y - 6, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      for (const p of particles) {
+        ctx.globalAlpha = Math.max(p.life, 0);
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function loop(ts) {
+      if (!running) return;
+      const dt = Math.min((ts - (loop.last || ts)) / 1000, 0.033);
+      loop.last = ts;
+      update(dt);
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    function circleRect(cx, cy, r, rx, ry, rw, rh) {
+      const nx = Math.max(rx, Math.min(cx, rx + rw));
+      const ny = Math.max(ry, Math.min(cy, ry + rh));
+      const dx = cx - nx;
+      const dy = cy - ny;
+      return dx * dx + dy * dy < r * r;
+    }
+
+    const keysDown = {};
+    window.addEventListener("keydown", e => {
+      keysDown[e.key] = true;
+      if (["ArrowLeft", "ArrowRight", "a", "d", "A", "D", " "].includes(e.key)) e.preventDefault();
+      if (e.key === " " && (gameOver || !running)) reset();
+    });
+    window.addEventListener("keyup", e => keysDown[e.key] = false);
+
+    window.addEventListener("pointerdown", e => {
+      if (e.target === startBtn) return;
+      if (e.clientX < w / 2) keysDown.ArrowLeft = true;
+      else keysDown.ArrowRight = true;
+    });
+    window.addEventListener("pointerup", () => {
+      keysDown.ArrowLeft = false;
+      keysDown.ArrowRight = false;
+    });
+
+    startBtn.addEventListener("click", reset);
+    window.addEventListener("resize", resize);
+
+    resize();
+    draw();
+  </script>
+</body>
+</html>

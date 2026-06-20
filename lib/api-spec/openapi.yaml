@@ -209,6 +209,30 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApplyResult"
 
+  /git/push:
+    post:
+      operationId: gitPush
+      summary: Set remote and push to GitHub
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GitPushRequest"
+      responses:
+        "200":
+          description: Push result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Push failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
   /workspace/open:
     post:
       operationId: openWorkspace
@@ -440,6 +464,22 @@ components:
           type: array
           items:
             type: string
+
+    GitPushRequest:
+      type: object
+      required: [workspace, repoUrl, token]
+      properties:
+        workspace:
+          type: string
+        repoUrl:
+          type: string
+          description: "GitHub repo URL e.g. https://github.com/user/repo"
+        token:
+          type: string
+          description: "GitHub Personal Access Token"
+        branch:
+          type: string
+          description: "Branch to push (default: main)"
 
     OpenWorkspaceRequest:
       type: object

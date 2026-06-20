@@ -4,6 +4,7 @@ import filesRouter from "./files";
 import gitRouter from "./git";
 import chatRouter from "./chat";
 import workspaceRouter from "./workspace";
+import downloadRouter from "./download";
 
 const router: IRouter = Router();
 
@@ -12,5 +13,6 @@ router.use(filesRouter);
 router.use(gitRouter);
 router.use(chatRouter);
 router.use(workspaceRouter);
+router.use(downloadRouter);
 
 export default router;

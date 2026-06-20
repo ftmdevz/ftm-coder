@@ -22,6 +22,7 @@ export * from './getGitStatusParams';
 export * from './gitCommitRequest';
 export * from './gitDiffResponse';
 export * from './gitFileStatus';
+export * from './gitPushRequest';
 export * from './gitStatusResponse';
 export * from './healthStatus';
 export * from './listFilesParams';

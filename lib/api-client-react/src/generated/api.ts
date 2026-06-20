@@ -31,6 +31,7 @@ import type {
   GetGitStatusParams,
   GitCommitRequest,
   GitDiffResponse,
+  GitPushRequest,
   GitStatusResponse,
   HealthStatus,
   ListFilesParams,
@@ -748,6 +749,77 @@ export const useApplyChanges = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getApplyChangesMutationOptions(options));
+    }
+
+export const getGitPushUrl = () => {
+
+
+
+
+  return `/api/git/push`
+}
+
+/**
+ * @summary Set remote and push to GitHub
+ */
+export const gitPush = async (gitPushRequest: GitPushRequest, options?: RequestInit): Promise<SuccessResponse> => {
+
+  return customFetch<SuccessResponse>(getGitPushUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      gitPushRequest,)
+  }
+);}
+
+
+
+
+export const getGitPushMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof gitPush>>, TError,{data: BodyType<GitPushRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof gitPush>>, TError,{data: BodyType<GitPushRequest>}, TContext> => {
+
+const mutationKey = ['gitPush'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof gitPush>>, {data: BodyType<GitPushRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  gitPush(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type GitPushMutationResult = NonNullable<Awaited<ReturnType<typeof gitPush>>>
+    export type GitPushMutationBody = BodyType<GitPushRequest>
+    export type GitPushMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Set remote and push to GitHub
+ */
+export const useGitPush = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof gitPush>>, TError,{data: BodyType<GitPushRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof gitPush>>,
+        TError,
+        {data: BodyType<GitPushRequest>},
+        TContext
+      > => {
+      return useMutation(getGitPushMutationOptions(options));
     }
 
 export const getOpenWorkspaceUrl = () => {

@@ -78,4 +78,61 @@ router.post("/git/commit", async (req, res) => {
   }
 });
 
+router.post("/git/push", async (req, res) => {
+  const { workspace, repoUrl, token, branch = "main" } = req.body as {
+    workspace: string;
+    repoUrl: string;
+    token: string;
+    branch?: string;
+  };
+
+  if (!repoUrl || !token) {
+    res.status(400).json({ error: "repoUrl and token are required" });
+    return;
+  }
+
+  const ws = workspace || process.cwd();
+
+  try {
+    // Build authenticated URL: https://token@github.com/user/repo.git
+    const url = new URL(repoUrl.trim());
+    url.username = token;
+    const authUrl = url.toString();
+
+    const git = getGit(ws);
+
+    // Make sure we have a git repo
+    const isRepo = await git.checkIsRepo().catch(() => false);
+    if (!isRepo) {
+      await git.init();
+      await git.add(".");
+      await git.commit("Initial commit");
+    }
+
+    // Set/update origin remote
+    const remotes = await git.getRemotes();
+    if (remotes.find(r => r.name === "origin")) {
+      await git.remote(["set-url", "origin", authUrl]);
+    } else {
+      await git.addRemote("origin", authUrl);
+    }
+
+    // Ensure branch name matches
+    await git.checkout(["-B", branch]).catch(() => {});
+
+    // Push
+    const result = await git.push(["origin", branch, "--force-with-lease"]).catch(async () => {
+      // First push may need --force if remote is empty
+      return git.push(["origin", branch, "-u", "--force"]);
+    });
+
+    res.json({ success: true, message: `Pushed to ${url.hostname}/${url.pathname.replace(/^\//, "")} on branch ${branch}` });
+  } catch (err: unknown) {
+    req.log.error({ err }, "Git push failed");
+    const msg = err instanceof Error ? err.message : String(err);
+    // Strip token from error message before sending
+    res.status(400).json({ error: msg.replace(token, "***") });
+  }
+});
+
 export default router;

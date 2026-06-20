@@ -166,6 +166,22 @@ export const ApplyChangesResponse = zod.object({
 
 
 /**
+ * @summary Set remote and push to GitHub
+ */
+export const GitPushBody = zod.object({
+  "workspace": zod.string(),
+  "repoUrl": zod.string().describe('GitHub repo URL e.g. https:\/\/github.com\/user\/repo'),
+  "token": zod.string().describe('GitHub Personal Access Token'),
+  "branch": zod.string().optional().describe('Branch to push (default: main)')
+})
+
+export const GitPushResponse = zod.object({
+  "success": zod.boolean(),
+  "message": zod.string().optional()
+})
+
+
+/**
  * @summary Set the current workspace root path
  */
 export const OpenWorkspaceBody = zod.object({

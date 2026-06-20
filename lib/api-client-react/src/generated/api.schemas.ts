@@ -134,6 +134,16 @@ export interface ApplyResult {
   errors?: string[];
 }
 
+export interface GitPushRequest {
+  workspace: string;
+  /** GitHub repo URL e.g. https://github.com/user/repo */
+  repoUrl: string;
+  /** GitHub Personal Access Token */
+  token: string;
+  /** Branch to push (default: main) */
+  branch?: string;
+}
+
 export interface OpenWorkspaceRequest {
   path: string;
 }
