@@ -24,15 +24,49 @@ export function saveAIConfig(cfg: AIConfig) {
 }
 
 const PROVIDERS = [
-  { label: "Z.ai (GLM-5)", baseURL: "https://api.z.ai/v1", hint: "Get your free API key at z.ai — runs GLM-5.2, the #1 open-source coding model" },
-  { label: "OpenRouter", baseURL: "https://openrouter.ai/api/v1", hint: "Get free key at openrouter.ai — access 200+ models" },
-  { label: "OpenAI", baseURL: "https://api.openai.com/v1", hint: "Get key at platform.openai.com" },
-  { label: "Anthropic", baseURL: "https://api.anthropic.com/v1", hint: "Get key at console.anthropic.com" },
-  { label: "OmniRoute (local)", baseURL: "http://localhost:20128/v1", hint: "Run: npm install -g omniroute && omniroute" },
-  { label: "Custom", baseURL: "", hint: "Enter your own OpenAI-compatible API base URL" },
+  {
+    label: "Ollama (Local — No Key)",
+    baseURL: "http://localhost:11434/v1",
+    hint: "100% free & local. Install: ollama.com → then run: ollama pull glm4",
+    noKey: true,
+  },
+  {
+    label: "Z.ai (GLM-5 Cloud)",
+    baseURL: "https://api.z.ai/v1",
+    hint: "Free API key at z.ai — cloud-hosted GLM-5.2, no hardware needed",
+    noKey: false,
+  },
+  {
+    label: "OpenRouter (Free Models)",
+    baseURL: "https://openrouter.ai/api/v1",
+    hint: "Free API key at openrouter.ai — 200+ models, many with free tier",
+    noKey: false,
+  },
+  {
+    label: "OpenAI",
+    baseURL: "https://api.openai.com/v1",
+    hint: "Paid. Get key at platform.openai.com",
+    noKey: false,
+  },
+  {
+    label: "Custom",
+    baseURL: "",
+    hint: "Any OpenAI-compatible endpoint (LM Studio, vLLM, SGLang, etc.)",
+    noKey: false,
+  },
 ];
 
 const MODELS_BY_PROVIDER: Record<string, string[]> = {
+  "http://localhost:11434/v1": [
+    "glm4",
+    "qwen2.5-coder:7b",
+    "qwen2.5-coder:32b",
+    "deepseek-coder-v2",
+    "codellama",
+    "llama3.2",
+    "phi4",
+    "mistral",
+  ],
   "https://api.z.ai/v1": [
     "glm-5.2",
     "glm-5.1",
@@ -54,16 +88,6 @@ const MODELS_BY_PROVIDER: Record<string, string[]> = {
     "o3",
     "o4-mini",
   ],
-  "https://api.anthropic.com/v1": [
-    "claude-opus-4-5",
-    "claude-sonnet-4-5",
-    "claude-haiku-4-5",
-  ],
-  "http://localhost:20128/v1": [
-    "gpt-4o",
-    "claude-opus-4-5",
-    "glm-5.2",
-  ],
 };
 
 type Status = "idle" | "testing" | "ok" | "error";
@@ -77,13 +101,14 @@ export function AISettingsDialog({
   onClose: () => void;
   serverConfig: AIConfig | null;
 }) {
-  const [cfg, setCfg] = useState<AIConfig>({ apiKey: "", baseURL: "https://api.z.ai/v1", model: "glm-5.2" });
+  const [cfg, setCfg] = useState<AIConfig>({ apiKey: "", baseURL: "http://localhost:11434/v1", model: "glm4" });
   const [showKey, setShowKey] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [statusMsg, setStatusMsg] = useState("");
 
   const activeProvider = PROVIDERS.find(p => p.baseURL === cfg.baseURL);
   const suggestedModels = MODELS_BY_PROVIDER[cfg.baseURL] ?? [];
+  const noKeyNeeded = activeProvider?.noKey ?? false;
 
   const selectProvider = (baseURL: string) => {
     const models = MODELS_BY_PROVIDER[baseURL] ?? [];
@@ -158,18 +183,30 @@ export function AISettingsDialog({
           </button>
         </div>
 
-        {/* Z.ai / GLM-5 banner */}
-        <div className="mb-4 p-3 rounded-lg bg-gradient-to-r from-blue-950/40 to-cyan-950/40 border border-blue-800/40">
-          <div className="flex items-start justify-between gap-2">
-            <div>
-              <p className="text-xs font-semibold text-cyan-300 mb-0.5">⭐ Recommended: GLM-5.2 via Z.ai</p>
-              <p className="text-xs text-muted-foreground">744B open-source coding model — #1 on SWE-Bench, 1M context. Free API key at z.ai</p>
+        {/* Banner — changes based on provider */}
+        {noKeyNeeded ? (
+          <div className="mb-4 p-3 rounded-lg bg-gradient-to-r from-green-950/40 to-emerald-950/40 border border-green-800/40">
+            <div className="flex items-start justify-between gap-2">
+              <div>
+                <p className="text-xs font-semibold text-green-300 mb-0.5">✅ Ollama — Bilkul Free, Koi Key Nahi</p>
+                <p className="text-xs text-muted-foreground">GLM-4, Qwen, DeepSeek seedha apne machine pe chalao. Koi signup nahi, koi API key nahi.</p>
+                <code className="text-xs text-green-200 mt-1.5 block font-mono bg-black/30 px-2 py-1 rounded">ollama pull glm4</code>
+              </div>
+              <a href="https://ollama.com" target="_blank" rel="noopener noreferrer" className="shrink-0 text-green-400 hover:text-green-300">
+                <ExternalLink className="h-3.5 w-3.5" />
+              </a>
             </div>
-            <a href="https://z.ai" target="_blank" rel="noopener noreferrer" className="shrink-0 text-cyan-400 hover:text-cyan-300">
-              <ExternalLink className="h-3.5 w-3.5" />
-            </a>
           </div>
-        </div>
+        ) : (
+          <div className="mb-4 p-3 rounded-lg bg-gradient-to-r from-blue-950/40 to-cyan-950/40 border border-blue-800/40">
+            <div className="flex items-start justify-between gap-2">
+              <div>
+                <p className="text-xs font-semibold text-cyan-300 mb-0.5">💡 Tip: Ollama se bilkul free chala sakte ho</p>
+                <p className="text-xs text-muted-foreground">API key nahi chahiye — Ollama select karo aur local model use karo.</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="space-y-4">
           {/* Provider quick-select */}
@@ -218,9 +255,14 @@ export function AISettingsDialog({
                 {showKey ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
               </button>
             </div>
-            <p className="text-xs text-muted-foreground mt-1 opacity-60">
-              {cfg.baseURL.includes("localhost") ? "OmniRoute local: find your key in the dashboard at localhost:20128/dashboard" : serverConfig?.apiKey ? "Server has a key configured. Paste here to override." : "Paste your API key here."}
-            </p>
+            {noKeyNeeded && (
+              <p className="text-xs text-green-400/70 mt-1">✅ Ollama ke liye key zaruri nahi — yeh field skip karo</p>
+            )}
+            {!noKeyNeeded && (
+              <p className="text-xs text-muted-foreground mt-1 opacity-60">
+                {serverConfig?.apiKey ? "Server has a key configured. Paste here to override." : "Paste your API key here."}
+              </p>
+            )}
           </div>
 
           <div>
