@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useWorkspace } from "@/lib/workspace-context";
 import { useApplyChanges, getListFilesQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Send, Loader2, Check, X, ChevronDown, ChevronRight, Trash2, Copy, CheckCheck } from "lucide-react";
+import { Send, Loader2, Check, X, ChevronDown, ChevronRight, Trash2, Copy, CheckCheck, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { loadAIConfig, type AIConfig } from "./AISettings";
@@ -10,6 +10,8 @@ import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import type { Components } from "react-markdown";
+
+// ─── Types ────────────────────────────────────────────────────────────────────
 
 type PendingChange = {
   path: string;
@@ -38,6 +40,8 @@ const EXAMPLE_PROMPTS = [
 const MAX_TOOL_CALLS = 20;
 const MAX_FILE_CHARS = 6000;
 
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
 function simpleDiff(oldContent: string, newContent: string, filePath: string): string {
   const old = oldContent.split("\n");
   const next = newContent.split("\n");
@@ -56,29 +60,68 @@ function simpleDiff(oldContent: string, newContent: string, filePath: string): s
   return changed ? lines.join("\n") : "";
 }
 
-// ─── Copy button ────────────────────────────────────────────────────────────
+// ─── SSE streaming parser ─────────────────────────────────────────────────────
+
+type DeltaToolCall = {
+  index: number;
+  id?: string;
+  type?: string;
+  function?: { name?: string; arguments?: string };
+};
+
+type StreamChunk = {
+  choices?: Array<{
+    delta?: { content?: string | null; tool_calls?: DeltaToolCall[] };
+    finish_reason?: string | null;
+  }>;
+};
+
+async function* readSSEStream(response: Response): AsyncGenerator<StreamChunk> {
+  const reader = response.body?.getReader();
+  if (!reader) return;
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+
+    const lines = buffer.split("\n");
+    buffer = lines.pop() ?? "";
+
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed || !trimmed.startsWith("data:")) continue;
+      const data = trimmed.slice(5).trim();
+      if (data === "[DONE]") return;
+      try {
+        yield JSON.parse(data) as StreamChunk;
+      } catch { /* skip malformed */ }
+    }
+  }
+}
+
+// ─── Markdown components (defined outside to avoid Babel JSX-in-object issues)
+
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
-  const copy = () => {
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
-  };
   return (
     <button
-      onClick={copy}
+      onClick={() => {
+        navigator.clipboard.writeText(text).then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        });
+      }}
       className="p-1 rounded bg-white/10 hover:bg-white/20 text-gray-400 hover:text-white transition-colors"
       title="Copy"
     >
-      {copied
-        ? <CheckCheck className="h-3.5 w-3.5 text-green-400" />
-        : <Copy className="h-3.5 w-3.5" />}
+      {copied ? <CheckCheck className="h-3.5 w-3.5 text-green-400" /> : <Copy className="h-3.5 w-3.5" />}
     </button>
   );
 }
 
-// ─── Code block (defined outside components object to avoid babel JSX issues)
 function CodeBlock({ lang, code }: { lang: string | null; code: string }) {
   return (
     <div className="relative my-2 rounded-lg overflow-hidden border border-white/10 text-xs">
@@ -100,21 +143,14 @@ function CodeBlock({ lang, code }: { lang: string | null; code: string }) {
 }
 
 function InlineCode({ children }: { children: React.ReactNode }) {
-  return (
-    <code className="px-1.5 py-0.5 rounded bg-white/10 text-pink-300 text-xs font-mono">
-      {children}
-    </code>
-  );
+  return <code className="px-1.5 py-0.5 rounded bg-white/10 text-pink-300 text-xs font-mono">{children}</code>;
 }
 
-// ─── Markdown components map ─────────────────────────────────────────────────
 const mdComponents: Components = {
   code({ className, children }) {
     const lang = /language-(\w+)/.exec(className || "")?.[1] ?? null;
     const code = String(children).replace(/\n$/, "");
-    if (code.includes("\n") || lang) {
-      return <CodeBlock lang={lang} code={code} />;
-    }
+    if (code.includes("\n") || lang) return <CodeBlock lang={lang} code={code} />;
     return <InlineCode>{children}</InlineCode>;
   },
   h1({ children }) { return <h1 className="text-base font-bold mt-4 mb-2">{children}</h1>; },
@@ -143,7 +179,8 @@ function MarkdownMessage({ content }: { content: string }) {
   );
 }
 
-// ─── Diff block ──────────────────────────────────────────────────────────────
+// ─── Diff & Change cards ──────────────────────────────────────────────────────
+
 function DiffBlock({ diff, filePath }: { diff: string; filePath: string }) {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -170,7 +207,6 @@ function DiffBlock({ diff, filePath }: { diff: string; filePath: string }) {
   );
 }
 
-// ─── Change card ─────────────────────────────────────────────────────────────
 function ChangeCard({ change, onAccept, onReject }: { change: PendingChange; onAccept: () => void; onReject: () => void }) {
   const colors: Record<string, string> = { create: "text-green-400", modify: "text-amber-400", delete: "text-red-400" };
   return (
@@ -191,7 +227,6 @@ function ChangeCard({ change, onAccept, onReject }: { change: PendingChange; onA
   );
 }
 
-// ─── Message bubble ──────────────────────────────────────────────────────────
 function MessageBubble({ msg, onApplyChanges }: { msg: ChatMessage; onApplyChanges: (c: PendingChange[]) => void }) {
   const isUser = msg.role === "user";
   const [dismissed, setDismissed] = useState<Set<number>>(new Set());
@@ -250,29 +285,44 @@ function MessageBubble({ msg, onApplyChanges }: { msg: ChatMessage; onApplyChang
   );
 }
 
-// ─── Thinking indicator ───────────────────────────────────────────────────────
-function ThinkingDots() {
+// ─── Streaming bubble ─────────────────────────────────────────────────────────
+
+function StreamingBubble({ content, status }: { content: string; status: string }) {
   return (
-    <div className="flex items-center gap-2 text-muted-foreground text-xs mb-3 ml-1">
-      <div className="flex gap-1">
-        <span className="h-1.5 w-1.5 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: "0ms" }} />
-        <span className="h-1.5 w-1.5 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: "150ms" }} />
-        <span className="h-1.5 w-1.5 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: "300ms" }} />
+    <div className="flex flex-col mb-3 items-start">
+      <div className="flex items-center gap-1.5 mb-1 ml-1">
+        <Zap className="h-2.5 w-2.5 text-primary/70 animate-pulse" />
+        <span className="text-[10px] text-primary/60 font-semibold uppercase tracking-wider">AI Agent</span>
+        {status && <span className="text-[10px] text-muted-foreground/50 italic">{status}</span>}
       </div>
-      <span className="text-muted-foreground/60">Agent is thinking...</span>
+      <div className="bg-[#1e1e2e] text-foreground border border-white/8 rounded-lg px-3 py-2 mr-2 w-full">
+        {content
+          ? <MarkdownMessage content={content} />
+          : <span className="flex gap-1 items-center text-muted-foreground/50 text-xs">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: "0ms" }} />
+              <span className="h-1.5 w-1.5 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: "150ms" }} />
+              <span className="h-1.5 w-1.5 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: "300ms" }} />
+            </span>
+        }
+        {content && <span className="inline-block w-0.5 h-3.5 ml-0.5 bg-primary/70 animate-pulse align-middle" />}
+      </div>
     </div>
   );
 }
 
 // ─── Main ChatPanel ───────────────────────────────────────────────────────────
+
 export function ChatPanel() {
   const { workspacePath, activeFile, chatHistory, addChatMessage, setChatHistory, sendToTerminal } = useWorkspace();
   const [input, setInput] = useState("");
   const [isThinking, setIsThinking] = useState(false);
+  const [streamContent, setStreamContent] = useState("");
+  const [streamStatus, setStreamStatus] = useState("");
   const [config, setConfig] = useState<AgentConfig>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const applyChanges = useApplyChanges();
+  const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     const stored = loadAIConfig();
@@ -288,13 +338,17 @@ export function ChatPanel() {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatHistory, isThinking]);
+  }, [chatHistory, streamContent, isThinking]);
 
-  const callAI = useCallback(async (
+  // ─── Stream one AI turn, returns { content, toolCalls, finishReason } ──────
+  const streamTurn = useCallback(async (
     messages: unknown[],
-    tools: unknown[]
-  ): Promise<{ message: unknown; finish_reason: string }> => {
+    tools: unknown[],
+    onToken: (tok: string) => void,
+    signal: AbortSignal,
+  ): Promise<{ content: string; toolCalls: Array<{ id: string; name: string; arguments: string }>; finishReason: string }> => {
     if (!config?.apiKey) throw new Error("No API key configured. Open ⚙ Settings to add your provider key.");
+
     const resp = await fetch(`${config.baseURL}/chat/completions`, {
       method: "POST",
       headers: {
@@ -308,20 +362,62 @@ export function ChatPanel() {
         tools: tools.length > 0 ? tools : undefined,
         tool_choice: tools.length > 0 ? "auto" : undefined,
         max_tokens: 4096,
+        stream: true,
       }),
+      signal,
     });
+
     if (!resp.ok) {
       const text = await resp.text();
       throw new Error(`API error ${resp.status}: ${text.slice(0, 300)}`);
     }
-    const data = await resp.json() as { choices?: Array<{ message: unknown; finish_reason: string }> };
-    if (!data.choices?.length) {
-      throw new Error(`No response from model "${config.model}". Try another model in ⚙ Settings.`);
+
+    let content = "";
+    let finishReason = "stop";
+    // Accumulate tool call deltas indexed by their position
+    const toolCallMap: Record<number, { id: string; name: string; arguments: string }> = {};
+
+    for await (const chunk of readSSEStream(resp)) {
+      if (signal.aborted) break;
+      const choice = chunk.choices?.[0];
+      if (!choice) continue;
+
+      if (choice.finish_reason) finishReason = choice.finish_reason;
+
+      const delta = choice.delta;
+      if (!delta) continue;
+
+      // Text token
+      if (delta.content) {
+        content += delta.content;
+        onToken(delta.content);
+      }
+
+      // Tool call deltas
+      if (delta.tool_calls) {
+        for (const tc of delta.tool_calls) {
+          const idx = tc.index;
+          if (!toolCallMap[idx]) {
+            toolCallMap[idx] = { id: tc.id ?? "", name: tc.function?.name ?? "", arguments: "" };
+          }
+          if (tc.id) toolCallMap[idx]!.id = tc.id;
+          if (tc.function?.name) toolCallMap[idx]!.name += tc.function.name;
+          if (tc.function?.arguments) toolCallMap[idx]!.arguments += tc.function.arguments;
+        }
+      }
     }
-    return data.choices[0]!;
+
+    const toolCalls = Object.values(toolCallMap);
+    return { content, toolCalls, finishReason };
   }, [config]);
 
-  const executeTool = useCallback(async (name: string, args: Record<string, string>): Promise<string> => {
+  // ─── Execute a single tool ────────────────────────────────────────────────
+
+  const executeTool = useCallback(async (
+    name: string,
+    args: Record<string, string>,
+    pendingChanges: PendingChange[],
+  ): Promise<string> => {
     const ws = workspacePath;
     switch (name) {
       case "listFiles": {
@@ -344,6 +440,34 @@ export function ChatPanel() {
         const c = d.content || "";
         return c.length <= MAX_FILE_CHARS ? c : `[TRUNCATED to ${MAX_FILE_CHARS} chars]\n` + c.slice(0, MAX_FILE_CHARS);
       }
+      case "writeFile": {
+        const { path: fp, content } = args;
+        let originalContent = "";
+        let changeType: "create" | "modify" = "create";
+        try {
+          const r = await fetch(`/api/files/content?path=${encodeURIComponent(fp!)}&workspace=${encodeURIComponent(ws)}`);
+          if (r.ok) { const d = await r.json() as { content: string }; originalContent = d.content; changeType = "modify"; }
+        } catch { /* new file */ }
+        const diff = simpleDiff(originalContent, content!, fp!);
+        const existing = pendingChanges.findIndex(c => c.path === fp);
+        if (existing >= 0) { pendingChanges[existing]!.content = content!; pendingChanges[existing]!.diff = diff; }
+        else pendingChanges.push({ path: fp!, content: content!, originalContent, type: changeType, diff });
+        return `Staged ${changeType} for ${fp} — awaiting user approval`;
+      }
+      case "editFile": {
+        const { path: fp, oldText, newText } = args;
+        const r = await fetch(`/api/files/content?path=${encodeURIComponent(fp!)}&workspace=${encodeURIComponent(ws)}`);
+        if (!r.ok) return `Error: File not found: ${fp}`;
+        const d = await r.json() as { content: string };
+        const original = d.content;
+        if (!original.includes(oldText!)) return `Error: oldText not found in ${fp}. Text must match exactly.`;
+        const newContent = original.replace(oldText!, newText!);
+        const diff = simpleDiff(original, newContent, fp!);
+        const existing = pendingChanges.findIndex(c => c.path === fp);
+        if (existing >= 0) { pendingChanges[existing]!.content = newContent; pendingChanges[existing]!.diff = diff; }
+        else pendingChanges.push({ path: fp!, content: newContent, originalContent: original, type: "modify", diff });
+        return `Staged edit to ${fp} — awaiting user approval`;
+      }
       case "runCommand": {
         const r = await fetch("/api/workspace/exec", {
           method: "POST",
@@ -356,7 +480,6 @@ export function ChatPanel() {
         return `Exit: ${d.exitCode}\n${(out || "(no output)").slice(0, 3000)}`;
       }
       case "runInTerminal": {
-        // Send command to the live interactive terminal (good for servers, long-running processes)
         const cmd = (args["command"] ?? "").trim();
         sendToTerminal(cmd + "\n");
         return `Sent to terminal: ${cmd}`;
@@ -373,66 +496,13 @@ export function ChatPanel() {
   }, [workspacePath, sendToTerminal]);
 
   const TOOLS = [
-    {
-      type: "function",
-      function: {
-        name: "listFiles",
-        description: "List files and directories in the workspace.",
-        parameters: { type: "object", properties: { directory: { type: "string", description: "Subdirectory to list (optional)" } } }
-      }
-    },
-    {
-      type: "function",
-      function: {
-        name: "readFile",
-        description: "Read a file's content. Always read before editing.",
-        parameters: { type: "object", required: ["path"], properties: { path: { type: "string" } } }
-      }
-    },
-    {
-      type: "function",
-      function: {
-        name: "writeFile",
-        description: "Stage a new or updated file for user review. Never auto-applies.",
-        parameters: { type: "object", required: ["path", "content"], properties: { path: { type: "string" }, content: { type: "string" } } }
-      }
-    },
-    {
-      type: "function",
-      function: {
-        name: "editFile",
-        description: "Edit a file by replacing specific text. Prefer over writeFile for targeted changes.",
-        parameters: {
-          type: "object",
-          required: ["path", "oldText", "newText"],
-          properties: { path: { type: "string" }, oldText: { type: "string", description: "Exact text to find" }, newText: { type: "string" } }
-        }
-      }
-    },
-    {
-      type: "function",
-      function: {
-        name: "runCommand",
-        description: "Run a short shell command (build, test, install). Has 30s timeout. Do NOT use for long-running servers — use runInTerminal instead.",
-        parameters: { type: "object", required: ["command"], properties: { command: { type: "string" } } }
-      }
-    },
-    {
-      type: "function",
-      function: {
-        name: "runInTerminal",
-        description: "Send a command to the live interactive terminal. Use this for servers, dev servers, or any long-running process. The user can see and interact with it.",
-        parameters: { type: "object", required: ["command"], properties: { command: { type: "string", description: "Command to run in the terminal (without trailing newline)" } } }
-      }
-    },
-    {
-      type: "function",
-      function: {
-        name: "getGitDiff",
-        description: "Get the current git diff.",
-        parameters: { type: "object", properties: { file: { type: "string" } } }
-      }
-    },
+    { type: "function", function: { name: "listFiles", description: "List files and directories in the workspace.", parameters: { type: "object", properties: { directory: { type: "string", description: "Subdirectory to list (optional)" } } } } },
+    { type: "function", function: { name: "readFile", description: "Read a file's content. Always read before editing.", parameters: { type: "object", required: ["path"], properties: { path: { type: "string" } } } } },
+    { type: "function", function: { name: "writeFile", description: "Stage a new or updated file for user review.", parameters: { type: "object", required: ["path", "content"], properties: { path: { type: "string" }, content: { type: "string" } } } } },
+    { type: "function", function: { name: "editFile", description: "Edit a file by replacing specific text. Prefer over writeFile for targeted changes.", parameters: { type: "object", required: ["path", "oldText", "newText"], properties: { path: { type: "string" }, oldText: { type: "string", description: "Exact text to find" }, newText: { type: "string" } } } } },
+    { type: "function", function: { name: "runCommand", description: "Run a short shell command (build, test, install). 30s timeout. Do NOT use for servers — use runInTerminal.", parameters: { type: "object", required: ["command"], properties: { command: { type: "string" } } } } },
+    { type: "function", function: { name: "runInTerminal", description: "Send a command to the live terminal. Use for servers, dev servers, or long-running processes.", parameters: { type: "object", required: ["command"], properties: { command: { type: "string" } } } } },
+    { type: "function", function: { name: "getGitDiff", description: "Get the current git diff.", parameters: { type: "object", properties: { file: { type: "string" } } } } },
   ];
 
   const handleSend = async () => {
@@ -443,11 +513,16 @@ export function ChatPanel() {
 
     addChatMessage({ role: "user", content: msg });
     setIsThinking(true);
+    setStreamContent("");
+    setStreamStatus("Thinking...");
+
+    const abort = new AbortController();
+    abortRef.current = abort;
 
     const pendingChanges: PendingChange[] = [];
     let toolCallsUsed = 0;
 
-    const systemPrompt = `You are FTM-CODER-AI, a professional autonomous coding agent — like Cursor or GitHub Copilot.\n\nWorkspace: ${workspacePath}${activeFile ? `\nActive file: ${activeFile}` : ""}\n\nRules:\n- Always listFiles or readFile before editing anything\n- Use editFile for targeted changes (preferred), writeFile for new files\n- Use runCommand for quick commands (build, install, compile) — 30s timeout\n- Use runInTerminal for servers, dev servers, or long-running processes\n- File changes are STAGED for user review — never auto-applied\n- Be direct and concise; show code, not just instructions`;
+    const systemPrompt = `You are FTM-CODER-AI, a professional autonomous coding agent.\n\nWorkspace: ${workspacePath}${activeFile ? `\nActive file: ${activeFile}` : ""}\n\nRules:\n- Always listFiles or readFile before editing anything\n- Use editFile for targeted changes (preferred), writeFile for new files or full rewrites\n- Use runCommand for quick commands (build, install, compile) — 30s timeout\n- Use runInTerminal for servers, dev servers, or long-running processes\n- File changes are staged for user review, never auto-applied\n- Be direct and concise`;
 
     const apiHistory = chatHistory.map(m => ({ role: m.role, content: m.content }));
     const messages: Array<Record<string, unknown>> = [
@@ -457,82 +532,90 @@ export function ChatPanel() {
     ];
 
     try {
+      let finalContent = "";
+
       while (toolCallsUsed < MAX_TOOL_CALLS) {
-        const { message, finish_reason } = await callAI(messages, TOOLS);
-        const assistantMsg = message as {
-          role: string;
-          content: string | null;
-          tool_calls?: Array<{ id: string; type: string; function: { name: string; arguments: string } }>;
-        };
+        if (abort.signal.aborted) break;
+
+        // Reset stream for this turn
+        setStreamContent("");
+        let turnContent = "";
+
+        const { content, toolCalls, finishReason } = await streamTurn(
+          messages,
+          TOOLS,
+          (tok) => {
+            turnContent += tok;
+            setStreamContent(prev => prev + tok);
+          },
+          abort.signal,
+        );
+
+        finalContent = content || turnContent;
+
+        // Build the assistant message for this turn
+        const assistantMsg: Record<string, unknown> = { role: "assistant", content: finalContent || null };
+        if (toolCalls.length > 0) {
+          assistantMsg.tool_calls = toolCalls.map((tc, i) => ({
+            id: tc.id || `call_${i}`,
+            type: "function",
+            function: { name: tc.name, arguments: tc.arguments },
+          }));
+        }
         messages.push(assistantMsg);
 
-        if (finish_reason !== "tool_calls" || !assistantMsg.tool_calls?.length) break;
+        if (finishReason !== "tool_calls" || toolCalls.length === 0) break;
 
-        const toolResults: Array<Record<string, unknown>> = [];
-        for (const tc of assistantMsg.tool_calls) {
-          if (toolCallsUsed >= MAX_TOOL_CALLS) {
-            toolResults.push({ role: "tool", tool_call_id: tc.id, content: `[ABORTED] Max tool calls reached.` });
-            break;
-          }
+        // Execute each tool call
+        setStreamContent("");
+        for (const tc of toolCalls) {
+          if (toolCallsUsed >= MAX_TOOL_CALLS) break;
           toolCallsUsed++;
+          setStreamStatus(`Running: ${tc.name}...`);
+
           let result = "";
           try {
-            const args = JSON.parse(tc.function.arguments || "{}") as Record<string, string>;
-
-            if (tc.function.name === "writeFile") {
-              const { path: fp, content } = args;
-              let originalContent = "";
-              let changeType: "create" | "modify" = "create";
-              try {
-                const r = await fetch(`/api/files/content?path=${encodeURIComponent(fp!)}&workspace=${encodeURIComponent(workspacePath)}`);
-                if (r.ok) { const d = await r.json() as { content: string }; originalContent = d.content; changeType = "modify"; }
-              } catch { /* new file */ }
-              const diff = simpleDiff(originalContent, content!, fp!);
-              const existing = pendingChanges.findIndex(c => c.path === fp);
-              if (existing >= 0) { pendingChanges[existing]!.content = content!; pendingChanges[existing]!.diff = diff; }
-              else pendingChanges.push({ path: fp!, content: content!, originalContent, type: changeType, diff });
-              result = `Staged ${changeType} for ${fp} — awaiting user approval`;
-
-            } else if (tc.function.name === "editFile") {
-              const { path: fp, oldText, newText } = args;
-              const r = await fetch(`/api/files/content?path=${encodeURIComponent(fp!)}&workspace=${encodeURIComponent(workspacePath)}`);
-              if (!r.ok) { result = `Error: File not found: ${fp}`; }
-              else {
-                const d = await r.json() as { content: string };
-                const original = d.content;
-                if (!original.includes(oldText!)) { result = `Error: oldText not found in ${fp}. Text must match exactly.`; }
-                else {
-                  const newContent = original.replace(oldText!, newText!);
-                  const diff = simpleDiff(original, newContent, fp!);
-                  const existing = pendingChanges.findIndex(c => c.path === fp);
-                  if (existing >= 0) { pendingChanges[existing]!.content = newContent; pendingChanges[existing]!.diff = diff; }
-                  else pendingChanges.push({ path: fp!, content: newContent, originalContent: original, type: "modify", diff });
-                  result = `Staged edit to ${fp} — awaiting user approval`;
-                }
-              }
-            } else {
-              result = await executeTool(tc.function.name, args);
-            }
+            const args = JSON.parse(tc.arguments || "{}") as Record<string, string>;
+            result = await executeTool(tc.name, args, pendingChanges);
           } catch (err) {
             result = `Tool error: ${err instanceof Error ? err.message : String(err)}`;
           }
-          toolResults.push({ role: "tool", tool_call_id: tc.id, content: result });
+
+          messages.push({
+            role: "tool",
+            tool_call_id: tc.id || `call_${toolCallsUsed}`,
+            content: result,
+          });
         }
-        messages.push(...toolResults);
+
+        setStreamStatus("Thinking...");
       }
 
-      const lastAssistant = [...messages].reverse().find(
-        m => m.role === "assistant" && typeof m.content === "string" && m.content
-      ) as { content: string } | undefined;
-      const finalText = lastAssistant?.content
-        ?? (pendingChanges.length > 0 ? `Prepared ${pendingChanges.length} file change(s). Review and accept above.` : "Done.");
+      // Finalize: add the complete message to history
+      setStreamContent("");
+      setStreamStatus("");
+      addChatMessage({
+        role: "assistant",
+        content: finalContent || (pendingChanges.length > 0 ? `Prepared ${pendingChanges.length} file change(s).` : "Done."),
+        pendingChanges,
+        toolCallsUsed,
+      } as ChatMessage);
 
-      addChatMessage({ role: "assistant", content: finalText, pendingChanges, toolCallsUsed } as ChatMessage);
     } catch (err) {
-      addChatMessage({ role: "assistant", content: `❌ ${err instanceof Error ? err.message : String(err)}` });
+      setStreamContent("");
+      setStreamStatus("");
+      if (!abort.signal.aborted) {
+        addChatMessage({ role: "assistant", content: `❌ ${err instanceof Error ? err.message : String(err)}` });
+      }
     } finally {
       setIsThinking(false);
+      setStreamContent("");
+      setStreamStatus("");
     }
+  };
+
+  const handleStop = () => {
+    abortRef.current?.abort();
   };
 
   const handleApplyChanges = (changes: PendingChange[]) => {
@@ -555,27 +638,36 @@ export function ChatPanel() {
         <div className="flex items-center gap-2">
           <div className="h-2 w-2 rounded-full bg-primary/70 animate-pulse" />
           <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">AI Agent</span>
-          {config && (
-            <span className="text-[10px] text-muted-foreground/50 font-mono">({config.model})</span>
-          )}
+          {config && <span className="text-[10px] text-muted-foreground/50 font-mono">({config.model})</span>}
         </div>
-        <button
-          onClick={() => setChatHistory([])}
-          className="text-muted-foreground/50 hover:text-foreground transition-colors p-1 rounded"
-          title="Clear chat"
-          data-testid="button-clear-chat"
-        >
-          <Trash2 className="h-3.5 w-3.5" />
-        </button>
+        <div className="flex items-center gap-1">
+          {isThinking && (
+            <button
+              onClick={handleStop}
+              className="text-xs px-2 py-0.5 rounded text-red-400/70 hover:text-red-400 border border-red-900/40 hover:border-red-900 transition-colors"
+              title="Stop generation"
+            >
+              Stop
+            </button>
+          )}
+          <button
+            onClick={() => setChatHistory([])}
+            className="text-muted-foreground/50 hover:text-foreground transition-colors p-1 rounded"
+            title="Clear chat"
+            data-testid="button-clear-chat"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+          </button>
+        </div>
       </div>
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-3 space-y-1" data-testid="chat-messages">
-        {chatHistory.length === 0 && (
+        {chatHistory.length === 0 && !isThinking && (
           <div className="flex flex-col gap-3 mt-2">
             {!configReady && (
               <div className="text-xs text-destructive/80 text-center px-3 py-2 rounded border border-destructive/20 bg-destructive/5">
-                No AI provider configured — click ⚙ Settings in the top bar to set up OpenRouter or OmniRoute.
+                No AI provider configured — click ⚙ Settings in the top bar.
               </div>
             )}
             {configReady && (
@@ -596,10 +688,16 @@ export function ChatPanel() {
             </div>
           </div>
         )}
+
         {chatHistory.map((msg, i) => (
           <MessageBubble key={i} msg={msg as ChatMessage} onApplyChanges={handleApplyChanges} />
         ))}
-        {isThinking && <ThinkingDots />}
+
+        {/* Live streaming bubble */}
+        {isThinking && (
+          <StreamingBubble content={streamContent} status={streamStatus} />
+        )}
+
         <div ref={bottomRef} />
       </div>
 
@@ -615,22 +713,25 @@ export function ChatPanel() {
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={configReady ? "Ask the agent to build, run, or edit... (Enter to send)" : "Configure AI provider in ⚙ Settings..."}
+            placeholder={configReady ? "Ask the agent anything... (Enter to send, Shift+Enter for newline)" : "Configure AI provider in ⚙ Settings..."}
             className="flex-1 resize-none text-sm min-h-[64px] max-h-[140px] bg-background/60 border-border/60 placeholder:text-muted-foreground/40"
             data-testid="input-chat"
             disabled={isThinking || !configReady}
           />
           <Button
             size="sm"
-            onClick={handleSend}
-            disabled={!input.trim() || isThinking || !configReady}
-            className="h-9 w-9 p-0 shrink-0"
+            onClick={isThinking ? handleStop : handleSend}
+            disabled={isThinking ? false : (!input.trim() || !configReady)}
+            className={`h-9 w-9 p-0 shrink-0 ${isThinking ? "bg-red-600/20 hover:bg-red-600/30 border-red-700/40" : ""}`}
             data-testid="button-send-chat"
           >
-            {isThinking ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+            {isThinking ? <Square className="h-4 w-4 fill-current text-red-400" /> : <Send className="h-4 w-4" />}
           </Button>
         </div>
       </div>
     </div>
   );
 }
+
+// Need to import Square for the stop button icon
+import { Square } from "lucide-react";
