@@ -66,10 +66,14 @@ async function ensureOllama() {
   const ready = await waitForOllama(15000);
   if (ready) {
     logger.info("Ollama started successfully");
-    // Pull default model in background (non-blocking)
+    // Pull default model in background — log result
     const model = process.env["AI_MODEL"] ?? "glm4";
-    const pull = spawn("ollama", ["pull", model], { stdio: "ignore", env: process.env });
+    const pull = spawn("ollama", ["pull", model], { stdio: ["ignore", "pipe", "pipe"], env: process.env });
     pull.on("error", () => { /* ollama not available — ignore */ });
+    pull.on("close", (code) => {
+      if (code === 0) logger.info({ model }, "Ollama model ready");
+      else logger.warn({ model, code }, "Ollama model pull exited with non-zero code");
+    });
     pull.unref();
   } else {
     logger.warn("Ollama did not start within 15s — AI proxy will return 502 until Ollama is running");

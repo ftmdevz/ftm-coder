@@ -48,6 +48,27 @@ router.post("/ai/chat/completions", async (req: Request, res: Response) => {
     if (!upstreamResp.ok) {
       const text = await upstreamResp.text();
       logger.error({ status: upstreamResp.status, upstream, text }, "AI upstream error");
+
+      // Auto-pull the model if Ollama says it's not found
+      const isModelNotFound = upstreamResp.status === 404 &&
+        (text.includes("not found") || text.includes("pull it first"));
+
+      if (isModelNotFound) {
+        // Trigger pull in background (non-blocking)
+        const { spawn } = await import("child_process");
+        const pull = spawn("ollama", ["pull", model], { stdio: "ignore" });
+        pull.on("error", () => { /* ollama not in PATH */ });
+        pull.unref();
+        logger.info({ model }, "Model not found — triggered background pull");
+        res.status(503).json({
+          error: {
+            message: `Model "${model}" is being downloaded. Please wait ~1-2 minutes and try again. Check progress with: ollama list`,
+            type: "model_downloading",
+          }
+        });
+        return;
+      }
+
       res.status(upstreamResp.status).json({
         error: { message: text || `Upstream returned ${upstreamResp.status}`, type: "upstream_error" }
       });
