@@ -54,16 +54,23 @@ export function TopBar({ showTerminal, showChat, onToggleTerminal, onToggleChat 
   const handleInstallOllama = () => {
     if (!showTerminal) onToggleTerminal();
     setInstallingOllama(true);
-    // Send install + pull command to terminal
-    const model = serverConfig ? "glm4" : "glm4";
-    const cmd = [
-      `echo "📦 Installing Ollama..."`,
-      `curl -fsSL https://ollama.com/install.sh | sh`,
-      `echo "📥 Pulling ${model} model (may take a few minutes)..."`,
-      `ollama pull ${model}`,
-      `echo "✅ Done! Ollama + ${model} ready."`,
-    ].join(" && ");
-    sendToTerminal(cmd + "\n");
+    // Send environment-aware install + pull command to terminal
+    const model = "glm4";
+    const installCmd = `
+if command -v ollama > /dev/null 2>&1; then
+  echo "✅ Ollama already installed: $(ollama --version)"
+elif command -v nix-env > /dev/null 2>&1; then
+  echo "📦 Installing Ollama via Nix..."
+  nix-env -iA nixpkgs.ollama
+elif command -v brew > /dev/null 2>&1; then
+  echo "📦 Installing Ollama via Homebrew..."
+  brew install ollama
+else
+  echo "📦 Installing Ollama via installer script..."
+  curl -fsSL https://ollama.com/install.sh | sh
+fi && echo "📥 Starting Ollama and pulling ${model}..." && ollama serve &>/dev/null & sleep 2 && ollama pull ${model} && echo "✅ Done! Ollama + ${model} ready."
+`.trim();
+    sendToTerminal(installCmd + "\n");
     // Re-check status after a delay
     setTimeout(() => { checkOllama(); setInstallingOllama(false); }, 5000);
   };
