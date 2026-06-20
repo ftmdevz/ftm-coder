@@ -5,7 +5,7 @@ import fs from "fs";
 
 const require = createRequire(import.meta.url);
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const archiver = require("archiver") as typeof import("archiver").default;
+const archiver = require("archiver") as (format: string, opts?: object) => import("archiver").Archiver;
 
 const router: IRouter = Router();
 
@@ -25,7 +25,7 @@ router.get("/workspace/download", async (req, res) => {
 
   const archive = archiver("zip", { zlib: { level: 6 } });
 
-  archive.on("error", (err) => {
+  archive.on("error", (err: Error) => {
     req.log.error({ err }, "Archive error");
     if (!res.headersSent) {
       res.status(500).json({ error: "Failed to create archive" });

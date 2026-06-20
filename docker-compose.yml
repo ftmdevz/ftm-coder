@@ -1,0 +1,12 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      STATIC_DIR: /app/public
+      # Optional — add if you use a database:
+      # DATABASE_URL: postgres://user:pass@db:5432/mydb
+    restart: unless-stopped
