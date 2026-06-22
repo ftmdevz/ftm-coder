@@ -177,20 +177,84 @@ jobs:
           cp -r artifacts/ftm-coder-ai/dist/. release-bundle/public/
           cp ftm-coder-ai-${{ matrix.os }}${{ matrix.ext }} release-bundle/
 
-          # Write a quick-start README into the bundle
-          cat <<'README' > release-bundle/README.txt
+          # ── Windows launcher (.bat) ──────────────────────────────
+          cat > release-bundle/Start\ FTM-CODER-AI.bat << 'WBAT'
+          @echo off
+          title FTM-CODER-AI
+          echo.
+          echo  ███████╗████████╗███╗   ███╗      ██████╗ ██████╗ ██████╗ ███████╗██████╗
+          echo  ██╔════╝╚══██╔══╝████╗ ████║     ██╔════╝██╔═══██╗██╔══██╗██╔════╝██╔══██╗
+          echo  █████╗     ██║   ██╔████╔██║     ██║     ██║   ██║██║  ██║█████╗  ██████╔╝
+          echo  ██╔══╝     ██║   ██║╚██╔╝██║     ██║     ██║   ██║██║  ██║██╔══╝  ██╔══██╗
+          echo  ██║        ██║   ██║ ╚═╝ ██║     ╚██████╗╚██████╔╝██████╔╝███████╗██║  ██║
+          echo  ╚═╝        ╚═╝   ╚═╝     ╚═╝      ╚═════╝ ╚═════╝ ╚═════╝╚══════╝╚═╝  ╚═╝
+          echo.
+          echo  Starting server on http://localhost:3000 ...
+          echo  Press Ctrl+C to stop.
+          echo.
+
+          set PORT=3000
+          set NODE_ENV=production
+          set STATIC_DIR=%~dp0public
+
+          start "" "ftm-coder-ai.exe"
+
+          timeout /t 2 /nobreak >nul
+          start "" "http://localhost:3000"
+
+          pause
+          WBAT
+
+          # ── Linux / macOS launcher (.sh) ─────────────────────────
+          cat > release-bundle/start.sh << 'SH'
+          #!/usr/bin/env bash
+          set -e
+          SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+          EXE=""
+          case "$(uname -s)" in
+            Darwin) EXE="$SCRIPT_DIR/ftm-coder-ai-macos" ;;
+            *)      EXE="$SCRIPT_DIR/ftm-coder-ai-linux" ;;
+          esac
+          chmod +x "$EXE"
+          export PORT=3000
+          export NODE_ENV=production
+          export STATIC_DIR="$SCRIPT_DIR/public"
+          echo "Starting FTM-CODER-AI on http://localhost:3000 ..."
+          "$EXE" &
+          SERVER_PID=$!
+          sleep 2
+          # Open browser
+          case "$(uname -s)" in
+            Darwin) open "http://localhost:3000" ;;
+            *)      xdg-open "http://localhost:3000" 2>/dev/null || echo "Open http://localhost:3000 in your browser." ;;
+          esac
+          echo "Server running (PID $SERVER_PID). Press Ctrl+C to stop."
+          wait $SERVER_PID
+          SH
+          chmod +x release-bundle/start.sh
+
+          # ── README ───────────────────────────────────────────────
+          cat > release-bundle/README.txt << 'README'
           FTM-CODER-AI — Quick Start
           ===========================
-          1. Run the executable:
-               Windows : ftm-coder-ai.exe
-               Linux   : ./ftm-coder-ai-linux
-               macOS   : ./ftm-coder-ai-macos
 
-          2. Open http://localhost:3000 in your browser.
+          WINDOWS:
+            Double-click "Start FTM-CODER-AI.bat"
+            → Server starts + browser opens automatically at http://localhost:3000
 
-          Environment variables (optional):
-            PORT=3000
-            AI_BASE_URL=http://localhost:11434/v1
+          LINUX / macOS:
+            Run: ./start.sh
+            → Server starts + browser opens automatically at http://localhost:3000
+
+          Manual start (advanced):
+            Windows : ftm-coder-ai.exe
+            Linux   : ./ftm-coder-ai-linux
+            macOS   : ./ftm-coder-ai-macos
+            Then open http://localhost:3000 in your browser.
+
+          Environment variables (optional, set before running):
+            PORT=3000                            (default: 3000)
+            AI_BASE_URL=http://localhost:11434/v1 (Ollama endpoint)
             AI_MODEL=glm4
           README
 
