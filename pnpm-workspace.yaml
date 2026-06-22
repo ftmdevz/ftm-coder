@@ -35,7 +35,7 @@ minimumReleaseAgeExclude:
   - stripe-replit-sync
 
 packages:
-  - artifacts/*
+  - "artifacts/!(desktop)"
   - lib/*
   - lib/integrations/*
   - scripts
@@ -71,6 +71,7 @@ autoInstallPeers: false
 onlyBuiltDependencies:
   - '@swc/core'
   - esbuild
+  - electron
   - msw
   - unrs-resolver
 
