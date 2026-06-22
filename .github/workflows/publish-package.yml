@@ -1,0 +1,62 @@
+name: Publish npm Package to GitHub Packages
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      package:
+        description: "Package filter (e.g. @workspace/api-server)"
+        required: false
+        default: ""
+
+jobs:
+  publish:
+    name: Publish to GitHub Packages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js (GitHub Packages registry)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://npm.pkg.github.com
+          scope: "@${{ github.repository_owner }}"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build all packages
+        run: pnpm run build
+
+      - name: Publish (all non-private packages)
+        run: |
+          # Find all package.json files that are NOT marked private
+          for dir in lib/*/; do
+            PKG="$dir/package.json"
+            if [ -f "$PKG" ]; then
+              IS_PRIVATE=$(node -e "const p=require('./$PKG'); process.stdout.write(String(!!p.private))")
+              if [ "$IS_PRIVATE" = "false" ]; then
+                echo "Publishing $dir …"
+                cd "$dir"
+                npm publish --access public
+                cd -
+              else
+                echo "Skipping private package: $dir"
+              fi
+            fi
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
