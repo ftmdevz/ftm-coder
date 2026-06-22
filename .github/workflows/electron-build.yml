@@ -1,0 +1,155 @@
+name: Build Electron Desktop App
+
+on:
+  push:
+    branches: [main, V1, "v*"]
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+concurrency:
+  group: electron-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  # ── Build frontend + API server once, share via artifact ────────────────
+  build-web:
+    name: Build web assets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build frontend
+        run: pnpm --filter @workspace/ftm-coder-ai run build
+        env:
+          NODE_ENV: production
+          PORT: "3000"
+          BASE_PATH: "/"
+
+      - name: Build API server
+        run: pnpm --filter @workspace/api-server run build
+        env:
+          NODE_ENV: production
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-assets
+          path: |
+            artifacts/ftm-coder-ai/dist
+            artifacts/api-server/dist
+
+  # ── Build Electron app per platform ─────────────────────────────────────
+  electron:
+    name: Electron — ${{ matrix.os }}
+    needs: build-web
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            platform: win
+            artifact_name: "*.exe"
+          - os: ubuntu-latest
+            platform: linux
+            artifact_name: "*.AppImage"
+          - os: macos-latest
+            platform: mac
+            artifact_name: "*.dmg"
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Download web assets
+        uses: actions/download-artifact@v4
+        with:
+          name: web-assets
+          path: artifacts
+
+      - name: Install desktop dependencies
+        working-directory: artifacts/desktop
+        run: npm install
+
+      - name: Generate placeholder icon (if missing)
+        shell: bash
+        run: |
+          mkdir -p artifacts/desktop/assets
+          # Create a simple placeholder SVG icon if no real icon exists
+          if [ ! -f artifacts/desktop/assets/icon.png ]; then
+            node -e "
+              const fs = require('fs');
+              const svg = \`<svg xmlns='http://www.w3.org/2000/svg' width='512' height='512'>
+                <rect width='512' height='512' rx='80' fill='#0f0f0f'/>
+                <text x='50%' y='54%' font-family='monospace' font-size='200' font-weight='bold'
+                  fill='url(#g)' text-anchor='middle' dominant-baseline='middle'>F</text>
+                <defs>
+                  <linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+                    <stop offset='0%' stop-color='#6366f1'/>
+                    <stop offset='100%' stop-color='#8b5cf6'/>
+                  </linearGradient>
+                </defs>
+              </svg>\`;
+              fs.writeFileSync('artifacts/desktop/assets/icon.svg', svg);
+            "
+          fi
+
+      - name: Build Electron app — ${{ matrix.platform }}
+        working-directory: artifacts/desktop
+        run: npm run build:${{ matrix.platform }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Electron artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: electron-${{ matrix.platform }}
+          path: |
+            artifacts/desktop/dist-electron/${{ matrix.artifact_name }}
+          if-no-files-found: warn
+
+  # ── Attach Electron binaries to latest GitHub Release ───────────────────
+  attach-to-release:
+    name: Attach to GitHub Release
+    needs: electron
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: electron-*
+          merge-multiple: true
+          path: ./electron-assets
+
+      - name: List built assets
+        run: ls -lh ./electron-assets/
+
+      - name: Upload to existing release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./electron-assets/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
