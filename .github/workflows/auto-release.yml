@@ -144,12 +144,20 @@ jobs:
 
       - name: Build frontend
         run: pnpm --filter @workspace/ftm-coder-ai run build
+        env:
+          NODE_ENV: production
+          PORT: "3000"
+          BASE_PATH: "/"
 
       - name: Build API server (ESM, for production)
         run: pnpm --filter @workspace/api-server run build
+        env:
+          NODE_ENV: production
 
       - name: Build CJS bundle (for pkg packaging)
         run: node artifacts/api-server/pkg-build.mjs
+        env:
+          NODE_ENV: production
 
       - name: Install pkg globally
         run: npm install -g @yao-pkg/pkg
