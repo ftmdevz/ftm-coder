@@ -2,7 +2,7 @@ name: Build & Push GHCR Image
 
 on:
   push:
-    branches: [main, V1, "v*"]
+    branches: ["**"]
     tags:
       - "v*.*.*"
   workflow_dispatch:

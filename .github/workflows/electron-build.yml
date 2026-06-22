@@ -2,7 +2,7 @@ name: Build Electron Desktop App
 
 on:
   push:
-    branches: [main, V1, "v*"]
+    branches: ["**"]
     tags:
       - "v*.*.*"
   workflow_dispatch:
@@ -93,28 +93,47 @@ jobs:
         working-directory: artifacts/desktop
         run: npm install
 
-      - name: Generate placeholder icon (if missing)
+      - name: Generate app icon
         shell: bash
         run: |
           mkdir -p artifacts/desktop/assets
-          # Create a simple placeholder SVG icon if no real icon exists
-          if [ ! -f artifacts/desktop/assets/icon.png ]; then
-            node -e "
-              const fs = require('fs');
-              const svg = \`<svg xmlns='http://www.w3.org/2000/svg' width='512' height='512'>
-                <rect width='512' height='512' rx='80' fill='#0f0f0f'/>
-                <text x='50%' y='54%' font-family='monospace' font-size='200' font-weight='bold'
-                  fill='url(#g)' text-anchor='middle' dominant-baseline='middle'>F</text>
-                <defs>
-                  <linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
-                    <stop offset='0%' stop-color='#6366f1'/>
-                    <stop offset='100%' stop-color='#8b5cf6'/>
-                  </linearGradient>
-                </defs>
-              </svg>\`;
-              fs.writeFileSync('artifacts/desktop/assets/icon.svg', svg);
-            "
-          fi
+          node -e "
+            const fs = require('fs');
+            const svg = \`<svg xmlns='http://www.w3.org/2000/svg' width='512' height='512'>
+              <rect width='512' height='512' rx='80' fill='#0f0f0f'/>
+              <text x='50%' y='54%' font-family='monospace' font-size='200' font-weight='bold'
+                fill='url(#g)' text-anchor='middle' dominant-baseline='middle'>F</text>
+              <defs>
+                <linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+                  <stop offset='0%' stop-color='#6366f1'/>
+                  <stop offset='100%' stop-color='#8b5cf6'/>
+                </linearGradient>
+              </defs>
+            </svg>\`;
+            fs.writeFileSync('artifacts/desktop/assets/icon.svg', svg);
+          "
+
+      # ── Windows: self-sign the exe so SmartScreen shows "More info → Run"
+      # instead of a hard block. Free, no paid cert needed.
+      - name: Create self-signed certificate (Windows only)
+        if: matrix.platform == 'win'
+        shell: pwsh
+        run: |
+          $pw = ConvertTo-SecureString "FtmCoder2026!" -AsPlainText -Force
+          $cert = New-SelfSignedCertificate `
+            -Type CodeSigning `
+            -Subject "CN=FTM-CODER-AI, O=ftmdevz, C=IN" `
+            -KeyUsage DigitalSignature `
+            -FriendlyName "FTM-CODER-AI Code Signing" `
+            -CertStoreLocation Cert:\CurrentUser\My `
+            -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.3","2.5.29.19={text}") `
+            -NotAfter (Get-Date).AddYears(3)
+          $pfxPath = "$env:RUNNER_TEMP\signing.pfx"
+          Export-PfxCertificate -Cert $cert -FilePath $pfxPath -Password $pw
+          echo "CSC_LINK=$pfxPath"         >> $env:GITHUB_ENV
+          echo "CSC_KEY_PASSWORD=FtmCoder2026!" >> $env:GITHUB_ENV
+          echo "WIN_CSC_LINK=$pfxPath"     >> $env:GITHUB_ENV
+          echo "WIN_CSC_KEY_PASSWORD=FtmCoder2026!" >> $env:GITHUB_ENV
 
       - name: Build Electron app — ${{ matrix.platform }}
         working-directory: artifacts/desktop
@@ -122,12 +141,43 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Add SmartScreen bypass README inside the Windows output folder
+      - name: Add SmartScreen instructions (Windows only)
+        if: matrix.platform == 'win'
+        shell: bash
+        run: |
+          cat > artifacts/desktop/dist-electron/HOW_TO_INSTALL_WINDOWS.txt << 'EOF'
+          FTM-CODER-AI — Windows Installation
+          =====================================
+
+          If Windows SmartScreen shows a warning:
+
+          METHOD 1 — Installer (.exe Setup):
+            1. Click "More info" in the SmartScreen popup
+            2. Click "Run anyway"
+            3. Install normally
+
+          METHOD 2 — Portable (.exe):
+            1. Right-click the .exe file
+            2. Select "Properties"
+            3. At the bottom check "Unblock"
+            4. Click OK, then run the file
+
+          WHY THIS HAPPENS:
+            This app is self-signed (free certificate). Windows SmartScreen
+            blocks apps from unknown publishers until enough users run it.
+            The app is safe — source code is on GitHub:
+            https://github.com/ftmdevz/ftm-coder
+
+          EOF
+
       - name: Upload Electron artifact
         uses: actions/upload-artifact@v4
         with:
           name: electron-${{ matrix.platform }}
           path: |
             artifacts/desktop/dist-electron/${{ matrix.artifact_name }}
+            artifacts/desktop/dist-electron/HOW_TO_INSTALL_WINDOWS.txt
           if-no-files-found: warn
 
   # ── Attach Electron binaries to latest GitHub Release ───────────────────
