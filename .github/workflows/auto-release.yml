@@ -2,7 +2,7 @@ name: Auto Release + Build Executables
 
 on:
   push:
-    branches: [main]
+    branches: [main, V1, "v*"]
   workflow_dispatch:
     inputs:
       bump:
