@@ -9,7 +9,7 @@ const router: IRouter = Router();
 // AI_MODEL     → default model name (default: glm4 via Ollama)
 const AI_BASE_URL = (process.env["AI_BASE_URL"] ?? "http://localhost:11434/v1").replace(/\/$/, "");
 const AI_API_KEY  = process.env["AI_API_KEY"]  ?? "ollama";
-const AI_MODEL    = process.env["AI_MODEL"]    ?? "glm4";
+const AI_MODEL    = process.env["AI_MODEL"]    ?? "qwen2.5-coder:7b";
 
 // ── Health check — lets the frontend know the proxy is up ────────────────────
 router.get("/ai/status", async (_req: Request, res: Response) => {

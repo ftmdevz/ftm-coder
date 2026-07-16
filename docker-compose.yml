@@ -10,7 +10,9 @@ services:
       STATIC_DIR: /app/public
       # Ollama runs inside the same container — auto-configured
       AI_BASE_URL: http://localhost:11434/v1
-      AI_MODEL: glm4       # Change to any Ollama-supported model
+      # Best local coding model — fast, accurate, 4.7 GB on disk.
+      # Needs ~6-8 GB RAM. Override to any Ollama model name.
+      AI_MODEL: qwen2.5-coder:7b
       # Optional: swap to a cloud provider instead of Ollama
       # AI_BASE_URL: https://api.z.ai/v1
       # AI_API_KEY: your_z_ai_key

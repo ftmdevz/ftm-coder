@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-MODEL="${AI_MODEL:-glm4}"
+MODEL="${AI_MODEL:-qwen2.5-coder:7b}"
 
 echo "🚀 Starting Ollama..."
 ollama serve &

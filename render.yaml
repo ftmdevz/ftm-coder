@@ -3,12 +3,33 @@ services:
     name: ftm-coder-ai
     runtime: docker
     dockerfilePath: ./Dockerfile
-    # Render auto-assigns PORT — we pass it through
+    # ─── Render plan recommendation ───────────────────────────────────────────
+    # qwen2.5-coder:7b (default) needs ~6 GB RAM minimum.
+    #
+    # Plan        RAM    Cost/mo   Verdict
+    # ---------   -----  --------  -----------------------------------------------
+    # Starter     512 MB  $7       ❌ Way too small — Ollama won't even start
+    # Standard    2 GB   $25       ❌ Model won't fit in RAM
+    # Pro         4 GB   $85       ⚠️  Borderline — may OOM mid-conversation
+    # Pro Plus    8 GB   $175      ✅ Recommended — smooth experience with 7B model
+    # Standard+   16 GB  $450      🚀 Comfortable headroom for larger models (14B)
+    #
+    # Budget alternative: set AI_MODEL=qwen2.5-coder:1.5b below (only ~2 GB RAM)
+    # and use the Pro plan ($85/mo) for a good-enough coding assistant.
+    #
+    # ⚠️  Important: Render doesn't persist volumes between deploys unless you use
+    #    a mounted disk. Add a /root/.ollama disk mount so the model isn't
+    #    re-downloaded on every deploy (Render Disks → mount path /root/.ollama).
+    # ──────────────────────────────────────────────────────────────────────────
     envVars:
       - key: NODE_ENV
         value: production
       - key: STATIC_DIR
         value: /app/public
+      # Default model — qwen2.5-coder:7b (needs Pro Plus / 8 GB).
+      # Switch to qwen2.5-coder:1.5b for the Pro plan (4 GB).
+      - key: AI_MODEL
+        value: qwen2.5-coder:7b
       # Add DATABASE_URL here if needed:
       # - key: DATABASE_URL
       #   fromDatabase:

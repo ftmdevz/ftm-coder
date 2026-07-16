@@ -44,7 +44,9 @@ ENV NODE_ENV=production
 ENV PORT=3000
 ENV STATIC_DIR=/app/public
 ENV AI_BASE_URL=http://localhost:11434/v1
-ENV AI_MODEL=glm4
+# Best local coding model: fast, accurate, 4.7 GB on disk
+# Override with AI_MODEL env var to use a different Ollama model
+ENV AI_MODEL=qwen2.5-coder:7b
 
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/artifacts/api-server/dist ./dist
