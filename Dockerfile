@@ -8,17 +8,18 @@ RUN corepack enable && corepack prepare pnpm@10 --activate
 
 WORKDIR /app
 
-COPY package.json pnpm-workspace.yaml pnpm-lock.yaml./
-COPY lib/api-zod/package.json./lib/api-zod/package.json
-COPY lib/api-spec/package.json./lib/api-spec/package.json
-COPY lib/api-client-react/package.json./lib/api-client-react/package.json
-COPY lib/db/package.json./lib/db/package.json
-COPY artifacts/api-server/package.json./artifacts/api-server/package.json
-COPY artifacts/ftm-coder-ai/package.json./artifacts/ftm-coder-ai/package.json
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
+
+COPY lib/api-zod/package.json lib/api-zod/package.json
+COPY lib/api-spec/package.json lib/api-spec/package.json
+COPY lib/api-client-react/package.json lib/api-client-react/package.json
+COPY lib/db/package.json lib/db/package.json
+COPY artifacts/api-server/package.json artifacts/api-server/package.json
+COPY artifacts/ftm-coder-ai/package.json artifacts/ftm-coder-ai/package.json
 
 RUN pnpm install --frozen-lockfile
 
-COPY..
+COPY . .
 
 RUN pnpm install --frozen-lockfile
 RUN pnpm --filter @workspace/ftm-coder-ai run build
@@ -37,10 +38,12 @@ RUN curl -fsSL https://ollama.com/install.sh | sh
 
 WORKDIR /app
 
-COPY --from=builder /app/artifacts/api-server/dist./dist
-COPY --from=builder /app/artifacts/ftm-coder-ai/dist./public
-COPY --from=builder /app/node_modules./node_modules
+COPY --from=builder /app/artifacts/api-server/dist ./dist
+COPY --from=builder /app/artifacts/ftm-coder-ai/dist ./public
+COPY --from=builder /app/node_modules ./node_modules
+
 COPY docker-entrypoint.sh /usr/local/bin/entrypoint.sh
+
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 VOLUME ["/root/.ollama"]
