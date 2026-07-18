@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import {
   Play, Square, GitBranch, Settings, Terminal,
   Github, Download, PanelRight, PanelRightClose,
-  Loader2, Bot, Cpu,
+  Loader2, Bot, Cpu, LogOut, Globe,
 } from "lucide-react";
 import { AISettingsDialog, loadAIConfig, type AIConfig } from "./AISettings";
 import { GitHubPushDialog } from "./GitHubPushDialog";
@@ -14,12 +14,14 @@ import { GitHubPushDialog } from "./GitHubPushDialog";
 type Props = {
   showTerminal: boolean;
   showChat: boolean;
+  showPreview: boolean;
   onToggleTerminal: () => void;
   onToggleChat: () => void;
+  onTogglePreview: () => void;
 };
 
-export function TopBar({ showTerminal, showChat, onToggleTerminal, onToggleChat }: Props) {
-  const { workspacePath, setWorkspacePath, sendToTerminal, killTerminal } = useWorkspace();
+export function TopBar({ showTerminal, showChat, showPreview, onToggleTerminal, onToggleChat, onTogglePreview }: Props) {
+  const { workspacePath, setWorkspacePath, sendToTerminal, killTerminal, onLogout } = useWorkspace();
   const [pathInput, setPathInput] = useState(workspacePath);
   const [commitMsg, setCommitMsg] = useState("");
   const [showCommit, setShowCommit] = useState(false);
@@ -278,6 +280,13 @@ fi && echo "📥 Starting Ollama and pulling ${model}..." && ollama serve &>/dev
           <div className="h-4 w-px bg-border/60 mx-0.5" />
 
           <button
+            onClick={onTogglePreview}
+            title={showPreview ? "Hide preview" : "Live preview (run a server first)"}
+            className={`flex items-center h-7 w-7 justify-center rounded transition-colors ${showPreview ? "text-green-400 bg-green-400/10" : "text-muted-foreground hover:text-foreground hover:bg-accent"}`}
+          >
+            <Globe className="h-3.5 w-3.5" />
+          </button>
+          <button
             onClick={onToggleChat}
             title={showChat ? "Hide AI panel" : "Show AI panel"}
             className={`flex items-center h-7 w-7 justify-center rounded transition-colors ${showChat ? "text-primary bg-primary/10" : "text-muted-foreground hover:text-foreground hover:bg-accent"}`}
@@ -292,6 +301,16 @@ fi && echo "📥 Starting Ollama and pulling ${model}..." && ollama serve &>/dev
           >
             <Settings className="h-3.5 w-3.5" />
           </button>
+
+          {onLogout && (
+            <button
+              onClick={onLogout}
+              title="Logout"
+              className="flex items-center h-7 w-7 justify-center rounded text-muted-foreground hover:text-red-400 hover:bg-red-400/10 transition-colors"
+            >
+              <LogOut className="h-3.5 w-3.5" />
+            </button>
+          )}
         </div>
       </div>
 

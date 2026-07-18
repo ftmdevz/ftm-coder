@@ -1,0 +1,44 @@
+2026-07-16T14:47:10.961218376Z ==> Starting service...
+2026-07-16T14:47:11.210445136Z ==> Setting WEB_CONCURRENCY=4 by default, based on available CPUs in the instance
+2026-07-16T14:47:42.24091154Z 🚀 Starting Ollama...
+2026-07-16T14:47:42.241076477Z ⏳ Waiting for Ollama to be ready...
+2026-07-16T14:47:42.256939604Z time=2026-07-16T14:47:42.256Z level=INFO source=routes.go:1947 msg="server config" env="map[CUDA_VISIBLE_DEVICES: GGML_VK_VISIBLE_DEVICES: GPU_DEVICE_ORDINAL: HIP_VISIBLE_DEVICES: HSA_OVERRIDE_GFX_VERSION: HTTPS_PROXY: HTTP_PROXY: LLAMA_ARG_FIT: LLAMA_ARG_FIT_TARGET: NO_PROXY: OLLAMA_CONTEXT_LENGTH:0 OLLAMA_DEBUG:INFO OLLAMA_DEBUG_LOG_REQUESTS:false OLLAMA_EDITOR: OLLAMA_FLASH_ATTENTION:false OLLAMA_GO_TEMPLATE:true OLLAMA_GPU_OVERHEAD:0 OLLAMA_HOST:http://127.0.0.1:11434 OLLAMA_IGPU_ENABLE: OLLAMA_KEEP_ALIVE:5m0s OLLAMA_KV_CACHE_TYPE: OLLAMA_LLM_LIBRARY: OLLAMA_LOAD_TIMEOUT:5m0s OLLAMA_MAX_LOADED_MODELS:0 OLLAMA_MAX_QUEUE:512 OLLAMA_MAX_TRANSFER_STREAMS:4 OLLAMA_MODELS:/root/.ollama/models OLLAMA_NOHISTORY:false OLLAMA_NOPRUNE:false OLLAMA_NO_CLOUD:false OLLAMA_NUM_PARALLEL:1 OLLAMA_ORIGINS:[http://localhost https://localhost http://localhost:* https://localhost:* http://127.0.0.1 https://127.0.0.1 http://127.0.0.1:* https://127.0.0.1:* http://0.0.0.0 https://0.0.0.0 http://0.0.0.0:* https://0.0.0.0:* app://* file://* tauri://* vscode-webview://* vscode-file://*] OLLAMA_REMOTES:[ollama.com] OLLAMA_SCHED_SPREAD:false OLLAMA_VULKAN:true ROCR_VISIBLE_DEVICES: http_proxy: https_proxy: no_proxy:]"
+2026-07-16T14:47:42.256955605Z time=2026-07-16T14:47:42.256Z level=INFO source=routes.go:1949 msg="Ollama cloud disabled: false"
+2026-07-16T14:47:42.261514677Z time=2026-07-16T14:47:42.261Z level=INFO source=images.go:883 msg="total blobs: 0"
+2026-07-16T14:47:42.261642283Z time=2026-07-16T14:47:42.261Z level=INFO source=images.go:890 msg="total unused blobs removed: 0"
+2026-07-16T14:47:42.261940837Z time=2026-07-16T14:47:42.261Z level=INFO source=routes.go:2004 msg="Listening on 127.0.0.1:11434 (version 0.32.0)"
+2026-07-16T14:47:42.263238777Z time=2026-07-16T14:47:42.263Z level=INFO source=runner.go:60 msg="discovering available GPUs..."
+2026-07-16T14:47:42.26674315Z time=2026-07-16T14:47:42.266Z level=INFO source=model_list_cache.go:112 msg="model list cache hydration complete" models=1 failures=0 elapsed=4.73795ms
+2026-07-16T14:47:42.431272805Z time=2026-07-16T14:47:42.431Z level=INFO source=types.go:50 msg="inference compute" id=cpu library=cpu compute="" name=cpu description=cpu libdirs=ollama driver="" pci_id="" type="" total="16.0 GiB" available="16.0 GiB"
+2026-07-16T14:47:42.431291726Z time=2026-07-16T14:47:42.431Z level=INFO source=routes.go:2054 msg="vram-based default context" total_vram="0 B" default_num_ctx=4096
+2026-07-16T14:47:42.526169464Z time=2026-07-16T14:47:42.526Z level=INFO source=model_recommendations.go:177 msg="model recommendations cache sleep scheduled" wait=4h46m57.730997592s consecutive_failures=0
+2026-07-16T14:47:43.259444246Z [GIN] 2026/07/16 - 14:47:43 | 200 |     389.588µs |       127.0.0.1 | GET      "/api/tags"
+2026-07-16T14:47:43.260424011Z ✅ Ollama is ready
+2026-07-16T14:47:43.260450502Z 📥 Pulling model: qwen2.5-coder:7b (skip if cached)...
+2026-07-16T14:47:43.274552377Z [GIN] 2026/07/16 - 14:47:43 | 200 |      52.732µs |       127.0.0.1 | HEAD     "/"
+2026-07-16T14:47:43.821966393Z [GIN] 2026/07/16 - 14:47:43 | 403 |      24.682µs |       127.0.0.1 | HEAD     "/"
+2026-07-16T14:47:44.376927969Z [GIN] 2026/07/16 - 14:47:44 | 200 |  1.102089719s |       127.0.0.1 | POST     "/api/pull"
+2026-07-16T14:47:44.376988502Z pulling manifest ⠋ pulling manifest ⠙ pulling manifest ⠹ pulling manifest ⠸ pulling manifest ⠼ pulling manifest ⠴ pulling manifest ⠧ pulling manifest ⠧ pulling manifest ⠇ pulling manifest ⠏ pulling manifest ⠋ pulling manifest 
+2026-07-16T14:47:44.377021444Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:47:44.377025944Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:47:44.377028734Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:47:44.377031524Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:47:44.377034234Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:47:44.377038635Z verifying sha256 digest 
+2026-07-16T14:47:44.377042205Z writing manifest 
+2026-07-16T14:47:44.377044275Z success 
+2026-07-16T14:47:44.378840588Z 🟢 Starting FTM-CODER-AI server on port 10000...
+2026-07-16T14:47:44.578740056Z {"level":30,"time":1784213264578,"pid":95,"hostname":"srv-d9ce6jfavr4c73b11up0-7b8dc5b4b5-4wn2w","staticDir":"/app/public","msg":"Serving static frontend"}
+2026-07-16T14:47:44.590298533Z {"level":30,"time":1784213264580,"pid":95,"hostname":"srv-d9ce6jfavr4c73b11up0-7b8dc5b4b5-4wn2w","port":10000,"msg":"Server listening (HTTP + WebSocket)"}
+2026-07-16T14:47:44.594482348Z [GIN] 2026/07/16 - 14:47:44 | 200 |     320.825µs |       127.0.0.1 | GET      "/api/tags"
+2026-07-16T14:47:44.598643501Z {"level":30,"time":1784213264598,"pid":95,"hostname":"srv-d9ce6jfavr4c73b11up0-7b8dc5b4b5-4wn2w","msg":"Ollama already running"}
+2026-07-16T14:47:44.829726309Z {"level":30,"time":1784213264829,"pid":95,"hostname":"srv-d9ce6jfavr4c73b11up0-7b8dc5b4b5-4wn2w","req":{"id":1,"method":"HEAD","url":"/"},"res":{"statusCode":404},"responseTime":5,"msg":"request completed"}
+2026-07-16T14:47:48.545684111Z ==> Your service is live 🎉
+2026-07-16T14:47:48.792893379Z ==> 
+2026-07-16T14:47:48.794966734Z ==> ///////////////////////////////////////////////////////////
+2026-07-16T14:47:48.796813534Z ==> 
+2026-07-16T14:47:48.798699728Z ==> Available at your primary URL https://ftm-coder-latest.onrender.com
+2026-07-16T14:47:48.80040196Z ==> 
+2026-07-16T14:47:48.802035618Z ==> ///////////////////////////////////////////////////////////
+2026-07-16T14:47:49.041003275Z {"level":30,"time":1784213269040,"pid":95,"hostname":"srv-d9ce6jfavr4c73b11up0-7b8dc5b4b5-4wn2w","req":{"id":2,"method":"GET","url":"/"},"res":{"statusCode":404},"responseTime":1,"msg":"request completed"}
+2026-07-16T14:48:01.155614523Z {"level":30,"time":1784213281155,"pid":95,"hostname":"srv-d9ce6jfavr4c73b11up0-7b8dc5b4b5-4wn2w","req":{"id":3,"method":"GET","url":"/"},"res":{"statusCode":404},"responseTime":1,"msg":"request completed"}

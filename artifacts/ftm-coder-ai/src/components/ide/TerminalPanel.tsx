@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Terminal } from "@xterm/xterm";
 import { FitAddon } from "@xterm/addon-fit";
 import { useWorkspace } from "@/lib/workspace-context";
+import { getToken } from "@/lib/auth";
 import "@xterm/xterm/css/xterm.css";
 import { X } from "lucide-react";
 
@@ -57,6 +58,8 @@ export function TerminalPanel({ onClose }: { onClose?: () => void }) {
     const wsUrl = new URL(location.origin.replace(/^http/, "ws"));
     wsUrl.pathname = "/api/ws/terminal";
     wsUrl.searchParams.set("workspace", workspacePath);
+    const token = getToken();
+    if (token) wsUrl.searchParams.set("token", token);
 
     const ws = new WebSocket(wsUrl.toString());
     wsRef.current = ws;

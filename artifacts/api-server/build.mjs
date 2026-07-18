@@ -29,8 +29,12 @@ async function buildAll() {
     // - use path traversal to read files (e.g. @google-cloud/secret-manager loads sibling .proto files)
     external: [
       "*.node",
+      // archiver uses createRequire at runtime — keep as external so it resolves from node_modules
+      "archiver",
       "sharp",
       "better-sqlite3",
+      // auth packages — native or CJS with dynamic requires; keep external
+      // jsonwebtoken and bcryptjs are pure-JS; bundled directly (see nodePaths below)
       "sqlite3",
       "canvas",
       "bcrypt",
@@ -101,6 +105,9 @@ async function buildAll() {
       "puppeteer-core",
       "electron",
     ],
+    // Allow esbuild to find packages installed by ensure-deps.mjs into the
+    // persistent .local-deps directory (avoids pnpm store mismatch in Replit).
+    nodePaths: [path.resolve(artifactDir, ".local-deps", "node_modules")],
     sourcemap: "linked",
     plugins: [
       // pino relies on workers to handle logging, instead of externalizing it we use a plugin to handle it
@@ -120,7 +127,52 @@ globalThis.__dirname = __bannerPath.dirname(globalThis.__filename);
   });
 }
 
-buildAll().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+buildAll()
+  .then(linkExternals)
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+
+/**
+ * After bundling, create dist/node_modules/ symlinks for every externalized
+ * native/CJS package. This lets Node resolve them via the normal directory
+ * traversal without relying on NODE_PATH (which ESM doesn't honour reliably
+ * for packages that have no `exports` field).
+ *
+ * Resolution order: dist/node_modules/<pkg> → artifacts/api-server/node_modules/<pkg>
+ *                                           → workspace root node_modules/<pkg>
+ *                                           → /home/runner/extra_modules/node_modules/<pkg>
+ */
+async function linkExternals() {
+  const { mkdirSync, symlinkSync, existsSync, readdirSync } = await import("node:fs");
+  const distNodeModules = path.resolve(artifactDir, "dist", "node_modules");
+  mkdirSync(distNodeModules, { recursive: true });
+
+  // Candidate lookup roots (highest to lowest priority)
+  const roots = [
+    path.resolve(artifactDir, "node_modules"),              // api-server local (pnpm)
+    path.resolve(artifactDir, ".local-deps", "node_modules"), // ensure-deps.mjs persistent install
+    path.resolve(artifactDir, "../..", "node_modules"),     // workspace root
+  ];
+
+  // Names of externalized packages that need runtime resolution
+  const externals = [
+    "better-sqlite3",
+    "archiver",
+  ];
+
+  for (const pkg of externals) {
+    const dest = path.join(distNodeModules, pkg);
+    if (existsSync(dest)) continue; // already linked
+
+    for (const root of roots) {
+      const src = path.join(root, pkg);
+      if (existsSync(src)) {
+        symlinkSync(src, dest);
+        console.log(`  → linked ${pkg} → ${src}`);
+        break;
+      }
+    }
+  }
+}

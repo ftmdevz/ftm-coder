@@ -1,0 +1,100 @@
+2026-07-16T14:11:38.999423892Z ==> Starting service...
+2026-07-16T14:11:39.216151147Z ==> Setting WEB_CONCURRENCY=4 by default, based on available CPUs in the instance
+2026-07-16T14:12:09.445680539Z 🚀 Starting Ollama...
+2026-07-16T14:12:09.448027337Z ⏳ Waiting for Ollama to be ready...
+2026-07-16T14:12:09.462242156Z time=2026-07-16T14:12:09.461Z level=INFO source=routes.go:1947 msg="server config" env="map[CUDA_VISIBLE_DEVICES: GGML_VK_VISIBLE_DEVICES: GPU_DEVICE_ORDINAL: HIP_VISIBLE_DEVICES: HSA_OVERRIDE_GFX_VERSION: HTTPS_PROXY: HTTP_PROXY: LLAMA_ARG_FIT: LLAMA_ARG_FIT_TARGET: NO_PROXY: OLLAMA_CONTEXT_LENGTH:0 OLLAMA_DEBUG:INFO OLLAMA_DEBUG_LOG_REQUESTS:false OLLAMA_EDITOR: OLLAMA_FLASH_ATTENTION:false OLLAMA_GO_TEMPLATE:true OLLAMA_GPU_OVERHEAD:0 OLLAMA_HOST:http://127.0.0.1:11434 OLLAMA_IGPU_ENABLE: OLLAMA_KEEP_ALIVE:5m0s OLLAMA_KV_CACHE_TYPE: OLLAMA_LLM_LIBRARY: OLLAMA_LOAD_TIMEOUT:5m0s OLLAMA_MAX_LOADED_MODELS:0 OLLAMA_MAX_QUEUE:512 OLLAMA_MAX_TRANSFER_STREAMS:4 OLLAMA_MODELS:/root/.ollama/models OLLAMA_NOHISTORY:false OLLAMA_NOPRUNE:false OLLAMA_NO_CLOUD:false OLLAMA_NUM_PARALLEL:1 OLLAMA_ORIGINS:[http://localhost https://localhost http://localhost:* https://localhost:* http://127.0.0.1 https://127.0.0.1 http://127.0.0.1:* https://127.0.0.1:* http://0.0.0.0 https://0.0.0.0 http://0.0.0.0:* https://0.0.0.0:* app://* file://* tauri://* vscode-webview://* vscode-file://*] OLLAMA_REMOTES:[ollama.com] OLLAMA_SCHED_SPREAD:false OLLAMA_VULKAN:true ROCR_VISIBLE_DEVICES: http_proxy: https_proxy: no_proxy:]"
+2026-07-16T14:12:09.462257357Z time=2026-07-16T14:12:09.462Z level=INFO source=routes.go:1949 msg="Ollama cloud disabled: false"
+2026-07-16T14:12:09.466882511Z time=2026-07-16T14:12:09.466Z level=INFO source=images.go:883 msg="total blobs: 0"
+2026-07-16T14:12:09.467008697Z time=2026-07-16T14:12:09.466Z level=INFO source=images.go:890 msg="total unused blobs removed: 0"
+2026-07-16T14:12:09.467310121Z time=2026-07-16T14:12:09.467Z level=INFO source=routes.go:2004 msg="Listening on 127.0.0.1:11434 (version 0.32.0)"
+2026-07-16T14:12:09.46835323Z time=2026-07-16T14:12:09.468Z level=INFO source=runner.go:60 msg="discovering available GPUs..."
+2026-07-16T14:12:09.472338364Z time=2026-07-16T14:12:09.472Z level=INFO source=model_list_cache.go:112 msg="model list cache hydration complete" models=1 failures=0 elapsed=4.925008ms
+2026-07-16T14:12:09.639482774Z time=2026-07-16T14:12:09.639Z level=INFO source=types.go:50 msg="inference compute" id=cpu library=cpu compute="" name=cpu description=cpu libdirs=ollama driver="" pci_id="" type="" total="16.0 GiB" available="16.0 GiB"
+2026-07-16T14:12:09.639504385Z time=2026-07-16T14:12:09.639Z level=INFO source=routes.go:2054 msg="vram-based default context" total_vram="0 B" default_num_ctx=4096
+2026-07-16T14:12:09.755080903Z time=2026-07-16T14:12:09.754Z level=INFO source=model_recommendations.go:177 msg="model recommendations cache sleep scheduled" wait=3h29m40.454411758s consecutive_failures=0
+2026-07-16T14:12:10.464308264Z [GIN] 2026/07/16 - 14:12:10 | 200 |     389.748µs |       127.0.0.1 | GET      "/api/tags"
+2026-07-16T14:12:10.465247448Z ✅ Ollama is ready
+2026-07-16T14:12:10.465269509Z 📥 Pulling model: qwen2.5-coder:7b (skip if cached)...
+2026-07-16T14:12:10.485477396Z [GIN] 2026/07/16 - 14:12:10 | 200 |      56.033µs |       127.0.0.1 | HEAD     "/"
+2026-07-16T14:12:10.92967436Z [GIN] 2026/07/16 - 14:12:10 | 403 |      30.531µs |       127.0.0.1 | HEAD     "/"
+2026-07-16T14:12:11.470959345Z [GIN] 2026/07/16 - 14:12:11 | 200 |  985.177245ms |       127.0.0.1 | POST     "/api/pull"
+2026-07-16T14:12:11.471000817Z pulling manifest ⠋ pulling manifest ⠙ pulling manifest ⠹ pulling manifest ⠸ pulling manifest ⠼ pulling manifest ⠴ pulling manifest ⠦ pulling manifest ⠧ pulling manifest ⠇ pulling manifest 
+2026-07-16T14:12:11.471022638Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:12:11.471026458Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:12:11.471029779Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:12:11.471032589Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:12:11.471035459Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:12:11.471039229Z verifying sha256 digest 
+2026-07-16T14:12:11.471042779Z writing manifest 
+2026-07-16T14:12:11.471045999Z success 
+2026-07-16T14:12:11.47299658Z 🟢 Starting FTM-CODER-AI server on port 10000...
+2026-07-16T14:12:11.702910959Z {"level":30,"time":1784211131702,"pid":97,"hostname":"srv-d9ce6jfavr4c73b11up0-85f4455d4d-zpltc","staticDir":"/app/public","msg":"Serving static frontend"}
+2026-07-16T14:12:11.753264493Z /node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:218
+2026-07-16T14:12:11.753294935Z           throw new PathError(`Missing parameter name at index ${index}`, str);
+2026-07-16T14:12:11.753299015Z                 ^
+2026-07-16T14:12:11.753302075Z 
+2026-07-16T14:12:11.753306095Z PathError [TypeError]: Missing parameter name at index 1: *; visit https://git.new/pathToRegexpError for info
+2026-07-16T14:12:11.753309376Z     at consumeUntil (/node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:218:17)
+2026-07-16T14:12:11.753311936Z     at parse (/node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:262:24)
+2026-07-16T14:12:11.753314736Z     at process (/node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:466:52)
+2026-07-16T14:12:11.753317536Z     at pathToRegexp (/node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:478:3)
+2026-07-16T14:12:11.753320356Z     at Object.match (/node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:416:28)
+2026-07-16T14:12:11.753323596Z     at matcher (/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:86:23)
+2026-07-16T14:12:11.753326407Z     at new Layer (/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:93:62)
+2026-07-16T14:12:11.753329156Z     at router9.route (/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:428:17)
+2026-07-16T14:12:11.753332127Z     at app2.route (/node_modules/.pnpm/express@5.2.1/node_modules/express/lib/application.js:257:22)
+2026-07-16T14:12:11.753334987Z     at app2.app2.<computed> (/node_modules/.pnpm/express@5.2.1/node_modules/express/lib/application.js:478:22) {
+2026-07-16T14:12:11.753336927Z   originalPath: '*'
+2026-07-16T14:12:11.753339217Z }
+2026-07-16T14:12:11.753340957Z 
+2026-07-16T14:12:11.753342837Z Node.js v24.18.0
+2026-07-16T14:12:16.858707069Z 🚀 Starting Ollama...
+2026-07-16T14:12:16.858871896Z ⏳ Waiting for Ollama to be ready...
+2026-07-16T14:12:16.873628621Z time=2026-07-16T14:12:16.873Z level=INFO source=routes.go:1947 msg="server config" env="map[CUDA_VISIBLE_DEVICES: GGML_VK_VISIBLE_DEVICES: GPU_DEVICE_ORDINAL: HIP_VISIBLE_DEVICES: HSA_OVERRIDE_GFX_VERSION: HTTPS_PROXY: HTTP_PROXY: LLAMA_ARG_FIT: LLAMA_ARG_FIT_TARGET: NO_PROXY: OLLAMA_CONTEXT_LENGTH:0 OLLAMA_DEBUG:INFO OLLAMA_DEBUG_LOG_REQUESTS:false OLLAMA_EDITOR: OLLAMA_FLASH_ATTENTION:false OLLAMA_GO_TEMPLATE:true OLLAMA_GPU_OVERHEAD:0 OLLAMA_HOST:http://127.0.0.1:11434 OLLAMA_IGPU_ENABLE: OLLAMA_KEEP_ALIVE:5m0s OLLAMA_KV_CACHE_TYPE: OLLAMA_LLM_LIBRARY: OLLAMA_LOAD_TIMEOUT:5m0s OLLAMA_MAX_LOADED_MODELS:0 OLLAMA_MAX_QUEUE:512 OLLAMA_MAX_TRANSFER_STREAMS:4 OLLAMA_MODELS:/root/.ollama/models OLLAMA_NOHISTORY:false OLLAMA_NOPRUNE:false OLLAMA_NO_CLOUD:false OLLAMA_NUM_PARALLEL:1 OLLAMA_ORIGINS:[http://localhost https://localhost http://localhost:* https://localhost:* http://127.0.0.1 https://127.0.0.1 http://127.0.0.1:* https://127.0.0.1:* http://0.0.0.0 https://0.0.0.0 http://0.0.0.0:* https://0.0.0.0:* app://* file://* tauri://* vscode-webview://* vscode-file://*] OLLAMA_REMOTES:[ollama.com] OLLAMA_SCHED_SPREAD:false OLLAMA_VULKAN:true ROCR_VISIBLE_DEVICES: http_proxy: https_proxy: no_proxy:]"
+2026-07-16T14:12:16.873648072Z time=2026-07-16T14:12:16.873Z level=INFO source=routes.go:1949 msg="Ollama cloud disabled: false"
+2026-07-16T14:12:16.874001608Z time=2026-07-16T14:12:16.873Z level=INFO source=images.go:883 msg="total blobs: 0"
+2026-07-16T14:12:16.874199427Z time=2026-07-16T14:12:16.874Z level=INFO source=images.go:890 msg="total unused blobs removed: 0"
+2026-07-16T14:12:16.874494191Z time=2026-07-16T14:12:16.874Z level=INFO source=routes.go:2004 msg="Listening on 127.0.0.1:11434 (version 0.32.0)"
+2026-07-16T14:12:16.875818323Z time=2026-07-16T14:12:16.875Z level=INFO source=runner.go:60 msg="discovering available GPUs..."
+2026-07-16T14:12:16.880190815Z time=2026-07-16T14:12:16.877Z level=INFO source=model_list_cache.go:112 msg="model list cache hydration complete" models=1 failures=0 elapsed=3.086143ms
+2026-07-16T14:12:17.040377377Z time=2026-07-16T14:12:17.040Z level=INFO source=types.go:50 msg="inference compute" id=cpu library=cpu compute="" name=cpu description=cpu libdirs=ollama driver="" pci_id="" type="" total="16.0 GiB" available="16.0 GiB"
+2026-07-16T14:12:17.040398868Z time=2026-07-16T14:12:17.040Z level=INFO source=routes.go:2054 msg="vram-based default context" total_vram="0 B" default_num_ctx=4096
+2026-07-16T14:12:17.158196223Z time=2026-07-16T14:12:17.158Z level=INFO source=model_recommendations.go:177 msg="model recommendations cache sleep scheduled" wait=4h7m17.708883401s consecutive_failures=0
+2026-07-16T14:12:17.710824635Z ==> Exited with status 1
+2026-07-16T14:12:17.713052545Z ==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
+2026-07-16T14:12:17.877065914Z [GIN] 2026/07/16 - 14:12:17 | 200 |     488.953µs |       127.0.0.1 | GET      "/api/tags"
+2026-07-16T14:12:17.878850577Z ✅ Ollama is ready
+2026-07-16T14:12:17.878870147Z 📥 Pulling model: qwen2.5-coder:7b (skip if cached)...
+2026-07-16T14:12:17.888864608Z ==> Instance srv-d9ce6jfavr4c73b11up0-zpltc restarted
+2026-07-16T14:12:17.894556625Z [GIN] 2026/07/16 - 14:12:17 | 200 |      56.503µs |       127.0.0.1 | HEAD     "/"
+2026-07-16T14:12:18.875939915Z [GIN] 2026/07/16 - 14:12:18 | 200 |  981.055034ms |       127.0.0.1 | POST     "/api/pull"
+2026-07-16T14:12:18.875980397Z pulling manifest ⠋ pulling manifest ⠙ pulling manifest ⠹ pulling manifest ⠸ pulling manifest ⠼ pulling manifest ⠴ pulling manifest ⠧ pulling manifest ⠧ pulling manifest ⠇ pulling manifest 
+2026-07-16T14:12:18.875989747Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:12:18.876005898Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:12:18.876010168Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:12:18.876013658Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:12:18.876017148Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:12:18.876021249Z verifying sha256 digest 
+2026-07-16T14:12:18.876025949Z writing manifest 
+2026-07-16T14:12:18.876029099Z success 
+2026-07-16T14:12:18.882538421Z 🟢 Starting FTM-CODER-AI server on port 10000...
+2026-07-16T14:12:19.095027049Z {"level":30,"time":1784211139094,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-85f4455d4d-zpltc","staticDir":"/app/public","msg":"Serving static frontend"}
+2026-07-16T14:12:19.142752993Z /node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:218
+2026-07-16T14:12:19.142778934Z           throw new PathError(`Missing parameter name at index ${index}`, str);
+2026-07-16T14:12:19.142783835Z                 ^
+2026-07-16T14:12:19.142786805Z 
+2026-07-16T14:12:19.142789905Z PathError [TypeError]: Missing parameter name at index 1: *; visit https://git.new/pathToRegexpError for info
+2026-07-16T14:12:19.142791745Z     at consumeUntil (/node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:218:17)
+2026-07-16T14:12:19.142793595Z     at parse (/node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:262:24)
+2026-07-16T14:12:19.142795425Z     at process (/node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:466:52)
+2026-07-16T14:12:19.142797265Z     at pathToRegexp (/node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:478:3)
+2026-07-16T14:12:19.142799115Z     at Object.match (/node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:416:28)
+2026-07-16T14:12:19.142800975Z     at matcher (/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:86:23)
+2026-07-16T14:12:19.142802805Z     at new Layer (/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:93:62)
+2026-07-16T14:12:19.142804576Z     at router9.route (/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:428:17)
+2026-07-16T14:12:19.142806356Z     at app2.route (/node_modules/.pnpm/express@5.2.1/node_modules/express/lib/application.js:257:22)
+2026-07-16T14:12:19.142808146Z     at app2.app2.<computed> (/node_modules/.pnpm/express@5.2.1/node_modules/express/lib/application.js:478:22) {
+2026-07-16T14:12:19.142809956Z   originalPath: '*'
+2026-07-16T14:12:19.142811856Z }
+2026-07-16T14:12:19.142813586Z 
+2026-07-16T14:12:19.142816746Z Node.js v24.18.0

@@ -1,15 +1,24 @@
 import { Router, type IRouter } from "express";
 import simpleGit from "simple-git";
+import { existsSync } from "fs";
 import path from "path";
 
 const router: IRouter = Router();
+
+/** Resolve a workspace path — fall back to /app (Docker) or cwd if it doesn't exist */
+const DEFAULT_WORKSPACE = existsSync("/app") ? "/app" : process.cwd();
+
+function resolveWorkspace(requested?: string): string {
+  if (requested && existsSync(requested)) return requested;
+  return DEFAULT_WORKSPACE;
+}
 
 function getGit(workspace: string) {
   return simpleGit(workspace);
 }
 
 router.get("/git/status", async (req, res) => {
-  const workspace = (req.query.workspace as string) || process.cwd();
+  const workspace = resolveWorkspace(req.query.workspace as string | undefined);
   try {
     const git = getGit(workspace);
     const status = await git.status();
@@ -36,7 +45,7 @@ router.get("/git/status", async (req, res) => {
 });
 
 router.get("/git/diff", async (req, res) => {
-  const workspace = (req.query.workspace as string) || process.cwd();
+  const workspace = resolveWorkspace(req.query.workspace as string | undefined);
   const file = req.query.file as string | undefined;
   try {
     const git = getGit(workspace);
@@ -65,7 +74,7 @@ router.post("/git/commit", async (req, res) => {
     res.status(400).json({ error: "Commit message is required" });
     return;
   }
-  const ws = workspace || process.cwd();
+  const ws = resolveWorkspace(workspace);
   try {
     const git = getGit(ws);
     await git.add(".");
@@ -91,7 +100,7 @@ router.post("/git/push", async (req, res) => {
     return;
   }
 
-  const ws = workspace || process.cwd();
+  const ws = resolveWorkspace(workspace);
 
   try {
     // Build authenticated URL: https://token@github.com/user/repo.git

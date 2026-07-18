@@ -2,6 +2,7 @@ import { Router, type IRouter } from "express";
 import fs from "fs/promises";
 import path from "path";
 import { logger } from "../lib/logger";
+import { getUserDir } from "../lib/auth-db";
 
 const router: IRouter = Router();
 
@@ -35,6 +36,19 @@ type FileNode = {
   size?: number;
   extension?: string;
 };
+
+/**
+ * Resolve `target` to an absolute path and verify it is at or below `root`.
+ * Throws a plain Error (caught by route handlers → 403) if it escapes.
+ */
+function assertInWorkspace(target: string, root: string): string {
+  const resolved = path.resolve(target);
+  const safeRoot = path.resolve(root);
+  if (resolved !== safeRoot && !resolved.startsWith(safeRoot + path.sep)) {
+    throw Object.assign(new Error("Access denied: path is outside your workspace"), { code: "EPERM" });
+  }
+  return resolved;
+}
 
 async function buildFileTree(dirPath: string, relativeTo: string, depth = 0): Promise<FileNode[]> {
   if (depth > 8) return [];
@@ -79,9 +93,20 @@ async function buildFileTree(dirPath: string, relativeTo: string, depth = 0): Pr
 }
 
 router.get("/files", async (req, res) => {
-  const workspace = (req.query.workspace as string) || process.cwd();
+  const userRoot = getUserDir(req.user!.username);
+  const rawWorkspace = (req.query.workspace as string) || userRoot;
   const subPath = (req.query.path as string) || "";
-  const targetDir = subPath ? path.join(workspace, subPath) : workspace;
+
+  let workspace: string;
+  let targetDir: string;
+  try {
+    workspace = assertInWorkspace(rawWorkspace, userRoot);
+    targetDir = subPath ? assertInWorkspace(path.join(workspace, subPath), userRoot) : workspace;
+  } catch {
+    res.status(403).json({ error: "Access denied: path is outside your workspace" });
+    return;
+  }
+
   try {
     const files = await buildFileTree(targetDir, workspace);
     res.json({ files, workspace });
@@ -92,13 +117,25 @@ router.get("/files", async (req, res) => {
 });
 
 router.get("/files/content", async (req, res) => {
-  const workspace = (req.query.workspace as string) || process.cwd();
+  const userRoot = getUserDir(req.user!.username);
+  const rawWorkspace = (req.query.workspace as string) || userRoot;
   const filePath = req.query.path as string;
   if (!filePath) {
     res.status(400).json({ error: "path query param required" });
     return;
   }
-  const fullPath = path.isAbsolute(filePath) ? filePath : path.join(workspace, filePath);
+
+  let workspace: string;
+  let fullPath: string;
+  try {
+    workspace = assertInWorkspace(rawWorkspace, userRoot);
+    const candidate = path.isAbsolute(filePath) ? filePath : path.join(workspace, filePath);
+    fullPath = assertInWorkspace(candidate, userRoot);
+  } catch {
+    res.status(403).json({ error: "Access denied: path is outside your workspace" });
+    return;
+  }
+
   try {
     const stat = await fs.stat(fullPath);
     if (!stat.isFile()) {
@@ -126,7 +163,7 @@ router.get("/files/content", async (req, res) => {
 });
 
 router.post("/files/content", async (req, res) => {
-  const { path: filePath, content, workspace } = req.body as {
+  const { path: filePath, content, workspace: rawWorkspace } = req.body as {
     path: string;
     content: string;
     workspace?: string;
@@ -135,8 +172,20 @@ router.post("/files/content", async (req, res) => {
     res.status(400).json({ error: "path and content are required" });
     return;
   }
-  const ws = workspace || process.cwd();
-  const fullPath = path.isAbsolute(filePath) ? filePath : path.join(ws, filePath);
+
+  const userRoot = getUserDir(req.user!.username);
+
+  let workspace: string;
+  let fullPath: string;
+  try {
+    workspace = assertInWorkspace(rawWorkspace || userRoot, userRoot);
+    const candidate = path.isAbsolute(filePath) ? filePath : path.join(workspace, filePath);
+    fullPath = assertInWorkspace(candidate, userRoot);
+  } catch {
+    res.status(403).json({ error: "Access denied: path is outside your workspace" });
+    return;
+  }
+
   try {
     await fs.mkdir(path.dirname(fullPath), { recursive: true });
     await fs.writeFile(fullPath, content, "utf-8");

@@ -1,0 +1,50 @@
+2026-07-17T01:06:44.731933243Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-17T01:06:44.731950914Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-17T01:06:44.731955094Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-17T01:06:44.731958654Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-17T01:06:44.83231597Z verifying sha256 digest ⠏ pulling manifest 
+2026-07-17T01:06:44.832335881Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-17T01:06:44.832338461Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-17T01:06:44.832340531Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-17T01:06:44.832342871Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-17T01:06:44.832344811Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-17T01:06:44.931544813Z verifying sha256 digest ⠋ pulling manifest 
+2026-07-17T01:06:44.931562374Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-17T01:06:44.931565964Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-17T01:06:44.931569264Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-17T01:06:44.931572905Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-17T01:06:44.931576635Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-17T01:06:45.020322042Z [GIN] 2026/07/17 - 01:06:45 | 200 | 24.188780229s |       127.0.0.1 | POST     "/api/pull"
+2026-07-17T01:06:45.020369564Z verifying sha256 digest ⠙ pulling manifest 
+2026-07-17T01:06:45.020381885Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-17T01:06:45.020385465Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-17T01:06:45.020388715Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-17T01:06:45.020391555Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-17T01:06:45.020394445Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-17T01:06:45.020398136Z verifying sha256 digest 
+2026-07-17T01:06:45.020401696Z writing manifest 
+2026-07-17T01:06:45.020404746Z success 
+2026-07-17T01:06:45.022469752Z 🟢 Starting FTM-CODER-AI server on port 10000...
+2026-07-17T01:06:45.791059474Z {"level":30,"time":1784250405790,"pid":111,"hostname":"srv-d9ce6jfavr4c73b11up0-75754c78c-hldds","staticDir":"/app/public","msg":"Serving static frontend"}
+2026-07-17T01:06:45.808254692Z {"level":30,"time":1784250405797,"pid":111,"hostname":"srv-d9ce6jfavr4c73b11up0-75754c78c-hldds","port":10000,"msg":"Server listening (HTTP + WebSocket)"}
+2026-07-17T01:06:45.812723369Z [GIN] 2026/07/17 - 01:06:45 | 200 |     366.747µs |       127.0.0.1 | GET      "/api/tags"
+2026-07-17T01:06:45.816938555Z {"level":30,"time":1784250405816,"pid":111,"hostname":"srv-d9ce6jfavr4c73b11up0-75754c78c-hldds","msg":"Ollama already running"}
+2026-07-17T01:06:46.702246021Z {"level":30,"time":1784250406701,"pid":111,"hostname":"srv-d9ce6jfavr4c73b11up0-75754c78c-hldds","req":{"id":1,"method":"HEAD","url":"/"},"res":{"statusCode":200},"responseTime":3,"msg":"request completed"}
+2026-07-17T01:06:47.196892146Z ==> No open ports detected on 0.0.0.0, continuing to scan...
+2026-07-17T01:06:47.58078135Z ==> Docs on specifying a port: https://render.com/docs/web-services#port-binding
+2026-07-17T01:06:54.567369357Z ==> Your service is live 🎉
+2026-07-17T01:06:54.78620282Z ==> 
+2026-07-17T01:06:54.788383218Z ==> ///////////////////////////////////////////////////////////
+2026-07-17T01:06:54.790409541Z ==> 
+2026-07-17T01:06:54.792463306Z ==> Available at your primary URL https://ftm-coder-latest.onrender.com
+2026-07-17T01:06:54.794774597Z ==> 
+2026-07-17T01:06:54.796915873Z ==> ///////////////////////////////////////////////////////////
+2026-07-17T01:07:03.382640361Z {"level":30,"time":1784250423382,"pid":111,"hostname":"srv-d9ce6jfavr4c73b11up0-75754c78c-hldds","req":{"id":2,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":3,"msg":"request completed"}
+2026-07-17T01:07:03.629290784Z {"level":30,"time":1784250423628,"pid":111,"hostname":"srv-d9ce6jfavr4c73b11up0-75754c78c-hldds","req":{"id":4,"method":"GET","url":"/assets/index-BppAiSeb.css"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-07-17T01:07:03.632973905Z {"level":30,"time":1784250423632,"pid":111,"hostname":"srv-d9ce6jfavr4c73b11up0-75754c78c-hldds","req":{"id":3,"method":"GET","url":"/assets/index-jcOxOohM.js"},"res":{"statusCode":200},"responseTime":7,"msg":"request completed"}
+2026-07-17T01:07:22.405201093Z {"level":30,"time":1784250442354,"pid":111,"hostname":"srv-d9ce6jfavr4c73b11up0-75754c78c-hldds","req":{"id":5,"method":"POST","url":"/api/auth/signup"},"res":{"statusCode":500},"err":{"type":"Error","message":"failed with status code 500","stack":"Error: failed with status code 500\n    at onResFinished (/node_modules/.pnpm/pino-http@10.5.0/node_modules/pino-http/logger.js:115:39)\n    at ServerResponse.onResponseComplete (/node_modules/.pnpm/pino-http@10.5.0/node_modules/pino-http/logger.js:178:14)\n    at ServerResponse.emit (node:events:521:24)\n    at onFinish (node:_http_outgoing:1031:10)\n    at callback (node:internal/streams/writable:764:21)\n    at afterWrite (node:internal/streams/writable:708:5)\n    at afterWriteTick (node:internal/streams/writable:694:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)"},"responseTime":324,"msg":"request errored"}
+2026-07-17T01:07:22.860557549Z {"level":30,"time":1784250442860,"pid":111,"hostname":"srv-d9ce6jfavr4c73b11up0-75754c78c-hldds","req":{"id":6,"method":"GET","url":"/api/ai/status"},"res":{"statusCode":401},"responseTime":1,"msg":"request completed"}
+2026-07-17T01:07:26.838997391Z {"level":30,"time":1784250446838,"pid":111,"hostname":"srv-d9ce6jfavr4c73b11up0-75754c78c-hldds","req":{"id":7,"method":"POST","url":"/api/auth/login"},"res":{"statusCode":500},"err":{"type":"Error","message":"failed with status code 500","stack":"Error: failed with status code 500\n    at onResFinished (/node_modules/.pnpm/pino-http@10.5.0/node_modules/pino-http/logger.js:115:39)\n    at ServerResponse.onResponseComplete (/node_modules/.pnpm/pino-http@10.5.0/node_modules/pino-http/logger.js:178:14)\n    at ServerResponse.emit (node:events:521:24)\n    at onFinish (node:_http_outgoing:1031:10)\n    at callback (node:internal/streams/writable:764:21)\n    at afterWrite (node:internal/streams/writable:708:5)\n    at afterWriteTick (node:internal/streams/writable:694:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)"},"responseTime":288,"msg":"request errored"}
+2026-07-17T01:07:26.839056454Z ReferenceError: PWD is not defined
+2026-07-17T01:07:26.839064074Z     at initUserDir (/app/src/lib/auth-db.ts:80:28)
+2026-07-17T01:07:26.839069105Z     at <anonymous> (/app/src/routes/auth.ts:79:15)

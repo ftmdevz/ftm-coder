@@ -1,0 +1,50 @@
+2026-07-18T14:11:50.057833371Z ==> Setting WEB_CONCURRENCY=4 by default, based on available CPUs in the instance
+2026-07-18T14:12:13.549469965Z time=2026-07-18T14:12:13.549Z level=INFO source=images.go:883 msg="total blobs: 5"
+2026-07-18T14:12:13.549634903Z time=2026-07-18T14:12:13.549Z level=INFO source=images.go:890 msg="total unused blobs removed: 0"
+2026-07-18T14:12:13.549932466Z time=2026-07-18T14:12:13.549Z level=INFO source=routes.go:2004 msg="Listening on 127.0.0.1:11434 (version 0.32.0)"
+2026-07-18T14:12:13.551889697Z time=2026-07-18T14:12:13.551Z level=INFO source=runner.go:60 msg="discovering available GPUs..."
+2026-07-18T14:12:13.554233756Z time=2026-07-18T14:12:13.554Z level=INFO source=model_list_cache.go:112 msg="model list cache hydration complete" models=1 failures=0 elapsed=4.09446ms
+2026-07-18T14:12:13.804510326Z time=2026-07-18T14:12:13.804Z level=INFO source=types.go:50 msg="inference compute" id=cpu library=cpu compute="" name=cpu description=cpu libdirs=ollama driver="" pci_id="" type="" total="16.0 GiB" available="16.0 GiB"
+2026-07-18T14:12:13.804532357Z time=2026-07-18T14:12:13.804Z level=INFO source=routes.go:2054 msg="vram-based default context" total_vram="0 B" default_num_ctx=4096
+2026-07-18T14:12:13.805070532Z [GIN] 2026/07/18 - 14:12:13 | 200 |      435.77µs |       127.0.0.1 | GET      "/api/tags"
+2026-07-18T14:12:13.809150271Z ✅ Ollama is ready
+2026-07-18T14:12:13.809180102Z 📥 Pulling model: qwen2.5-coder:7b (skip if cached)...
+2026-07-18T14:12:13.823719056Z [GIN] 2026/07/18 - 14:12:13 | 200 |      38.381µs |       127.0.0.1 | HEAD     "/"
+2026-07-18T14:12:14.016789755Z pulling manifest ⠋ time=2026-07-18T14:12:14.016Z level=INFO source=model_recommendations.go:177 msg="model recommendations cache sleep scheduled" wait=4h15m25.76618709s consecutive_failures=0
+2026-07-18T14:12:14.808001947Z [GIN] 2026/07/18 - 14:12:14 | 200 |  983.442292ms |       127.0.0.1 | POST     "/api/pull"
+2026-07-18T14:12:14.808134773Z pulling manifest ⠙ pulling manifest ⠹ pulling manifest ⠼ pulling manifest ⠼ pulling manifest ⠴ pulling manifest ⠦ pulling manifest ⠧ pulling manifest ⠇ pulling manifest 
+2026-07-18T14:12:14.808157534Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-18T14:12:14.808160924Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-18T14:12:14.808163934Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-18T14:12:14.808166974Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-18T14:12:14.808169744Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-18T14:12:14.808174285Z verifying sha256 digest 
+2026-07-18T14:12:14.808177695Z writing manifest 
+2026-07-18T14:12:14.808180695Z success 
+2026-07-18T14:12:14.810459401Z 🟢 Starting FTM-CODER-AI server on port 10000...
+2026-07-18T14:12:15.238566283Z {"level":30,"time":1784383935237,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","staticDir":"/app/public","msg":"Serving static frontend"}
+2026-07-18T14:12:15.257954882Z {"level":30,"time":1784383935246,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","port":10000,"msg":"Server listening (HTTP + WebSocket)"}
+2026-07-18T14:12:15.263982761Z [GIN] 2026/07/18 - 14:12:15 | 200 |     295.764µs |       127.0.0.1 | GET      "/api/tags"
+2026-07-18T14:12:15.269295387Z {"level":30,"time":1784383935269,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","msg":"Ollama already running"}
+2026-07-18T14:12:19.289916049Z [GIN] 2026/07/18 - 14:12:19 | 403 |      35.292µs |       127.0.0.1 | HEAD     "/"
+2026-07-18T14:12:19.301002053Z {"level":30,"time":1784383939300,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","req":{"id":1,"method":"HEAD","url":"/"},"res":{"statusCode":200},"responseTime":5,"msg":"request completed"}
+2026-07-18T14:12:22.09615845Z ==> Your service is live 🎉
+2026-07-18T14:12:22.334591839Z ==> 
+2026-07-18T14:12:22.337176708Z ==> ///////////////////////////////////////////////////////////
+2026-07-18T14:12:22.339488843Z ==> 
+2026-07-18T14:12:22.341795528Z ==> Available at your primary URL https://ftm-coder-latest.onrender.com
+2026-07-18T14:12:22.344048789Z ==> 
+2026-07-18T14:12:22.346372675Z ==> ///////////////////////////////////////////////////////////
+2026-07-18T14:13:46.099863236Z {"level":30,"time":1784384026099,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","req":{"id":2,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":3,"msg":"request completed"}
+2026-07-18T14:13:46.86737919Z {"level":30,"time":1784384026867,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","req":{"id":3,"method":"GET","url":"/assets/index-L1yM8rMq.css"},"res":{"statusCode":200},"responseTime":4,"msg":"request completed"}
+2026-07-18T14:13:46.874748932Z {"level":30,"time":1784384026874,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","req":{"id":4,"method":"GET","url":"/assets/index-BdkKy_SR.js"},"res":{"statusCode":200},"responseTime":11,"msg":"request completed"}
+2026-07-18T14:13:54.253576718Z {"level":30,"time":1784384034253,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","req":{"id":5,"method":"GET","url":"/favicon.svg"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-07-18T14:15:46.784920575Z {"level":30,"time":1784384146784,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","req":{"id":6,"method":"GET","url":"/"},"res":{"statusCode":304},"responseTime":1,"msg":"request completed"}
+2026-07-18T14:15:47.04863598Z {"level":30,"time":1784384147048,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","req":{"id":7,"method":"GET","url":"/assets/index-BdkKy_SR.js"},"res":{"statusCode":304},"responseTime":1,"msg":"request completed"}
+2026-07-18T14:15:47.188548735Z {"level":30,"time":1784384147188,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","req":{"id":8,"method":"GET","url":"/assets/index-L1yM8rMq.css"},"res":{"statusCode":304},"responseTime":1,"msg":"request completed"}
+2026-07-18T14:15:48.161630824Z {"level":30,"time":1784384148161,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","req":{"id":9,"method":"GET","url":"/favicon.svg"},"res":{"statusCode":304},"responseTime":1,"msg":"request completed"}
+2026-07-18T14:15:57.487936599Z {"level":30,"time":1784384157487,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","req":{"id":10,"method":"GET","url":"/"},"res":{"statusCode":304},"responseTime":1,"msg":"request completed"}
+2026-07-18T14:15:57.719379848Z {"level":30,"time":1784384157719,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","req":{"id":11,"method":"GET","url":"/assets/index-BdkKy_SR.js"},"res":{"statusCode":304},"responseTime":1,"msg":"request completed"}
+2026-07-18T14:15:57.719749485Z {"level":30,"time":1784384157719,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","req":{"id":12,"method":"GET","url":"/assets/index-L1yM8rMq.css"},"res":{"statusCode":304},"responseTime":0,"msg":"request completed"}
+2026-07-18T14:15:58.575878132Z {"level":30,"time":1784384158575,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","req":{"id":13,"method":"GET","url":"/favicon.svg"},"res":{"statusCode":304},"responseTime":1,"msg":"request completed"}
+2026-07-18T14:16:06.702358763Z {"level":30,"time":1784384166702,"pid":74,"hostname":"srv-d9ce6jfavr4c73b11up0-669754cbd-ngr5x","req":{"id":14,"method":"POST","url":"/api/auth/login"},"res":{"statusCode":200},"responseTime":301,"msg":"request completed"}

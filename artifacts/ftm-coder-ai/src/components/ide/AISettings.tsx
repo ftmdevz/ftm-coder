@@ -149,28 +149,49 @@ export function AISettingsDialog({
     setStatusMsg("");
     try {
       const key = cfg.apiKey.startsWith("••") ? serverConfig?.apiKey || "" : cfg.apiKey;
-      const resp = await fetch(`${cfg.baseURL}/chat/completions`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${key}`,
-          "x-api-key": key,
-        },
-        body: JSON.stringify({
-          model: cfg.model,
-          messages: [{ role: "user", content: "say ok" }],
-          max_tokens: 5,
-        }),
-      });
+      // For built-in server AI use the /status endpoint (returns plain JSON, no stream)
+      const isBuiltIn = cfg.baseURL === "/api/ai";
+      let resp: Response;
+      if (isBuiltIn) {
+        resp = await fetch(`${cfg.baseURL}/status`, { method: "GET" });
+      } else {
+        resp = await fetch(`${cfg.baseURL}/chat/completions`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${key}`,
+            "x-api-key": key,
+          },
+          body: JSON.stringify({
+            model: cfg.model,
+            messages: [{ role: "user", content: "say ok" }],
+            max_tokens: 5,
+            stream: false,
+          }),
+        });
+      }
       const text = await resp.text();
       if (resp.ok) {
-        const data = JSON.parse(text) as { choices?: unknown[] };
-        if (data.choices && data.choices.length > 0) {
-          setStatus("ok");
-          setStatusMsg("Connection successful!");
+        if (isBuiltIn) {
+          const data = JSON.parse(text) as { ok?: boolean; model?: string };
+          if (data.ok) {
+            setStatus("ok");
+            setStatusMsg(`Connected! Server model: ${data.model ?? cfg.model}`);
+          } else {
+            setStatus("error");
+            setStatusMsg("Server AI not ready. Check AI_BASE_URL on the server.");
+          }
         } else {
-          setStatus("error");
-          setStatusMsg("Connected but got empty response. Try a different model.");
+          // Strip SSE prefix if present (e.g. "data: {...}")
+          const jsonText = text.startsWith("data:") ? text.replace(/^data:\s*/, "").split("\n")[0] : text;
+          const data = JSON.parse(jsonText) as { choices?: unknown[] };
+          if (data.choices && data.choices.length > 0) {
+            setStatus("ok");
+            setStatusMsg("Connection successful!");
+          } else {
+            setStatus("error");
+            setStatusMsg("Connected but got empty response. Try a different model.");
+          }
         }
       } else {
         let errMsg = text.slice(0, 200);

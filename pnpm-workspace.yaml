@@ -1,11 +1,6 @@
 # ============================================================================
 # SECURITY: Minimum release age for npm packages
 # ============================================================================
-minimumReleaseAge: 1440
-
-minimumReleaseAgeExclude:
-    - '@replit/*'
-    - stripe-replit-sync
 
 # FIX: Docker multi-arch ke liye dono arch allow karna zaruri hai
 supportedArchitectures:
@@ -13,7 +8,9 @@ supportedArchitectures:
   cpu: [x64, arm64]
 
 packages:
-    - "artifacts/!(desktop)"
+    - "artifacts/api-server"
+    - "artifacts/ftm-coder-ai"
+    - "artifacts/mockup-sandbox"
     - lib/*
     - lib/integrations/*
     - scripts
@@ -90,4 +87,4 @@ overrides:
 
   # tailwind oxide - keep linux x64-gnu and arm64-gnu
   "@tailwindcss/oxide>@tailwindcss/oxide-android-arm64": "-"
-  "@tailwindcss/oxide>@tailwindcss/oxide-darwin-arm64":
+  "@tailwindcss/oxide>@tailwindcss/oxide-darwin-arm64": "-"

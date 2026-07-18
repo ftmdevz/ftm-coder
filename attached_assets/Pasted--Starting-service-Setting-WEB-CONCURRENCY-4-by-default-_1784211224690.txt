@@ -1,0 +1,61 @@
+==> Starting service...
+==> Setting WEB_CONCURRENCY=4 by default, based on available CPUs in the instance
+🚀 Starting Ollama...
+⏳ Waiting for Ollama to be ready...
+time=2026-07-16T14:12:09.461Z level=INFO source=routes.go:1947 msg="server config" env="map[CUDA_VISIBLE_DEVICES: GGML_VK_VISIBLE_DEVICES: GPU_DEVICE_ORDINAL: HIP_VISIBLE_DEVICES: HSA_OVERRIDE_GFX_VERSION: HTTPS_PROXY: HTTP_PROXY: LLAMA_ARG_FIT: LLAMA_ARG_FIT_TARGET: NO_PROXY: OLLAMA_CONTEXT_LENGTH:0 OLLAMA_DEBUG:INFO OLLAMA_DEBUG_LOG_REQUESTS:false OLLAMA_EDITOR: OLLAMA_FLASH_ATTENTION:false OLLAMA_GO_TEMPLATE:true OLLAMA_GPU_OVERHEAD:0 OLLAMA_HOST:http://127.0.0.1:11434 OLLAMA_IGPU_ENABLE: OLLAMA_KEEP_ALIVE:5m0s OLLAMA_KV_CACHE_TYPE: OLLAMA_LLM_LIBRARY: OLLAMA_LOAD_TIMEOUT:5m0s OLLAMA_MAX_LOADED_MODELS:0 OLLAMA_MAX_QUEUE:512 OLLAMA_MAX_TRANSFER_STREAMS:4 OLLAMA_MODELS:/root/.ollama/models OLLAMA_NOHISTORY:false OLLAMA_NOPRUNE:false OLLAMA_NO_CLOUD:false OLLAMA_NUM_PARALLEL:1 OLLAMA_ORIGINS:[http://localhost https://localhost http://localhost:* https://localhost:* http://127.0.0.1 https://127.0.0.1 http://127.0.0.1:* https://127.0.0.1:* http://0.0.0.0 https://0.0.0.0 http://0.0.0.0:* https://0.0.0.0:* app://* file://* tauri://* vscode-webview://* vscode-file://*] OLLAMA_REMOTES:[ollama.com] OLLAMA_SCHED_SPREAD:false OLLAMA_VULKAN:true ROCR_VISIBLE_DEVICES: http_proxy: https_proxy: no_proxy:]"
+time=2026-07-16T14:12:09.462Z level=INFO source=routes.go:1949 msg="Ollama cloud disabled: false"
+time=2026-07-16T14:12:09.466Z level=INFO source=images.go:883 msg="total blobs: 0"
+time=2026-07-16T14:12:09.466Z level=INFO source=images.go:890 msg="total unused blobs removed: 0"
+time=2026-07-16T14:12:09.467Z level=INFO source=routes.go:2004 msg="Listening on 127.0.0.1:11434 (version 0.32.0)"
+time=2026-07-16T14:12:09.468Z level=INFO source=runner.go:60 msg="discovering available GPUs..."
+time=2026-07-16T14:12:09.472Z level=INFO source=model_list_cache.go:112 msg="model list cache hydration complete" models=1 failures=0 elapsed=4.925008ms
+time=2026-07-16T14:12:09.639Z level=INFO source=types.go:50 msg="inference compute" id=cpu library=cpu compute="" name=cpu description=cpu libdirs=ollama driver="" pci_id="" type="" total="16.0 GiB" available="16.0 GiB"
+time=2026-07-16T14:12:09.639Z level=INFO source=routes.go:2054 msg="vram-based default context" total_vram="0 B" default_num_ctx=4096
+time=2026-07-16T14:12:09.754Z level=INFO source=model_recommendations.go:177 msg="model recommendations cache sleep scheduled" wait=3h29m40.454411758s consecutive_failures=0
+[GIN] 2026/07/16 - 14:12:10 | 200 |     389.748µs |       127.0.0.1 | GET      "/api/tags"
+✅ Ollama is ready
+📥 Pulling model: qwen2.5-coder:7b (skip if cached)...
+[GIN] 2026/07/16 - 14:12:10 | 200 |      56.033µs |       127.0.0.1 | HEAD     "/"
+[GIN] 2026/07/16 - 14:12:10 | 403 |      30.531µs |       127.0.0.1 | HEAD     "/"
+[GIN] 2026/07/16 - 14:12:11 | 200 |  985.177245ms |       127.0.0.1 | POST     "/api/pull"
+pulling manifest ⠋ pulling manifest ⠙ pulling manifest ⠹ pulling manifest ⠸ pulling manifest ⠼ pulling manifest ⠴ pulling manifest ⠦ pulling manifest ⠧ pulling manifest ⠇ pulling manifest 
+pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+verifying sha256 digest 
+writing manifest 
+success 
+🟢 Starting FTM-CODER-AI server on port 10000...
+{"level":30,"time":1784211131702,"pid":97,"hostname":"srv-d9ce6jfavr4c73b11up0-85f4455d4d-zpltc","staticDir":"/app/public","msg":"Serving static frontend"}
+/node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:218
+          throw new PathError(`Missing parameter name at index ${index}`, str);
+                ^
+PathError [TypeError]: Missing parameter name at index 1: *; visit https://git.new/pathToRegexpError for info
+    at consumeUntil (/node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:218:17)
+    at parse (/node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:262:24)
+    at process (/node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:466:52)
+    at pathToRegexp (/node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:478:3)
+    at Object.match (/node_modules/.pnpm/path-to-regexp@8.4.2/node_modules/path-to-regexp/src/index.ts:416:28)
+    at matcher (/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:86:23)
+    at new Layer (/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:93:62)
+    at router9.route (/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:428:17)
+    at app2.route (/node_modules/.pnpm/express@5.2.1/node_modules/express/lib/application.js:257:22)
+    at app2.app2.<computed> (/node_modules/.pnpm/express@5.2.1/node_modules/express/lib/application.js:478:22) {
+  originalPath: '*'
+}
+Node.js v24.18.0
+🚀 Starting Ollama...
+⏳ Waiting for Ollama to be ready...
+time=2026-07-16T14:12:16.873Z level=INFO source=routes.go:1947 msg="server config" env="map[CUDA_VISIBLE_DEVICES: GGML_VK_VISIBLE_DEVICES: GPU_DEVICE_ORDINAL: HIP_VISIBLE_DEVICES: HSA_OVERRIDE_GFX_VERSION: HTTPS_PROXY: HTTP_PROXY: LLAMA_ARG_FIT: LLAMA_ARG_FIT_TARGET: NO_PROXY: OLLAMA_CONTEXT_LENGTH:0 OLLAMA_DEBUG:INFO OLLAMA_DEBUG_LOG_REQUESTS:false OLLAMA_EDITOR: OLLAMA_FLASH_ATTENTION:false OLLAMA_GO_TEMPLATE:true OLLAMA_GPU_OVERHEAD:0 OLLAMA_HOST:http://127.0.0.1:11434 OLLAMA_IGPU_ENABLE: OLLAMA_KEEP_ALIVE:5m0s OLLAMA_KV_CACHE_TYPE: OLLAMA_LLM_LIBRARY: OLLAMA_LOAD_TIMEOUT:5m0s OLLAMA_MAX_LOADED_MODELS:0 OLLAMA_MAX_QUEUE:512 OLLAMA_MAX_TRANSFER_STREAMS:4 OLLAMA_MODELS:/root/.ollama/models OLLAMA_NOHISTORY:false OLLAMA_NOPRUNE:false OLLAMA_NO_CLOUD:false OLLAMA_NUM_PARALLEL:1 OLLAMA_ORIGINS:[http://localhost https://localhost http://localhost:* https://localhost:* http://127.0.0.1 https://127.0.0.1 http://127.0.0.1:* https://127.0.0.1:* http://0.0.0.0 https://0.0.0.0 http://0.0.0.0:* https://0.0.0.0:* app://* file://* tauri://* vscode-webview://* vscode-file://*] OLLAMA_REMOTES:[ollama.com] OLLAMA_SCHED_SPREAD:false OLLAMA_VULKAN:true ROCR_VISIBLE_DEVICES: http_proxy: https_proxy: no_proxy:]"
+time=2026-07-16T14:12:16.873Z level=INFO source=routes.go:1949 msg="Ollama cloud disabled: false"
+time=2026-07-16T14:12:16.873Z level=INFO source=images.go:883 msg="total blobs: 0"
+time=2026-07-16T14:12:16.874Z level=INFO source=images.go:890 msg="total unused blobs removed: 0"
+time=2026-07-16T14:12:16.874Z level=INFO source=routes.go:2004 msg="Listening on 127.0.0.1:11434 (version 0.32.0)"
+time=2026-07-16T14:12:16.875Z level=INFO source=runner.go:60 msg="discovering available GPUs..."
+time=2026-07-16T14:12:16.877Z level=INFO source=model_list_cache.go:112 msg="model list cache hydration complete" models=1 failures=0 elapsed=3.086143ms
+time=2026-07-16T14:12:17.040Z level=INFO source=types.go:50 msg="inference compute" id=cpu library=cpu compute="" name=cpu description=cpu libdirs=ollama driver="" pci_id="" type="" total="16.0 GiB" available="16.0 GiB"
+time=2026-07-16T14:12:17.040Z level=INFO source=routes.go:2054 msg="vram-based default context" total_vram="0 B" default_num_ctx=4096
+time=2026-07-16T14:12:17.158Z level=INFO source=model_recommendations.go:177 msg="model recommendations cache sleep scheduled" wait=4h7m17.708883401s consecutive_failures=0
+==> Exited with status 1

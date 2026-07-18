@@ -39,7 +39,8 @@ if (staticDir && fs.existsSync(staticDir)) {
   logger.info({ staticDir }, "Serving static frontend");
   app.use(express.static(staticDir));
   // SPA fallback — any non-API route serves index.html
-  app.get("*", (_req: Request, res: Response) => {
+  // Express 5 / path-to-regexp@8 requires a named wildcard (not bare "*")
+  app.get("/*path", (_req: Request, res: Response) => {
     res.sendFile(path.join(staticDir, "index.html"));
   });
 }

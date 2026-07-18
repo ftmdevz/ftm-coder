@@ -16,6 +16,35 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- ── Client-side error forwarder ──────────────────────────────────────────
+         Catches ALL JS errors (including ones before React mounts) and POSTs
+         them to /api/log/client-error so they appear in server (Render) logs.
+    ──────────────────────────────────────────────────────────────────────────── -->
+    <script>
+      (function () {
+        function send(payload) {
+          try {
+            navigator.sendBeacon
+              ? navigator.sendBeacon('/api/log/client-error', JSON.stringify(payload))
+              : fetch('/api/log/client-error', { method: 'POST', body: JSON.stringify(payload), headers: { 'content-type': 'application/json' } }).catch(function(){});
+          } catch (e) {}
+        }
+        window.addEventListener('error', function (e) {
+          send({ type: 'error', message: e.message, filename: e.filename, line: e.lineno, col: e.colno, stack: e.error && e.error.stack });
+        });
+        window.addEventListener('unhandledrejection', function (e) {
+          send({ type: 'unhandledrejection', reason: String(e.reason), stack: e.reason && e.reason.stack });
+        });
+        // Override console.error so React's error logs also appear in server logs
+        var _ce = console.error.bind(console);
+        console.error = function () {
+          var args = Array.prototype.slice.call(arguments);
+          var msg = args.map(function(a) { try { return typeof a === 'object' ? JSON.stringify(a) : String(a); } catch(e){ return String(a); } }).join(' ');
+          send({ type: 'console.error', message: msg.slice(0, 2000) });
+          _ce.apply(console, arguments);
+        };
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

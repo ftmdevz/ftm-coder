@@ -1,0 +1,400 @@
+2026-07-16T14:02:10.870513199Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:10.870515099Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:10.969798205Z verifying sha256 digest ⠋ pulling manifest 
+2026-07-16T14:02:10.969820916Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:10.969825126Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:10.969828786Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:10.969832796Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:10.969836816Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:11.070174717Z verifying sha256 digest ⠙ pulling manifest 
+2026-07-16T14:02:11.070202577Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:11.070206527Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:11.070209867Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:11.070213048Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:11.070215778Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:11.170556378Z verifying sha256 digest ⠹ pulling manifest 
+2026-07-16T14:02:11.170572168Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:11.170575448Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:11.170579288Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:11.170582858Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:11.170585908Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:11.269942477Z verifying sha256 digest ⠸ pulling manifest 
+2026-07-16T14:02:11.269962697Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:11.269966217Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:11.269969077Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:11.269986838Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:11.269990358Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:11.370352928Z verifying sha256 digest ⠼ pulling manifest 
+2026-07-16T14:02:11.370380509Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:11.370385599Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:11.370389529Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:11.370393909Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:11.370397769Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:11.469598684Z verifying sha256 digest ⠴ pulling manifest 
+2026-07-16T14:02:11.469612964Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:11.469615344Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:11.469617495Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:11.469619395Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:11.469621275Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:11.569976255Z verifying sha256 digest ⠦ pulling manifest 
+2026-07-16T14:02:11.569995846Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:11.569998866Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:11.570001356Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:11.570003676Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:11.570006066Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:11.670378397Z verifying sha256 digest ⠧ pulling manifest 
+2026-07-16T14:02:11.670389958Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:11.670392787Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:11.670395638Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:11.670398098Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:11.670400468Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:11.769799687Z verifying sha256 digest ⠇ pulling manifest 
+2026-07-16T14:02:11.769817807Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:11.769820367Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:11.769822397Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:11.769824277Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:11.769826157Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:11.870239369Z verifying sha256 digest ⠏ pulling manifest 
+2026-07-16T14:02:11.87026701Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:11.87027065Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:11.87027327Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:11.87027587Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:11.87027838Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:11.970626701Z verifying sha256 digest ⠋ pulling manifest 
+2026-07-16T14:02:11.970652151Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:11.970655442Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:11.970658191Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:11.970660742Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:11.970663132Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:12.07001643Z verifying sha256 digest ⠙ pulling manifest 
+2026-07-16T14:02:12.07003971Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:12.07004287Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:12.0700455Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:12.07004824Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:12.07005059Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:12.170397631Z verifying sha256 digest ⠹ pulling manifest 
+2026-07-16T14:02:12.170416181Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:12.170431972Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:12.170434252Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:12.170436212Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:12.170439062Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:12.269832201Z verifying sha256 digest ⠸ pulling manifest 
+2026-07-16T14:02:12.269857001Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:12.269860021Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:12.269862611Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:12.269865042Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:12.269867391Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:12.370220482Z verifying sha256 digest ⠼ pulling manifest 
+2026-07-16T14:02:12.370241253Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:12.370245153Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:12.370247673Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:12.370250203Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:12.370267583Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:12.470630364Z verifying sha256 digest ⠴ pulling manifest 
+2026-07-16T14:02:12.470652965Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:12.470657065Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:12.470660505Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:12.470663745Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:12.470666975Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:12.505380714Z [GIN] 2026/07/16 - 14:02:12 | 200 | 52.835757166s |       127.0.0.1 | POST     "/api/pull"
+2026-07-16T14:02:12.505417965Z verifying sha256 digest ⠦ pulling manifest 
+2026-07-16T14:02:12.505424435Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:02:12.505434525Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-16T14:02:12.505436635Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-16T14:02:12.505438595Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-16T14:02:12.505440815Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-16T14:02:12.505442985Z verifying sha256 digest 
+2026-07-16T14:02:12.505445496Z writing manifest 
+2026-07-16T14:02:12.505447436Z success 
+2026-07-16T14:02:12.50785487Z 🟢 Starting FTM-CODER-AI server on port 10000...
+2026-07-16T14:02:12.724100315Z node:internal/modules/cjs/loader:1517
+2026-07-16T14:02:12.724128185Z   const err = new Error(message);
+2026-07-16T14:02:12.724132375Z               ^
+2026-07-16T14:02:12.724135375Z 
+2026-07-16T14:02:12.724138426Z Error: Cannot find module 'archiver'
+2026-07-16T14:02:12.724141286Z Require stack:
+2026-07-16T14:02:12.724145066Z - /app/dist/index.mjs
+2026-07-16T14:02:12.724149366Z     at Module._resolveFilename (node:internal/modules/cjs/loader:1517:15)
+2026-07-16T14:02:12.724152716Z     at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)
+2026-07-16T14:02:12.724156716Z     at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)
+2026-07-16T14:02:12.724159776Z     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1122:12)
+2026-07-16T14:02:12.724163486Z     at Module._load (node:internal/modules/cjs/loader:1294:5)
+2026-07-16T14:02:12.724166546Z     at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+2026-07-16T14:02:12.724169706Z     at Module.require (node:internal/modules/cjs/loader:1617:12)
+2026-07-16T14:02:12.724176036Z     at require (node:internal/modules/helpers:153:16)
+2026-07-16T14:02:12.724179036Z     at <anonymous> (/app/src/routes/download.ts:8:18)
+2026-07-16T14:02:12.724181896Z     at ModuleJob.run (node:internal/modules/esm/module_job:439:25) {
+2026-07-16T14:02:12.724185597Z   code: 'MODULE_NOT_FOUND',
+2026-07-16T14:02:12.724188837Z   requireStack: [ '/app/dist/index.mjs' ]
+2026-07-16T14:02:12.724191627Z }
+2026-07-16T14:02:12.724194357Z 
+2026-07-16T14:02:12.724197367Z Node.js v24.18.0
+2026-07-16T14:02:23.885099662Z ==> No open ports detected on 0.0.0.0, continuing to scan...
+2026-07-16T14:02:24.266258002Z ==> Docs on specifying a port: https://render.com/docs/web-services#port-binding
+2026-07-16T14:02:44.721060929Z 🚀 Starting Ollama...
+2026-07-16T14:02:44.721282624Z ⏳ Waiting for Ollama to be ready...
+2026-07-16T14:02:44.738142208Z Couldn't find '/root/.ollama/id_ed25519'. Generating new private key.
+2026-07-16T14:02:44.73957762Z Your new public key is: 
+2026-07-16T14:02:44.739600921Z 
+2026-07-16T14:02:44.739604331Z ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDZgRdL2N8yeEDK36kZX/dznwkBohQb3HdmM757610pp
+2026-07-16T14:02:44.739606401Z 
+2026-07-16T14:02:44.740339557Z time=2026-07-16T14:02:44.740Z level=INFO source=routes.go:1947 msg="server config" env="map[CUDA_VISIBLE_DEVICES: GGML_VK_VISIBLE_DEVICES: GPU_DEVICE_ORDINAL: HIP_VISIBLE_DEVICES: HSA_OVERRIDE_GFX_VERSION: HTTPS_PROXY: HTTP_PROXY: LLAMA_ARG_FIT: LLAMA_ARG_FIT_TARGET: NO_PROXY: OLLAMA_CONTEXT_LENGTH:0 OLLAMA_DEBUG:INFO OLLAMA_DEBUG_LOG_REQUESTS:false OLLAMA_EDITOR: OLLAMA_FLASH_ATTENTION:false OLLAMA_GO_TEMPLATE:true OLLAMA_GPU_OVERHEAD:0 OLLAMA_HOST:http://127.0.0.1:11434 OLLAMA_IGPU_ENABLE: OLLAMA_KEEP_ALIVE:5m0s OLLAMA_KV_CACHE_TYPE: OLLAMA_LLM_LIBRARY: OLLAMA_LOAD_TIMEOUT:5m0s OLLAMA_MAX_LOADED_MODELS:0 OLLAMA_MAX_QUEUE:512 OLLAMA_MAX_TRANSFER_STREAMS:4 OLLAMA_MODELS:/root/.ollama/models OLLAMA_NOHISTORY:false OLLAMA_NOPRUNE:false OLLAMA_NO_CLOUD:false OLLAMA_NUM_PARALLEL:1 OLLAMA_ORIGINS:[http://localhost https://localhost http://localhost:* https://localhost:* http://127.0.0.1 https://127.0.0.1 http://127.0.0.1:* https://127.0.0.1:* http://0.0.0.0 https://0.0.0.0 http://0.0.0.0:* https://0.0.0.0:* app://* file://* tauri://* vscode-webview://* vscode-file://*] OLLAMA_REMOTES:[ollama.com] OLLAMA_SCHED_SPREAD:false OLLAMA_VULKAN:true ROCR_VISIBLE_DEVICES: http_proxy: https_proxy: no_proxy:]"
+2026-07-16T14:02:44.740349068Z time=2026-07-16T14:02:44.740Z level=INFO source=routes.go:1949 msg="Ollama cloud disabled: false"
+2026-07-16T14:02:44.740684815Z time=2026-07-16T14:02:44.740Z level=INFO source=images.go:883 msg="total blobs: 0"
+2026-07-16T14:02:44.740725046Z time=2026-07-16T14:02:44.740Z level=INFO source=images.go:890 msg="total unused blobs removed: 0"
+2026-07-16T14:02:44.741071094Z time=2026-07-16T14:02:44.740Z level=INFO source=routes.go:2004 msg="Listening on 127.0.0.1:11434 (version 0.32.0)"
+2026-07-16T14:02:44.74134497Z time=2026-07-16T14:02:44.741Z level=INFO source=model_list_cache.go:112 msg="model list cache hydration complete" models=0 failures=0 elapsed=192.205µs
+2026-07-16T14:02:44.742353903Z time=2026-07-16T14:02:44.742Z level=INFO source=runner.go:60 msg="discovering available GPUs..."
+2026-07-16T14:02:44.922009856Z time=2026-07-16T14:02:44.921Z level=INFO source=types.go:50 msg="inference compute" id=cpu library=cpu compute="" name=cpu description=cpu libdirs=ollama driver="" pci_id="" type="" total="16.0 GiB" available="16.0 GiB"
+2026-07-16T14:02:44.922034557Z time=2026-07-16T14:02:44.921Z level=INFO source=routes.go:2054 msg="vram-based default context" total_vram="0 B" default_num_ctx=4096
+2026-07-16T14:02:45.083472436Z time=2026-07-16T14:02:45.083Z level=INFO source=model_recommendations.go:177 msg="model recommendations cache sleep scheduled" wait=4h6m55.054211716s consecutive_failures=0
+2026-07-16T14:03:05.871798123Z pulling 60e05f210007:  91% ▕████████████████  ▏ 4.2 GB/4.7 GB   58 MB/s      7spulling manifest 
+2026-07-16T14:03:05.972034401Z pulling 60e05f210007:  91% ▕████████████████  ▏ 4.3 GB/4.7 GB   58 MB/s      7spulling manifest 
+2026-07-16T14:03:06.071985893Z pulling 60e05f210007:  91% ▕████████████████  ▏ 4.3 GB/4.7 GB   58 MB/s      7spulling manifest 
+2026-07-16T14:03:06.171867203Z pulling 60e05f210007:  91% ▕████████████████  ▏ 4.3 GB/4.7 GB   58 MB/s      7spulling manifest 
+2026-07-16T14:03:06.271901826Z pulling 60e05f210007:  91% ▕████████████████  ▏ 4.3 GB/4.7 GB   58 MB/s      6spulling manifest 
+2026-07-16T14:03:06.372176005Z pulling 60e05f210007:  91% ▕████████████████  ▏ 4.3 GB/4.7 GB   57 MB/s      7spulling manifest 
+2026-07-16T14:03:06.471981213Z pulling 60e05f210007:  91% ▕████████████████  ▏ 4.3 GB/4.7 GB   57 MB/s      7spulling manifest 
+2026-07-16T14:03:06.572033477Z pulling 60e05f210007:  92% ▕████████████████  ▏ 4.3 GB/4.7 GB   57 MB/s      6spulling manifest 
+2026-07-16T14:03:06.671729343Z pulling 60e05f210007:  92% ▕████████████████  ▏ 4.3 GB/4.7 GB   57 MB/s      6spulling manifest 
+2026-07-16T14:03:06.771780617Z pulling 60e05f210007:  92% ▕████████████████  ▏ 4.3 GB/4.7 GB   57 MB/s      6spulling manifest 
+2026-07-16T14:03:06.872457435Z pulling 60e05f210007:  92% ▕████████████████  ▏ 4.3 GB/4.7 GB   57 MB/s      6spulling manifest 
+2026-07-16T14:03:06.971979636Z pulling 60e05f210007:  92% ▕████████████████  ▏ 4.3 GB/4.7 GB   57 MB/s      6spulling manifest 
+2026-07-16T14:03:07.071898857Z pulling 60e05f210007:  92% ▕████████████████  ▏ 4.3 GB/4.7 GB   57 MB/s      6spulling manifest 
+2026-07-16T14:03:07.171780907Z pulling 60e05f210007:  92% ▕████████████████  ▏ 4.3 GB/4.7 GB   57 MB/s      6spulling manifest 
+2026-07-16T14:03:07.272060946Z pulling 60e05f210007:  92% ▕████████████████  ▏ 4.3 GB/4.7 GB   57 MB/s      6spulling manifest 
+2026-07-16T14:03:07.371919766Z pulling 60e05f210007:  93% ▕████████████████  ▏ 4.3 GB/4.7 GB   57 MB/s      5spulling manifest 
+2026-07-16T14:03:07.471629222Z pulling 60e05f210007:  93% ▕████████████████  ▏ 4.3 GB/4.7 GB   57 MB/s      5spulling manifest 
+2026-07-16T14:03:07.572000203Z pulling 60e05f210007:  93% ▕████████████████  ▏ 4.4 GB/4.7 GB   57 MB/s      5spulling manifest 
+2026-07-16T14:03:07.671800141Z pulling 60e05f210007:  93% ▕████████████████  ▏ 4.4 GB/4.7 GB   57 MB/s      5spulling manifest 
+2026-07-16T14:03:07.772298165Z pulling 60e05f210007:  93% ▕████████████████  ▏ 4.4 GB/4.7 GB   57 MB/s      5spulling manifest 
+2026-07-16T14:03:07.872501282Z pulling 60e05f210007:  93% ▕████████████████  ▏ 4.4 GB/4.7 GB   57 MB/s      5spulling manifest 
+2026-07-16T14:03:07.972411543Z pulling 60e05f210007:  93% ▕████████████████  ▏ 4.4 GB/4.7 GB   57 MB/s      5spulling manifest 
+2026-07-16T14:03:08.071910174Z pulling 60e05f210007:  93% ▕████████████████  ▏ 4.4 GB/4.7 GB   57 MB/s      5spulling manifest 
+2026-07-16T14:03:08.171807594Z pulling 60e05f210007:  93% ▕████████████████  ▏ 4.4 GB/4.7 GB   57 MB/s      5spulling manifest 
+2026-07-16T14:03:08.271587672Z pulling 60e05f210007:  93% ▕████████████████  ▏ 4.4 GB/4.7 GB   57 MB/s      5spulling manifest 
+2026-07-16T14:03:08.371889451Z pulling 60e05f210007:  94% ▕████████████████  ▏ 4.4 GB/4.7 GB   56 MB/s      5spulling manifest 
+2026-07-16T14:03:08.472020967Z pulling 60e05f210007:  94% ▕████████████████  ▏ 4.4 GB/4.7 GB   56 MB/s      5spulling manifest 
+2026-07-16T14:03:08.571819685Z pulling 60e05f210007:  94% ▕████████████████  ▏ 4.4 GB/4.7 GB   56 MB/s      5spulling manifest 
+2026-07-16T14:03:08.671906009Z pulling 60e05f210007:  94% ▕████████████████  ▏ 4.4 GB/4.7 GB   56 MB/s      4spulling manifest 
+2026-07-16T14:03:08.772587718Z pulling 60e05f210007:  94% ▕████████████████  ▏ 4.4 GB/4.7 GB   56 MB/s      4spulling manifest 
+2026-07-16T14:03:08.87256535Z pulling 60e05f210007:  94% ▕████████████████  ▏ 4.4 GB/4.7 GB   56 MB/s      4spulling manifest 
+2026-07-16T14:03:08.972283596Z pulling 60e05f210007:  94% ▕████████████████  ▏ 4.4 GB/4.7 GB   56 MB/s      4spulling manifest 
+2026-07-16T14:03:09.072124165Z pulling 60e05f210007:  94% ▕████████████████  ▏ 4.4 GB/4.7 GB   56 MB/s      4spulling manifest 
+2026-07-16T14:03:09.172083297Z pulling 60e05f210007:  94% ▕████████████████  ▏ 4.4 GB/4.7 GB   56 MB/s      4spulling manifest 
+2026-07-16T14:03:09.271816053Z pulling 60e05f210007:  94% ▕█████████████████ ▏ 4.4 GB/4.7 GB   56 MB/s      4spulling manifest 
+2026-07-16T14:03:09.372594614Z pulling 60e05f210007:  95% ▕█████████████████ ▏ 4.4 GB/4.7 GB   54 MB/s      4spulling manifest 
+2026-07-16T14:03:09.472006853Z pulling 60e05f210007:  95% ▕█████████████████ ▏ 4.4 GB/4.7 GB   54 MB/s      4spulling manifest 
+2026-07-16T14:03:09.572488076Z pulling 60e05f210007:  95% ▕█████████████████ ▏ 4.4 GB/4.7 GB   54 MB/s      4spulling manifest 
+2026-07-16T14:03:09.672037509Z pulling 60e05f210007:  95% ▕█████████████████ ▏ 4.4 GB/4.7 GB   54 MB/s      4spulling manifest 
+2026-07-16T14:03:09.771864157Z pulling 60e05f210007:  95% ▕█████████████████ ▏ 4.4 GB/4.7 GB   54 MB/s      4spulling manifest 
+2026-07-16T14:03:09.87188454Z pulling 60e05f210007:  95% ▕█████████████████ ▏ 4.4 GB/4.7 GB   54 MB/s      4spulling manifest 
+2026-07-16T14:03:09.971805031Z pulling 60e05f210007:  95% ▕█████████████████ ▏ 4.5 GB/4.7 GB   54 MB/s      4spulling manifest 
+2026-07-16T14:03:10.071940377Z pulling 60e05f210007:  95% ▕█████████████████ ▏ 4.5 GB/4.7 GB   54 MB/s      4spulling manifest 
+2026-07-16T14:03:10.1723641Z pulling 60e05f210007:  95% ▕█████████████████ ▏ 4.5 GB/4.7 GB   54 MB/s      4spulling manifest 
+2026-07-16T14:03:10.272145377Z pulling 60e05f210007:  95% ▕█████████████████ ▏ 4.5 GB/4.7 GB   54 MB/s      4spulling manifest 
+2026-07-16T14:03:10.371756701Z pulling 60e05f210007:  95% ▕█████████████████ ▏ 4.5 GB/4.7 GB   54 MB/s      3spulling manifest 
+2026-07-16T14:03:10.472143352Z pulling 60e05f210007:  96% ▕█████████████████ ▏ 4.5 GB/4.7 GB   53 MB/s      3spulling manifest 
+2026-07-16T14:03:10.571633774Z pulling 60e05f210007:  96% ▕█████████████████ ▏ 4.5 GB/4.7 GB   53 MB/s      3spulling manifest 
+2026-07-16T14:03:10.671905032Z pulling 60e05f210007:  96% ▕█████████████████ ▏ 4.5 GB/4.7 GB   53 MB/s      3spulling manifest 
+2026-07-16T14:03:10.771812133Z pulling 60e05f210007:  96% ▕█████████████████ ▏ 4.5 GB/4.7 GB   53 MB/s      3spulling manifest 
+2026-07-16T14:03:10.872402409Z pulling 60e05f210007:  96% ▕█████████████████ ▏ 4.5 GB/4.7 GB   53 MB/s      3spulling manifest 
+2026-07-16T14:03:10.972238688Z pulling 60e05f210007:  96% ▕█████████████████ ▏ 4.5 GB/4.7 GB   53 MB/s      3spulling manifest 
+2026-07-16T14:03:11.072407334Z pulling 60e05f210007:  96% ▕█████████████████ ▏ 4.5 GB/4.7 GB   53 MB/s      3spulling manifest 
+2026-07-16T14:03:11.172516259Z pulling 60e05f210007:  96% ▕█████████████████ ▏ 4.5 GB/4.7 GB   53 MB/s      3spulling manifest 
+2026-07-16T14:03:11.272609644Z pulling 60e05f210007:  96% ▕█████████████████ ▏ 4.5 GB/4.7 GB   53 MB/s      3spulling manifest 
+2026-07-16T14:03:11.372080285Z pulling 60e05f210007:  97% ▕█████████████████ ▏ 4.5 GB/4.7 GB   53 MB/s      2spulling manifest 
+2026-07-16T14:03:11.472276312Z pulling 60e05f210007:  97% ▕█████████████████ ▏ 4.5 GB/4.7 GB   52 MB/s      2spulling manifest 
+2026-07-16T14:03:11.571807394Z pulling 60e05f210007:  97% ▕█████████████████ ▏ 4.5 GB/4.7 GB   52 MB/s      2spulling manifest 
+2026-07-16T14:03:11.672575194Z pulling 60e05f210007:  97% ▕█████████████████ ▏ 4.5 GB/4.7 GB   52 MB/s      2spulling manifest 
+2026-07-16T14:03:11.772080545Z pulling 60e05f210007:  97% ▕█████████████████ ▏ 4.5 GB/4.7 GB   52 MB/s      2spulling manifest 
+2026-07-16T14:03:11.872292383Z pulling 60e05f210007:  97% ▕█████████████████ ▏ 4.6 GB/4.7 GB   52 MB/s      2spulling manifest 
+2026-07-16T14:03:11.97160108Z pulling 60e05f210007:  97% ▕█████████████████ ▏ 4.6 GB/4.7 GB   52 MB/s      2spulling manifest 
+2026-07-16T14:03:12.071824977Z pulling 60e05f210007:  97% ▕█████████████████ ▏ 4.6 GB/4.7 GB   52 MB/s      2spulling manifest 
+2026-07-16T14:03:12.172181238Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   52 MB/s      2spulling manifest 
+2026-07-16T14:03:12.271962456Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   52 MB/s      2spulling manifest 
+2026-07-16T14:03:12.37200079Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   52 MB/s      1spulling manifest 
+2026-07-16T14:03:12.471753946Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   54 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428688146Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   54 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428704777Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   54 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428708137Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   54 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428711347Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   54 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428714317Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   54 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428724237Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   54 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428727197Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   54 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428729727Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   54 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428732287Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   54 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428734907Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   46 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428737578Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   46 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428740367Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   46 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428743088Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   46 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428746018Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   46 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428748818Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   46 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428751858Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   46 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428755228Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   46 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428758188Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   46 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428760978Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   46 MB/s      1spulling manifest 
+2026-07-16T14:03:15.428763678Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   41 MB/s      2spulling manifest 
+2026-07-16T14:03:15.428766458Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   41 MB/s      2spulling manifest 
+2026-07-16T14:03:15.428769288Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   41 MB/s      2spulling manifest 
+2026-07-16T14:03:15.428772188Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   41 MB/s      2spulling manifest 
+2026-07-16T14:03:15.428775508Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   41 MB/s      2spulling manifest 
+2026-07-16T14:03:15.428792479Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   41 MB/s      2spulling manifest 
+2026-07-16T14:03:15.428796089Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   41 MB/s      2spulling manifest 
+2026-07-16T14:03:15.428799419Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   41 MB/s      2spulling manifest 
+2026-07-16T14:03:15.428801919Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   41 MB/s      2spulling manifest 
+2026-07-16T14:03:15.428804609Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   41 MB/s      2spulling manifest 
+2026-07-16T14:03:15.472196625Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   41 MB/s      2spulling manifest 
+2026-07-16T14:03:15.572153707Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   35 MB/s      2spulling manifest 
+2026-07-16T14:03:15.671977626Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   35 MB/s      2spulling manifest 
+2026-07-16T14:03:15.772258925Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   35 MB/s      2spulling manifest 
+2026-07-16T14:03:15.871629783Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   35 MB/s      2spulling manifest 
+2026-07-16T14:03:15.972483965Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   35 MB/s      2spulling manifest 
+2026-07-16T14:03:16.071892334Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   35 MB/s      2spulling manifest 
+2026-07-16T14:03:16.172146853Z pulling 60e05f210007:  98% ▕█████████████████ ▏ 4.6 GB/4.7 GB   35 MB/s      2spulling manifest 
+2026-07-16T14:03:16.272565595Z pulling 60e05f210007:  99% ▕█████████████████ ▏ 4.6 GB/4.7 GB   35 MB/s      1spulling manifest 
+2026-07-16T14:03:16.372308122Z pulling 60e05f210007:  99% ▕█████████████████ ▏ 4.6 GB/4.7 GB   35 MB/s      1spulling manifest 
+2026-07-16T14:03:16.471778592Z pulling 60e05f210007:  99% ▕█████████████████ ▏ 4.6 GB/4.7 GB   35 MB/s      1spulling manifest 
+2026-07-16T14:03:16.572337558Z pulling 60e05f210007:  99% ▕█████████████████ ▏ 4.6 GB/4.7 GB   33 MB/s      1spulling manifest 
+2026-07-16T14:03:16.671635644Z pulling 60e05f210007:  99% ▕█████████████████ ▏ 4.6 GB/4.7 GB   33 MB/s      1spulling manifest 
+2026-07-16T14:03:16.771967954Z pulling 60e05f210007:  99% ▕█████████████████ ▏ 4.7 GB/4.7 GB   33 MB/s      0spulling manifest 
+2026-07-16T14:03:16.872494419Z pulling 60e05f210007:  99% ▕█████████████████ ▏ 4.7 GB/4.7 GB   33 MB/s      0spulling manifest 
+2026-07-16T14:03:16.972562343Z pulling 60e05f210007:  99% ▕█████████████████ ▏ 4.7 GB/4.7 GB   33 MB/s      0spulling manifest 
+2026-07-16T14:03:17.071733027Z pulling 60e05f210007:  99% ▕█████████████████ ▏ 4.7 GB/4.7 GB   33 MB/s      0spulling manifest 
+2026-07-16T14:03:17.172363734Z pulling 60e05f210007:  99% ▕█████████████████ ▏ 4.7 GB/4.7 GB   33 MB/s      0spulling manifest 
+2026-07-16T14:03:17.271912267Z pulling 60e05f210007: 100% ▕█████████████████ ▏ 4.7 GB/4.7 GB   33 MB/s      0spulling manifest 
+2026-07-16T14:03:17.371869278Z pulling 60e05f210007: 100% ▕█████████████████ ▏ 4.7 GB/4.7 GB   33 MB/s      0spulling manifest 
+2026-07-16T14:03:17.472577157Z pulling 60e05f210007: 100% ▕█████████████████ ▏ 4.7 GB/4.7 GB   33 MB/s      0spulling manifest 
+2026-07-16T14:03:17.572217941Z pulling 60e05f210007: 100% ▕█████████████████ ▏ 4.7 GB/4.7 GB   31 MB/s      0spulling manifest 
+2026-07-16T14:03:17.671717153Z pulling 60e05f210007: 100% ▕█████████████████ ▏ 4.7 GB/4.7 GB   31 MB/s      0spulling manifest 
+2026-07-16T14:03:17.772279018Z pulling 60e05f210007: 100% ▕█████████████████ ▏ 4.7 GB/4.7 GB   31 MB/s      0spulling manifest 
+2026-07-16T14:03:17.871899182Z pulling 60e05f210007: 100% ▕█████████████████ ▏ 4.7 GB/4.7 GB   31 MB/s      0spulling manifest 
+2026-07-16T14:03:17.972241823Z pulling 60e05f210007: 100% ▕█████████████████ ▏ 4.7 GB/4.7 GB   31 MB/s      0spulling manifest 
+2026-07-16T14:03:18.07244098Z pulling 60e05f210007: 100% ▕█████████████████ ▏ 4.7 GB/4.7 GB   31 MB/s      0spulling manifest 
+2026-07-16T14:03:18.171929321Z pulling 60e05f210007: 100% ▕█████████████████ ▏ 4.7 GB/4.7 GB   31 MB/s      0spulling manifest 
+2026-07-16T14:03:18.272352293Z pulling 60e05f210007: 100% ▕█████████████████ ▏ 4.7 GB/4.7 GB   31 MB/s      0spulling manifest 
+2026-07-16T14:03:18.371930096Z pulling 60e05f210007: 100% ▕█████████████████ ▏ 4.7 GB/4.7 GB   31 MB/s      0spulling manifest 
+2026-07-16T14:03:18.471799196Z pulling 60e05f210007: 100% ▕█████████████████ ▏ 4.7 GB/4.7 GB   31 MB/s      0spulling manifest 
+2026-07-16T14:03:18.572584366Z pulling 60e05f210007: 100% ▕█████████████████ ▏ 4.7 GB/4.7 GB   27 MB/s      0spulling manifest 
+2026-07-16T14:03:18.671962565Z pulling 60e05f210007: 100% ▕█████████████████ ▏ 4.7 GB/4.7 GB   27 MB/s      0spulling manifest 
+2026-07-16T14:03:18.771804864Z pulling 60e05f210007: 100% ▕█████████████████ ▏ 4.7 GB/4.7 GB   27 MB/s      0spulling manifest 
+2026-07-16T14:03:18.872278287Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:18.972479624Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:19.071880374Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:19.172369637Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:19.272561024Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:19.371883171Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:19.472233262Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:19.571624981Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:19.672022612Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:19.772447725Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:19.871629979Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:19.972068921Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:20.072528524Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:20.171717379Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:20.272042839Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:20.37243764Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:20.471620834Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:20.57221242Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:20.671608119Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:20.772085243Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:20.872202358Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:20.971749531Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:21.071889607Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:21.172151795Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:21.272382793Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:21.371629008Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:21.389984676Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         time=2026-07-16T14:03:21.389Z level=INFO source=download.go:179 msg="downloading 66b9ea09bd5b in 1 68 B part(s)"
+2026-07-16T14:03:21.472513021Z pulling manifest 
+2026-07-16T14:03:21.571870849Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:21.672125318Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:21.771746372Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:21.872080732Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:21.972265829Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:22.071993305Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         pulling manifest 
+2026-07-16T14:03:22.072014106Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:22.172289555Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:22.172309325Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:22.271593372Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:22.271615202Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:22.371973403Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:22.371993714Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:22.472290823Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:22.472309243Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:22.572615983Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:22.572633763Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:22.672053253Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:22.672071173Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:22.771612795Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:22.771633736Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:22.871831143Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:22.871850014Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:22.972210334Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:22.972228295Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:23.072567715Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:23.072586136Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:23.17179901Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:23.171823301Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:23.272236043Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:23.272260914Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:23.372609884Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:23.372629635Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:23.472019093Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:23.472039344Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:23.57218482Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:23.57220795Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:23.671999308Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:23.672022969Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:23.773209298Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:23.773234319Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:23.871579054Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:23.871599124Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:23.972007026Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:23.972029047Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:24.072336166Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:24.072354567Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:24.171585242Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:24.171602142Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:24.271997624Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:24.272021004Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:24.372196221Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:24.372225382Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:24.47158528Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:24.471607291Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:24.572011692Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:24.572032173Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:24.672266471Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:24.672282501Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:24.772630892Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:24.772652382Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:24.871898618Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:24.871917508Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:24.972219638Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:24.972237598Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:25.071737239Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:25.07176148Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:25.172006138Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:25.172028029Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:25.2724163Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:25.272436301Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:25.3718667Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:25.371885201Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:25.472062597Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:25.472083168Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:25.572378407Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:25.572396768Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:25.671733865Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:25.671752615Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:25.772041865Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:25.772060635Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:25.872372925Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:25.872393616Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:25.971739873Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:25.971765014Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:26.072048533Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:26.074402377Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:26.172497666Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:26.172520446Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:26.271916205Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         pulling manifest 
+2026-07-16T14:03:26.271938446Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-16T14:03:26.956197122Z ==> No open ports detected on 0.0.0.0, continuing to scan...

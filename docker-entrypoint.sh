@@ -3,6 +3,15 @@ set -e
 
 MODEL="${AI_MODEL:-qwen2.5-coder:7b}"
 
+# ── Single persistent disk layout (/data by default) ─────────────────────────
+# Mount one disk at $DATA_DIR on Render; everything lives under it:
+#   $DATA_DIR/ollama/models  — Ollama model weights
+#   $DATA_DIR/users/         — per-user sandboxed workspaces + SQLite auth DB
+DATA_DIR="${DATA_DIR:-/data}"
+export OLLAMA_MODELS="${DATA_DIR}/ollama/models"
+export USERS_ROOT="${DATA_DIR}/users"
+mkdir -p "$OLLAMA_MODELS" "$USERS_ROOT"
+
 echo "🚀 Starting Ollama..."
 ollama serve &
 OLLAMA_PID=$!

@@ -633,7 +633,9 @@ export function ChatPanel() {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); }
   };
 
-  const configReady = !!(config?.apiKey);
+  // Built-in server proxy ("/api/ai") needs no API key — only external providers do.
+  const isServerProxy = config?.baseURL === "/api/ai";
+  const configReady = !!(config?.baseURL && config?.model && (isServerProxy || config?.apiKey));
 
   return (
     <div className="h-full flex flex-col bg-[#13131a] border-l border-border" data-testid="container-chat">

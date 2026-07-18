@@ -1,0 +1,50 @@
+2026-07-17T00:50:40.492073456Z Node.js v24.18.0
+2026-07-17T00:50:45.816326568Z 🚀 Starting Ollama...
+2026-07-17T00:50:45.816493246Z ⏳ Waiting for Ollama to be ready...
+2026-07-17T00:50:45.831361192Z time=2026-07-17T00:50:45.831Z level=INFO source=routes.go:1947 msg="server config" env="map[CUDA_VISIBLE_DEVICES: GGML_VK_VISIBLE_DEVICES: GPU_DEVICE_ORDINAL: HIP_VISIBLE_DEVICES: HSA_OVERRIDE_GFX_VERSION: HTTPS_PROXY: HTTP_PROXY: LLAMA_ARG_FIT: LLAMA_ARG_FIT_TARGET: NO_PROXY: OLLAMA_CONTEXT_LENGTH:0 OLLAMA_DEBUG:INFO OLLAMA_DEBUG_LOG_REQUESTS:false OLLAMA_EDITOR: OLLAMA_FLASH_ATTENTION:false OLLAMA_GO_TEMPLATE:true OLLAMA_GPU_OVERHEAD:0 OLLAMA_HOST:http://127.0.0.1:11434 OLLAMA_IGPU_ENABLE: OLLAMA_KEEP_ALIVE:5m0s OLLAMA_KV_CACHE_TYPE: OLLAMA_LLM_LIBRARY: OLLAMA_LOAD_TIMEOUT:5m0s OLLAMA_MAX_LOADED_MODELS:0 OLLAMA_MAX_QUEUE:512 OLLAMA_MAX_TRANSFER_STREAMS:4 OLLAMA_MODELS:/root/.ollama/models OLLAMA_NOHISTORY:false OLLAMA_NOPRUNE:false OLLAMA_NO_CLOUD:false OLLAMA_NUM_PARALLEL:1 OLLAMA_ORIGINS:[http://localhost https://localhost http://localhost:* https://localhost:* http://127.0.0.1 https://127.0.0.1 http://127.0.0.1:* https://127.0.0.1:* http://0.0.0.0 https://0.0.0.0 http://0.0.0.0:* https://0.0.0.0:* app://* file://* tauri://* vscode-webview://* vscode-file://*] OLLAMA_REMOTES:[ollama.com] OLLAMA_SCHED_SPREAD:false OLLAMA_VULKAN:true ROCR_VISIBLE_DEVICES: http_proxy: https_proxy: no_proxy:]"
+2026-07-17T00:50:45.831380343Z time=2026-07-17T00:50:45.831Z level=INFO source=routes.go:1949 msg="Ollama cloud disabled: false"
+2026-07-17T00:50:45.831857235Z time=2026-07-17T00:50:45.831Z level=INFO source=images.go:883 msg="total blobs: 5"
+2026-07-17T00:50:45.832119968Z time=2026-07-17T00:50:45.832Z level=INFO source=images.go:890 msg="total unused blobs removed: 0"
+2026-07-17T00:50:45.832402411Z time=2026-07-17T00:50:45.832Z level=INFO source=routes.go:2004 msg="Listening on 127.0.0.1:11434 (version 0.32.0)"
+2026-07-17T00:50:45.834002636Z time=2026-07-17T00:50:45.833Z level=INFO source=runner.go:60 msg="discovering available GPUs..."
+2026-07-17T00:50:45.834872777Z time=2026-07-17T00:50:45.834Z level=INFO source=model_list_cache.go:112 msg="model list cache hydration complete" models=1 failures=0 elapsed=2.418293ms
+2026-07-17T00:50:45.995332546Z time=2026-07-17T00:50:45.995Z level=INFO source=types.go:50 msg="inference compute" id=cpu library=cpu compute="" name=cpu description=cpu libdirs=ollama driver="" pci_id="" type="" total="16.0 GiB" available="16.0 GiB"
+2026-07-17T00:50:45.995353257Z time=2026-07-17T00:50:45.995Z level=INFO source=routes.go:2054 msg="vram-based default context" total_vram="0 B" default_num_ctx=4096
+2026-07-17T00:50:46.130781085Z time=2026-07-17T00:50:46.130Z level=INFO source=model_recommendations.go:177 msg="model recommendations cache sleep scheduled" wait=4h26m28.738654604s consecutive_failures=0
+2026-07-17T00:50:46.713115228Z ==> Exited with status 1
+2026-07-17T00:50:46.717997787Z ==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
+2026-07-17T00:50:46.833889032Z [GIN] 2026/07/17 - 00:50:46 | 200 |     286.633µs |       127.0.0.1 | GET      "/api/tags"
+2026-07-17T00:50:46.834671788Z ✅ Ollama is ready
+2026-07-17T00:50:46.834685759Z 📥 Pulling model: qwen2.5-coder:7b (skip if cached)...
+2026-07-17T00:50:46.840708247Z ==> Instance srv-d9ce6jfavr4c73b11up0-kwz7n restarted
+2026-07-17T00:50:46.849758845Z [GIN] 2026/07/17 - 00:50:46 | 200 |      32.062µs |       127.0.0.1 | HEAD     "/"
+2026-07-17T00:50:47.878383866Z [GIN] 2026/07/17 - 00:50:47 | 200 |  1.028263514s |       127.0.0.1 | POST     "/api/pull"
+2026-07-17T00:50:47.878453809Z pulling manifest ⠋ pulling manifest ⠙ pulling manifest ⠹ pulling manifest ⠸ pulling manifest ⠼ pulling manifest ⠴ pulling manifest ⠦ pulling manifest ⠧ pulling manifest ⠇ pulling manifest ⠏ pulling manifest 
+2026-07-17T00:50:47.87847139Z pulling 60e05f210007: 100% ▕██████████████████▏ 4.7 GB                         
+2026-07-17T00:50:47.87847522Z pulling 66b9ea09bd5b: 100% ▕██████████████████▏   68 B                         
+2026-07-17T00:50:47.87847848Z pulling 1e65450c3067: 100% ▕██████████████████▏ 1.6 KB                         
+2026-07-17T00:50:47.87848163Z pulling 832dd9e00a68: 100% ▕██████████████████▏  11 KB                         
+2026-07-17T00:50:47.878484651Z pulling d9bb33f27869: 100% ▕██████████████████▏  487 B                         
+2026-07-17T00:50:47.878488131Z verifying sha256 digest 
+2026-07-17T00:50:47.878493031Z writing manifest 
+2026-07-17T00:50:47.878496161Z success 
+2026-07-17T00:50:47.880700904Z 🟢 Starting FTM-CODER-AI server on port 10000...
+2026-07-17T00:50:48.0006882Z node:internal/modules/package_json_reader:301
+2026-07-17T00:50:48.000714371Z   throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+2026-07-17T00:50:48.000717971Z         ^
+2026-07-17T00:50:48.000720351Z 
+2026-07-17T00:50:48.000723332Z Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'better-sqlite3' imported from /app/dist/index.mjs
+2026-07-17T00:50:48.000727582Z     at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+2026-07-17T00:50:48.000730842Z     at packageResolve (node:internal/modules/esm/resolve:768:81)
+2026-07-17T00:50:48.000749793Z     at moduleResolve (node:internal/modules/esm/resolve:859:18)
+2026-07-17T00:50:48.000754533Z     at defaultResolve (node:internal/modules/esm/resolve:992:11)
+2026-07-17T00:50:48.000758483Z     at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+2026-07-17T00:50:48.000762003Z     at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+2026-07-17T00:50:48.000765133Z     at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+2026-07-17T00:50:48.000768763Z     at #resolve (node:internal/modules/esm/loader:683:17)
+2026-07-17T00:50:48.000772404Z     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+2026-07-17T00:50:48.000776004Z     at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {
+2026-07-17T00:50:48.000779804Z   code: 'ERR_MODULE_NOT_FOUND'
+2026-07-17T00:50:48.000783374Z }
+2026-07-17T00:50:48.000786775Z 
+2026-07-17T00:50:48.000789764Z Node.js v24.18.0
